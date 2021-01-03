@@ -1,56 +1,70 @@
 <template>
     <div class="login-page" :style="{paddingBottom: `${footerHeight}px`}">
         <div class="form">
-            <form class="login-form">
-                <input v-model="username" type="text" placeholder="username"/>
-                <input v-model="password" type="password" placeholder="password"/>
-                <button @click.prevent="submitTheDetails">login</button>
-                <p class="message">Not registered? <router-link to="/register" href="#">Create an account</router-link></p>
+            <form @submit.prevent="submitDetails" class="register-form">
+                <h1 v-if="submissionError">{{submissionError}}</h1>
+                <input type="text" v-bind:class="[name ? 'success' : 'error']" v-model="name" placeholder="name"/>
+                <input type="email" v-model="email" v-bind:class="[email ? 'success' : 'error']" placeholder="email address"/>
+                <input type="password" v-bind:class="[password && password === reEnterPassword ? 'success' : 'error']" v-model="password" placeholder="password"/>
+                <input type="password" v-bind:class="[password && password === reEnterPassword ? 'success' : 'error']" v-model="reEnterPassword" placeholder="re-enter password"/>
+                <button type="submit">create</button>
+                <p class="message">Already registered? <router-link to="/login" href="#">Sign In</router-link></p>
             </form>
         </div>
     </div>
 </template>
 
 <script>
-
     import { mapGetters, mapActions } from 'vuex'
     import AuthService from '../services/AuthService'
 
     export default {
-        name: 'Login',
+        name: 'Register',
         data() {
             return {
                 footerHeight: null,
+                name: '',
+                email: '',
+                password: '',
+                reEnterPassword: '',
+                submissionError: null,
                 buffer: false,
-                errorMessage: null,
-                username: '',
-                password: ''
+                errorMessage: null
             }
         },
         methods: {
             ...mapGetters(['getFooterHeight']),
             ...mapActions(['setNavbarAndFooter']),
             async submitTheDetails(){
-                try {
-                    this.buffer = true
-                    const response = await AuthService.login({
-                        email: this.username, 
-                        password: this.password
-                    })
-                    this.$store.dispatch('setToken', response.data.token)
-                    this.$store.dispatch('setUser', response.data.user)
-                    this.$store.dispatch('setToken', this.username)
-                    this.$store.dispatch('setUser', this.password)
-                    this.buffer = false
-                    this.$router.push({
-                        name: 'Home'
-                    })
-                } 
-                catch (err) {
-                    this.buffer = false
-                    this.errorMessage = err
+                if(this.name && this.email && this.password && this.reEnterPassword){
+                    if(this.password === this.reEnterPassword){
+                        try {
+                            this.buffer = true
+                            const response = await AuthService.register({
+                                name: this.name,
+                                email: this.username, 
+                                password: this.password
+                            })
+
+                            console.log(response)
+
+                            this.$store.dispatch('setToken', response.data.token)
+                            this.$store.dispatch('setUser', response.data.user)
+                            this.buffer = false
+                            this.$router.push({
+                                name: 'Home'
+                            })
+                        } 
+                        catch (err) {
+                            console.log(err)
+                            this.buffer = false
+                            this.errorMessage = err
+                        }
+                    }else {
+                        this.submissionError = 'Passwords do not match'
+                    }
                 }
-            },
+            }
         },
         created() {
             this.setNavbarAndFooter(false)
@@ -61,6 +75,11 @@
 </script>
 
 <style scoped>
+
+    h1 {
+        font-size: 13px;
+        padding-bottom: 2em;
+    }
 
     .login-page {
         width: 360px;
@@ -80,12 +99,19 @@
         box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
     }
 
+    .success {
+        border: none;
+        
+    }
+    .error {
+        border: 1px solid #ff8282;
+    }
+
     .form input {
+        background: #f2f2f2;
         font-family: "Roboto", sans-serif;
         outline: 0;
-        background: #f2f2f2;
         width: 100%;
-        border: 0;
         margin: 0 0 15px;
         padding: 15px;
         box-sizing: border-box;

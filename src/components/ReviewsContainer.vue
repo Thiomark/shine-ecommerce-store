@@ -7,11 +7,11 @@
         </div>
         <h1>add a review</h1>
         <div class="add-review">
-            <i class="far fa-star"></i>
-            <i class="far fa-star"></i>
-            <i class="far fa-star"></i>
-            <i class="far fa-star"></i>
-            <i class="far fa-star"></i>
+            <i @mouseover="starHover(1)" @mouseleave="removeTheHover"  class="selected-stars far fa-star"></i>
+            <i @mouseover="starHover(2)" @mouseleave="removeTheHover"  class="far fa-star"></i>
+            <i @mouseover="starHover(3)" @mouseleave="removeTheHover"  class="far fa-star"></i>
+            <i @mouseover="starHover(4)" @mouseleave="removeTheHover"  class="far fa-star"></i>
+            <i @mouseover="starHover(5)" @mouseleave="removeTheHover"  class="far fa-star"></i>
             <form >
                 <label for="name">review *</label>
                 <textarea name="" id="" cols="30" rows="10"></textarea>
@@ -30,7 +30,46 @@
     export default {
         components: {
             ReviewTemplate
-        }
+        },
+        data() {
+            return {
+                numberOfSelectedStars: 0,
+                makeit: true
+            }
+        },
+        created() {
+            const allStars = document.querySelectorAll('.far')
+                allStars.forEach(star => star.style.color = "red")
+        },
+        methods: {
+            starHover(index){
+                const allStars = document.querySelectorAll('.far')
+
+                for(let i = 0; i < allStars.length; i++){
+                    allStars[i].style.color = "rgb(182, 182, 182)"
+                }
+
+                for(let i = 0; i <= index; i++){
+                    allStars[i].style.color = "#ffa534"
+                }
+            },
+            removeTheHover(){
+                // const allStars = document.querySelectorAll('.far')
+
+                // for(let i = 0; i < allStars.length; i++){
+                //     allStars[i].style.color = "rgb(182, 182, 182)"
+                // }
+            },
+            Selected(index){
+                const allStars = document.querySelectorAll('.far')
+                for(let i = 0; i < allStars.length; i++){
+                    allStars[i].className = "far fa-star not-selected-stars"
+                }
+                for(let i = 0; i <= index; i++){
+                    allStars[i].className = "far fa-star selected-stars"
+                }
+            }
+        },
     }
 </script>
 
@@ -41,14 +80,22 @@
         border-bottom: 1px solid rgb(221, 221, 221);
     }
 
+    .selected-stars {
+        color: #ffa534;
+    }
+
+    .not-selected-stars {
+        color: rgb(182, 182, 182);
+    }
+
     .stars {
         display: grid;
         grid-template-columns: auto auto auto auto auto;
-        grid-column-gap: .7em;
+        grid-column-gap: .8em;
     }
 
     .far {
-        font-size: .9rem;
+        font-size: 1.1rem;
         color: rgb(182, 182, 182);
     }
 
@@ -56,6 +103,7 @@
         max-width: 1100px;
         margin: 2em auto;
         width: 100%;
+        padding: 0 2em;
     }
 
     h1 {

@@ -1,9 +1,9 @@
 <template>
     <section class="product-wrapper">
-        <ProductHeader />
+        <!-- <ProductHeader  v-if="menuOpen" @click="showMenu"/> -->
         <div class="product-section">
             <Product 
-                v-for="product in products" 
+                v-for="product in getAllProducts" 
                 :key="product._id" 
                 :title="product.title"
                 :price="product.productCost"
@@ -15,49 +15,62 @@
 </template>
 
 <script>
-    import ProductHeader from './product/ProductHeader'
+
+    import {mapGetters, mapActions} from 'vuex'
+    //import ProductHeader from './product/ProductHeader'
     import Product from './product/Product'
-    import axios from 'axios'
 
     export default {
         name: 'ProductContainer',
         components: {
-            ProductHeader,
+           // ProductHeader,
             Product,
         },
         data() {
             return {
-                products: []
+                menuOpen: false
             }
         },
-        async created() {
-
-            const response = await axios.get('https://ecomstoreapi.herokuapp.com/api/v1/product/')
-            const allProducts = response.data.fetcheQuerys
-            //console.log(allProducts.length)
-            this.products = allProducts
-            // state.commit('setAllProducts', products.data.fetcheQuerys)
+        methods: {
+            ...mapActions(['fetchAllProducts']),
+            showMenu(){
+                this.menuOpen = !this.menuOpen
+            }
         },
-        // computed() {
-        //     return this.$store.getters.getAllProducts
-        // },
+        created() {
+            this.fetchAllProducts()
+        },
+        computed: mapGetters(['getAllProducts'])
+        
     }
 </script>
 
 <style scoped>
 
+    
+
     .product-wrapper {
         width: 100%;
         max-width: 1100px;
-        margin: auto;
         overflow-x: hidden;
+        margin: 2em auto;
+        padding: 0 2em;
     }
 
     .product-section {
         width: 100%;
-        grid-gap: 10px;
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
+        gap: 10px;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    @media (max-width: 577px) and (min-width: 300px){
+        .product-section {
+            width: 100%;
+            display: grid;
+            gap: 10px;
+            grid-template-columns: repeat(2, 1fr);
+        }
     }
     
 </style>

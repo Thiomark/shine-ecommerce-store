@@ -2,8 +2,8 @@
     <div class="landing-page-container">
         <div class="overlay">
             <Welcome />
-            <i class="icofont-scroll-bubble-down"></i>
         </div>
+        <i class="icofont-scroll-bubble-down"></i>
     </div>
 </template>
 
@@ -21,7 +21,6 @@
 <style scoped>
 
     .overlay {
-        /* z-index: 50; */
         position: absolute;
         top: 0;
         bottom: 0;
@@ -49,18 +48,15 @@
         justify-content: center;
         overflow: hidden;
 
-        /* filter: blur(8px);
-  -webkit-filter: blur(8px); */
     }
 
     .icofont-scroll-bubble-down {
-   
         color: rgb(240, 240, 240);
         font-size: 3rem;
         position: absolute;
         left: 50%;
-        bottom: 50px;
-        transform: translateY(-50%);
+        bottom: 100px;
+        transform: translateX(-50%);
         animation: move-up-and-down 2s ease-in-out infinite alternate;
     }
 
@@ -68,7 +64,7 @@
  
         100% {
             color: rgb(223, 223, 223);
-            bottom: 40px;
+            bottom: 80px;
         }
     }
 

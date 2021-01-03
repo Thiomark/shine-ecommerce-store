@@ -18,7 +18,8 @@
 <style scoped>
     .description-container {
         max-width: 1100px;
-        margin: 2em auto;
+        width: 100%;
+        padding: 2em;
     }
 
     .description-container p {

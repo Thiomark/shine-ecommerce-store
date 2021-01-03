@@ -1,66 +1,96 @@
 <template>
-    <div class="product-header-container">
-        <div class="left-section">
-            <ul>
-                <li><a href="#">Show All</a></li>
-                <li><a href="#">new</a></li>
-                <li><a href="#">Trending</a></li>
-                <li><a href="#">Essentials</a></li>
-            </ul>
-        </div>
+    <div class="Prodct-header-container">
         <div class="right-section">
-            <ul>
-                <li class="menu-links">
-                    <!-- <MenuItems class="menu-items"/> -->
-                    <a href="#">Sort by</a></li>
-                <li><a href="#">Options</a></li>
+            <a @click="showCategory" class="main-button" href="javascript:void(0)">Category<i class="fas fa-chevron-down"></i></a>
+            <ul class="category" v-if="category">
+                <a href="javascript:void(0)">New</a>
+                <a href="javascript:void(0)">Trending</a>
+                <a href="javascript:void(0)">All</a>
+                <a href="javascript:void(0)">T-Shirts</a>
+                <a href="javascript:void(0)">Shoes</a>
+                <a href="javascript:void(0)">Watch</a>
             </ul>
         </div>
-        
+        <div class="left-section">
+            <a @click="showSort"  class="main-button" href="javascript:void(0)">Sort<i class="fas fa-chevron-down"></i></a>
+            <MenuItems items="items"/>
+            <ul class="sort" v-if="sort" >
+                <a href="javascript:void(0)">A - Z</a>
+                <a href="javascript:void(0)">Z - A</a>
+                <a href="javascript:void(0)">Price low to high</a>
+                <a href="javascript:void(0)">Price high to low</a>
+            </ul>
+        </div>
     </div>
 </template>
 
 <script>
-    //import MenuItems from './MenuItems'
+
+    import MenuItems from '../extra/Menu'
+
     export default {
         name: 'ProdctHeader',
+        data() {
+            return {
+                sort: false,
+                category: false,
+                items: ["A - Z", "Z - A", "Price low to high", "Price high to low"]
+            }
+        },
+        methods: {
+            showCategory(){
+                this.category = !this.category
+            },
+            showSort(){
+                this.sort = !this.sort
+            }
+        },
         components: {
-            //MenuItems
+            MenuItems
+            //Menu
         }
     }
 </script>
 
 <style scoped>
 
-    .menu-links {
-        position: relative;
-    }
 
-    .menu-items {
-        top: 30px;
-        z-index: 13;
-        position: absolute;
-    }
 
-    .product-header-container {
+    .Prodct-header-container {
         width: 100%;
-        max-width: 1100px;
-        margin: auto;
         display: flex;
-        align-items: center;
+        max-width: 1100px;
         justify-content: space-between;
         padding: 1em 0;
     }
 
-    ul {
-        display: flex;
+    .fas {
+        padding-left: 10px;
+
     }
 
-    a {
-        color: rgb(26, 26, 26);
-        font-size: .9rem;
-        margin: 0 1em;
-        text-transform: capitalize;
+    .Prodct-header-container a{
+        color: rgb(68, 68, 68);
+        font-size: .8rem;
     }
+
+    .sort {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: flex-end;
+    }
+
+
+    ul {
+        display: flex;
+        flex-direction: column;
+        padding-top: 1em;
+    }
+
+    ul a {
+        padding: .6em 0;
+    }
+
 
 </style>

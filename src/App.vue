@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <Navbar storeName="Leavealot.com"/>
+    <Navbar storeName="leavealot.com" v-if="!getNavBarInfo"/>
     <router-view/>
-    <Footer class="put-at-the-bottom"/>
+    <Footer v-if="!getNavBarInfo" class="put-at-the-bottom"/>
   </div>
 </template>
 
@@ -11,18 +11,25 @@
   require('../src/assets/icofont/icofont.css')
   import Footer from './components/Footer'
   import Navbar from './components/landingpage/Navbar'
+  import {mapGetters} from 'vuex'
 
   export default {
       components: {
         Footer,
         Navbar
-      }
+      },
+      data() {
+        return {
+          currentRoute: null
+        }
+      },
+      computed: mapGetters(['getNavBarInfo']),
 
   }
 
 </script>
 
-<style>
+<style >
   * {
     box-sizing: border-box;
     padding: 0;

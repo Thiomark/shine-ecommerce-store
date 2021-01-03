@@ -1,23 +1,43 @@
 <template>
-    <nav>
-        <ul class="menu">
-            <li class="logo"><router-link to="/" href="#">{{storeName}}</router-link></li>
-            <li class="item"><router-link to="/">Home</router-link></li>
-            <li class="item"><router-link to="/product">About</router-link></li>
-            <li class="item"><router-link to="shipping">Shipping</router-link></li>
-            <!-- <li><i class="icofont-search ico"></i></li> -->
-            <li class="item button"><router-link to="/login" >Log In</router-link></li>
-            <li class="item button secondary"><router-link to="/register" >Sign Up</router-link></li>
-            <li @click="navigate('Cart')" class="item button"><i class="icofont-shopping-cart ico "></i><h6 class="items-the-cart">{{itemsInShoppingCart}}</h6></li>
-            
-            <li class="toggle"><span class="bars"></span></li>
-        </ul>
+    <nav id="nav" class="header-container">
+        <div class="header-wrapper"> 
+            <router-link to="/" class="logo pri-colour" href="javascript:void(0)">{{storeName}}</router-link>
+            <ul class="desktop-menu">
+                <li><router-link to="/">Home</router-link></li>
+                <li><router-link to="/product">About</router-link></li>
+                <li><router-link to="/contact">Contact</router-link></li>
+                <li v-if="!$store.state.token" class="login special"><router-link to="/login">Login</router-link></li>
+                <li v-if="!$store.state.token" class="signup special"><router-link to="/register">Sign Up</router-link></li>
+                <li v-if="$store.state.token" @click="logoutTheUser" class="signup special"><a to="javascript:void(0)">Log Out</a></li>
+            </ul>
+            <ul class="icons">
+                <li><i class="fas fa-heart justico pri-colour "></i></li>
+                <li><i class="icofont-user-alt-7 pri-colour  justico"></i></li>
+                <li class="cart"><i @click="navigate('Cart')" class="icofont-shopping-cart ico pri-colour "></i><h6 class="items-the-cart pri-colour ">{{getShoppingcart}}</h6></li>
+                <div class="menu-button">
+                    <i v-if="showMenuIcon" @click="toggleMenu" class="fas fa-bars pri-colour mobile"></i>
+                    <a v-if="!showMenuIcon" @click="toggleMenu" class="mobile pri-colour close" href="javascript:void(0)">&times;</a>
+                    <!-- <ul :class="{'hideTheMenu': showMenuIcon}" class="mobile-menu">
+                        <li><router-link to="/">Home</router-link></li>
+                        <li><router-link to="/product">About</router-link></li>
+                        <li><router-link to="shipping">Shipping</router-link></li>
+                        <li v-if="!$store.state.token" class="login special"><router-link to="/login">Login</router-link></li>
+                        <li v-if="!$store.state.token" class="signup special"><router-link to="/register">Sign Up</router-link></li>
+                        <li v-if="$store.state.token" @click="logoutTheUser" class="signup special"><a to="javascript:void(0)">Log Out</a></li>
+                    </ul> -->
+                </div>
+            </ul>
+        </div>
     </nav>
 </template>
 
 <script>
+
+    import { mapGetters } from 'vuex'
+
     export default {
-        name: "Navbar",
+        
+        name: "NavBar",
         props: {
             storeName: {
                 type: String
@@ -25,195 +45,160 @@
         },
         data() {
             return {
-                itemsInShoppingCart: null
+                showMenuIcon: true
             }
         },
         methods: {
+            toggleMenu(){
+                this.showMenuIcon = !this.showMenuIcon
+            },
             navigate(page) {
                 this.$router.push({
                     name: page
                 })
-            }
+            },
+            logoutTheUser(){
+                this.$store.dispatch('setToken', null)
+                this.$store.dispatch('setUser', null)
+            },
         },
-        mounted() {
-            this.itemsInShoppingCart = this.$store.getters.getShoppingcart
-        }
+        computed: mapGetters(['getShoppingcart', 'getTheUser']),
+        
     }
 </script>
 
 <style scoped>
 
-    .icofont-shopping-cart {
+  
+
+   
+    @media (min-width: 900px) {
+        .desktop-menu {
+            display: flex;
+        }
+    }
+    @media (max-width: 900px) {
+        .desktop-menu {
+            display: none;
+        }
+    }
+
+    .pri-colour {
+        color: rgb(209, 209, 209);
+    }
+
+    .header-container {
+        width: 100%;
+        padding: 1.3em;
+        overflow: hidden;
+        background-color: rgb(10, 10, 10);
+    }
+
+    .header-wrapper {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        max-width: 1100px;
+        margin: auto;
+        align-items: center;
+    }
+
+    .mobile-menu {
+        position: absolute;
+        align-items: center;
+        justify-content: center;
+        background: gray;
+        top: 1em;
+        padding: 1em;
+        width: 10em;
+
+    }
+
+    .desktop-menu li {
+        padding: 0 1.4em;
+    }
+
+    .mobile {
+        position: absolute;
+    }
+
+    .menu-button {
+        display: flex;
+        align-items: center;
         position: relative;
+        justify-content: center;
+    }
+
+    .icons {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-column-gap: 1.6em;
+        place-items: center;
+    }
+
+    .close {
+        font-size: 2rem;
+    }
+
+    .logo {
+        font-weight: 500;
+        text-transform: uppercase;
+        font-size: 1em;
+        cursor: pointer;
+        font-family: 'Poppins', sans-serif; 
+    }
+
+    .login {
+        padding: 10px .6em;
+        border-radius: 70px;
+        background-color: teal;
+        margin-right: 10px;
+    }
+
+    .signup {
+        padding: 8px .2em;
+        border-radius: 70px;
+        border: 2px solid teal;
+        margin-right: 10px;
+    }
+
+    .cart {
+        position: relative;
+        font-size: 1.2rem;
+        
+    }
+
+    .icofont-shopping-cart {
+    }
+
+    .justico {
+        font-size: .9rem;
     }
 
     .items-the-cart {
         position: absolute;
-        top: 13px;
-        padding-left: 1.2em;
-        /* top: 50;
-        right: 0; */
+        top: -7px;
+        right: -10px;
+        font-size: 14px;
+        font-weight: 400;
     }
 
-    .items-the-cart{
-        color: #ebebeb;
-        font-size: .7em;
+    .desktop-menu a {
+        color: rgb(228, 228, 228);
+        font-family: 'Poppins', sans-serif; 
     }
-
+    
+    .desktop-menu a:hover {
+        color: teal;
+    }
 
     i {
         cursor: pointer;
     }
 
     i:hover {
-        color: #005959;
+        color: teal;
     }
 
-    .ico {
-        color: white;
-    }
-    nav {
-        background: #222;
-        padding: 5px 20px;
-        width: 100vw;
-        position: fixed;
-        top: 0;
-        z-index: 10;
-    }
-
-    ul {
-        max-width: 1100px;
-        margin: auto;
-    }
-
-    a {
-        color: white;
-    }
-
-    a:hover {
-        text-decoration: underline;
-    }
-
-    .logo a:hover {
-        text-decoration: none;
-    }
-    .menu li {
-        font-size: 16px;
-        padding: 15px 5px;
-        white-space: nowrap;
-    }
-    .logo a,
-    .toggle a {
-        font-size: 20px;
-    }
-    .button.secondary {
-        border-bottom: 1px #444 solid;
-    }
-
-    /* Mobile menu */
-    .menu {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .toggle {
-        order: 1;
-    }
-    .item.button {
-        order: 2;
-    }
-    .item {
-        width: 100%;
-        text-align: center;
-        order: 3;
-        display: none;
-    }
-    .item.active {
-        display: block;
-    }
-
-    .toggle {
-        cursor:pointer;
-    }
-
-
-    /* Tablet menu */
-    @media all and (min-width: 468px) {
-        .menu {
-            justify-content: center;
-        }
-
-        .logo {
-            flex: 1;
-        }
-
-        .item.button {
-            width: auto;
-            order: 1;
-            display: block;
-        }
-        .toggle {
-            order: 2;
-        }
-        .button.secondary {
-            border: 0;
-        }
-        .button a {
-            padding: 7.5px 15px;
-            background: teal;
-            border: 1px #006d6d solid;
-            border-radius:50em;
-        }
-        .button.secondary a {
-            background: transparent;    
-        }
-        .button a:hover {
-            text-decoration: none;
-            transition:all .25s;
-        }
-        .button:not(.secondary) a:hover {
-            background: #006d6d;
-            border-color: #005959;
-        }
-        .button.secondary a:hover {
-            color: #ddd;
-        } 
-    }
-
-    @media all and (min-width: 768px) {
-
-        .item {
-            display: block;
-            width: auto;
-        }
-
-        .toggle {
-            display: none;
-        }
-
-        .logo {
-            order: 0;
-        }
-
-        .item {
-            order: 1;
-        }
-
-        .button {
-            order: 2;
-        }
-
-        .icofont-shopping-cart {
-            order: 3;
-        }
-
-        .menu li {
-            padding: 15px 10px;
-        }
-        
-        .menu li.button {
-            padding-right: 0;
-        }
-    }
+    
 </style>

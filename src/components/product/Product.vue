@@ -1,20 +1,21 @@
 <template>
-    <div @mouseover="showButtons" @mouseleave="hideButtons" @click="navigate" class="product-container">
+    <div @mouseover="showButtons" @mouseleave="hideButtons" @click="navigateToTheProduct" class="product-container">
         <div class="image-shape image-position"
             :style="{'background-image': `url('${productImage}')`}"
             >   
-            <i @mouseover="showButtons" class="far fa-heart" :style="{opacity: buttonOpacity}"></i>
-            <input @mouseover="showButtons" type="button" :style="{opacity: buttonOpacity}" value="add to cart">
+            <i @mouseover="disableNavigation" @mouseleave="disableNavigation" class="far fa-heart" :style="{opacity: buttonOpacity}"></i>
+            <input @mouseover="disableNavigation" @mouseleave="disableNavigation" @click="addItemToCart({price, title, productImage, productID})" type="button" :style="{opacity: buttonOpacity}" value="add to cart">
         </div>
-        <h1 class="title-and-price">{{title}} - R {{price}}</h1>
-        <!-- <div class="product-info">
+        <div class="product-info">
             <h1>R {{price}}</h1>
-            <h1>{{title}}</h1>
-        </div> -->
+            <h2>{{title}}</h2>
+        </div>
     </div>
 </template>
 
 <script>
+
+    import { mapActions } from 'vuex'
 
     export default {
 
@@ -35,22 +36,39 @@
         },
         data() {
             return {
-                buttonOpacity: 0
+                buttonOpacity: 0,
+                navigateToADiffrentPage: true,
+                navigaion: true
             }
         },
         methods: {
+            ...mapActions(['addedItemToCart']),
             showButtons(){
                 return this.buttonOpacity = 1
             },
             hideButtons(){
                 this.buttonOpacity = 0
             },
-            navigate() {
-                console.log('gg')
-                this.$router.push({
-                    name: 'SingleProduct',
-                    params: { productID: this.productID }
-                })
+            disableNavigation(){
+                this.navigaion = !this.navigaion
+            },
+            navigateToTheProduct(){   
+                if(this.navigaion){
+                    this.$router.push({
+                        name: 'SingleProduct',
+                        params: { productID: this.productID }
+                    })
+                } 
+            },
+            addItemToCart(item){
+                const {price, title, productImage, productID} = item
+
+                for(const product of this.$store.state.itemsInShoppingCart){
+                    if(product.productID === productID){
+                        return
+                    }
+                }
+                this.addedItemToCart({price, title, productImage, productID, quantity: 1, totalPrice:  price})
             }
         }
     }
@@ -59,24 +77,24 @@
 
 <style scoped>
 
-    h1 {
+    h1, h2 {
         text-transform: capitalize;
         color: rgb(94, 94, 94);
-        font-size: 1rem;
         font-weight: 400;
-        align-self: center;
-        
+        font-family: 'Roboto', sans-serif;
+        font-size: .7rem;
     }
 
-    .title-and-price {
-        margin: 1em 0;
+    @media (min-width: 500px){
+        h1, h2 {
+            font-size: .9rem;
+        }
     }
 
     .product-info {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        margin: .4em 0 2em 0;
+        display: grid;
+        grid-template-columns: 1fr;
+        margin: .4em 0 .6em 0;
     }
 
     .image-position {
@@ -99,7 +117,8 @@
     }
 
     .product-container {
-        max-width: 20em;
+        
+        /* max-width: 20em; */
         border-radius: 4px;
         display: flex;
         flex-direction: column;
@@ -129,6 +148,7 @@
     }
 
     input {
+        z-index: 12;
         border-radius: 5px;
         background-color: rgb(22, 22, 22);
         color: rgb(212, 212, 212);
