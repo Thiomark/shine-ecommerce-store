@@ -1,4 +1,4 @@
-# untitledapp
+# eCommerce store 
 
 [X] Represent Done [ ] Represents yet not Done
 
@@ -9,7 +9,7 @@
 site link: https://awesome-agnesi-fe97a2.netlify.app
 
 For Admins - email/username = admin && email/username = notadmin
-[ ]Admin Dashboard https://awesome-agnesi-fe97a2.netlify.app/dashboard
+[X]Admin Dashboard https://awesome-agnesi-fe97a2.netlify.app/dashboard
 
 
 
