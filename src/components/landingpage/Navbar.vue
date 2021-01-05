@@ -4,8 +4,8 @@
             <router-link to="/" class="logo pri-colour" href="javascript:void(0)">{{storeName}}</router-link>
             <ul class="desktop-menu">
                 <li><router-link to="/">Home</router-link></li>
-                <li><router-link to="/product">About</router-link></li>
-                <li><router-link to="/contact">Contact</router-link></li>
+                <li><router-link to="">About</router-link></li>
+                <li><router-link to="">Contact</router-link></li>
                 <li v-if="!$store.state.token" class="login special"><router-link to="/login">Login</router-link></li>
                 <li v-if="!$store.state.token" class="signup special"><router-link to="/register">Sign Up</router-link></li>
                 <li v-if="$store.state.token" @click="logoutTheUser" class="signup special"><a to="javascript:void(0)">Log Out</a></li>
@@ -76,11 +76,15 @@
         .desktop-menu {
             display: flex;
         }
+        .mobile {
+            display: none;
+        }
     }
     @media (max-width: 900px) {
         .desktop-menu {
             display: none;
         }
+        
     }
 
     .pri-colour {

@@ -8,17 +8,17 @@
                 <li><router-link to="/">Home</router-link></li>
                 <li><router-link to="/product">About</router-link></li>
                 <li><router-link to="shipping">Shipping</router-link></li>
-                <li v-if="!$store.state.token" class="login special"><router-link to="/login">Login</router-link></li>
-                <li v-if="!$store.state.token" class="signup special"><router-link to="/register">Sign Up</router-link></li>
-                <li v-if="$store.state.token" @click="logoutTheUser" class="signup special"><a to="javascript:void(0)">Log Out</a></li>
+                <li v-if="!$store.state.user" class="login special"><router-link to="/login">Login</router-link></li>
+                <li v-if="!$store.state.user" class="signup special"><router-link to="/register">Sign Up</router-link></li>
+                <li v-if="$store.state.user" @click="logoutTheUser" class="signup special"><a to="javascript:void(0)">Log Out</a></li>
             </ul>
             <ul :class="{'hideTheMenu': showMenuIcon}" class="mobile-menu">
                 <li><router-link to="/">Home</router-link></li>
                 <li><router-link to="/product">About</router-link></li>
                 <li><router-link to="shipping">Shipping</router-link></li>
-                <li v-if="!$store.state.token" class="login special"><router-link to="/login">Login</router-link></li>
-                <li v-if="!$store.state.token" class="signup special"><router-link to="/register">Sign Up</router-link></li>
-                <li v-if="$store.state.token" @click="logoutTheUser" class="signup special"><a to="javascript:void(0)">Log Out</a></li>
+                <li v-if="!$store.state.user" class="login special"><router-link to="/login">Login</router-link></li>
+                <li v-if="!$store.state.user" class="signup special"><router-link to="/register">Sign Up</router-link></li>
+                <li v-if="$store.state.user" @click="logoutTheUser" class="signup special"><a to="javascript:void(0)">Log Out</a></li>
             </ul>
              <li class="cart"><i @click="navigate('Cart')" class="icofont-shopping-cart ico "></i><h6 class="items-the-cart">{{getShoppingcart}}</h6></li>
         </div>

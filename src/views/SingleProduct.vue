@@ -14,18 +14,18 @@
                 :productID="getOneProducts._id"
             />
         </div>  
-        <div class="select-tab">
-            <a @click.prevent="switchToDescription" :class="{'addtheborder': description}" href="javascript:void(0)">Description</a>
-            <a @click.prevent="switchToReview" :class="{'addtheborder': reviews}" href="javascript:void(0)">Reviews</a>
+        <div class="buttons-container">
+            <div class="select-tab">
+                <a @click.prevent="switchToDescription" :class="{'addtheborder': description}" href="javascript:void(0)">Description</a>
+                <a @click.prevent="switchToReview" :class="{'addtheborder': reviews}" href="javascript:void(0)">Reviews</a>
+            </div>
         </div>
+        
         <div class="product-info">
             <ProductDescription v-if="getOneProducts && description" :description="getOneProducts.description" class="switch"/>
             <ReviewsContainer v-if="reviews" class="switch"/>
         </div>
-        <!-- 
-        
-        <h1>Related Products</h1>
-        <RelatedProduct /> -->
+        <RelatedProduct />   
     </div>
 </template>
 
@@ -34,18 +34,19 @@
     import ProductInformation from '../components/product/ProductInformation'
     import ProductImage from '../components/product/ProductImage'
     import ProductDescription from '../components/product/ProductDescription'
-    // import RelatedProduct from '../components/RelatedProduct'
+    import RelatedProduct from '../components/RelatedProduct'
     import ReviewsContainer from '../components/ReviewsContainer'
+
     import {mapGetters, mapActions} from 'vuex'
 
     export default {
         name: "Product",
         components: {
-            //RelatedProduct,
+            RelatedProduct,
             ProductInformation,
             ProductImage,
             ProductDescription,
-            ReviewsContainer
+            ReviewsContainer,
         },
         data() {
             return {
@@ -67,6 +68,11 @@
                 this.reviews = false
                 this.description = true
             },
+            navigate(page) {
+                this.$router.push({
+                    name: page
+                })
+            },
         },
         created() {
             this.setNavbarAndFooter(false)
@@ -83,6 +89,32 @@
 
 <style scoped>
 
+    .buttons-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        width: 100%;
+        padding: 0 2em;
+    }
+
+    .select-tab {
+        justify-content: space-evenly;
+        display: flex;
+        padding-bottom: 1.5em ;
+        border-bottom: 1px solid rgb(226, 226, 226);
+    }
+
+    .select-tab a {
+        font-size: .9rem;
+        font-weight: blod;
+        color: rgb(31, 31, 31);
+    }
+
+    .select-tab a:hover {
+        color: #006d6d;
+    }
+
+
+
     .product-wrapper {
         width: 100%;
         min-height: 100vh;
@@ -98,22 +130,7 @@
         }
     }
 
-    .select-tab {
-        display: flex;
-        width: 100%;
-        justify-content: space-evenly;
-        padding: 0 2em;
-    }
-
-    .select-tab a {
-        font-size: .9rem;
-        font-weight: blod;
-        color: rgb(31, 31, 31);
-    }
-
-    .select-tab a:hover {
-        color: #006d6d;
-    }
+   
     
 
 

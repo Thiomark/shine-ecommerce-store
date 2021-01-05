@@ -39,8 +39,6 @@
                     })
                     this.$store.dispatch('setToken', response.data.token)
                     this.$store.dispatch('setUser', response.data.user)
-                    this.$store.dispatch('setToken', this.username)
-                    this.$store.dispatch('setUser', this.password)
                     this.buffer = false
                     this.$router.push({
                         name: 'Home'

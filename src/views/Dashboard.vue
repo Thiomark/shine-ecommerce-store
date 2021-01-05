@@ -8,6 +8,7 @@
         <ul>
             <li @click="navigate('Home') " tabindex="0"><i class="fas fa-home"></i><span>Home</span></li>
             <li tabindex="0"><i class="fas fa-shopping-cart"></i><span>Products</span></li>
+            <li tabindex="0"><i class="fas fa-plus"></i><span>Add Product</span></li>
             <li tabindex="0"><i class="fas fa-comments"></i><span>Reviews</span></li>
             <li tabindex="0"><i class="fas fa-shipping-fast"></i><span>Orders</span></li>
             <li tabindex="0"><i class="fas fa-users"></i><span>Customers</span></li>
@@ -15,7 +16,8 @@
         </ul>
         </nav>
         <main>
-        
+            <!-- <ProductForm /> -->
+            <AllProducts />
         </main>
     </div>
 </template>
@@ -23,11 +25,19 @@
 <script>
 
     import {mapActions} from 'vuex'
+    //import ProductForm from '../components/dashboard/ProductForm'
+    import AllProducts from '../components/dashboard/AllProducts'
+
     export default {
         data() {
             return {
                 somethi: ''
             }
+        },
+        components: {
+            //ProductForm,
+            AllProducts
+
         },
         methods: {
             ...mapActions(['setNavbarAndFooter']),
