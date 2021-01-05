@@ -2,11 +2,11 @@
 
 ## Front End
 
-###[X] Represent Done [ ] Represents yet not Done
+[X] Represent Done [ ] Represents yet not Done
 
 Site link: https://awesome-agnesi-fe97a2.netlify.app
 
-###For Admins 
+For Admins 
 email/username = admin 
 Password = notadmin
 [X]Admin Dashboard https://awesome-agnesi-fe97a2.netlify.app/dashboard
