@@ -6,18 +6,19 @@
 https://github.com/Thiomark/store-api
 ```
 
+## Admin access
+
+```
+email/username = admin 
+Password = notadmin
+```
+
 ## Front End
 
 [X] Represent Done [ ] Represents yet not Done
 
-Site link: https://awesome-agnesi-fe97a2.netlify.app
 
 ```
-
-For Admins 
-email/username = admin 
-Password = notadmin
-
 [X] The website is responsive
 [X] Products routes
 [X] Review section
