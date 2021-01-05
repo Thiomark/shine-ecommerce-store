@@ -1,14 +1,15 @@
 # eCommerce store 
 
-[X] Represent Done [ ] Represents yet not Done
-
 ## Front End
 
 ```
+###[X] Represent Done [ ] Represents yet not Done
 
-site link: https://awesome-agnesi-fe97a2.netlify.app
+Site link: https://awesome-agnesi-fe97a2.netlify.app
 
-For Admins - email/username = admin && email/username = notadmin
+###For Admins 
+email/username = admin 
+Password = notadmin
 [X]Admin Dashboard https://awesome-agnesi-fe97a2.netlify.app/dashboard
 
 
