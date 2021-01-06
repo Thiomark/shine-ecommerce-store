@@ -1,9 +1,9 @@
 # eCommerce store
 
-## The Store
+## Website Preview
 
 ```
-https://github.com/Thiomark/ecommerce-store
+https://awesome-agnesi-fe97a2.netlify.app/
 ```
 
 ## The backend Api
