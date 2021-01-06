@@ -1,79 +1,151 @@
 <template>
-    <form class="cart-total-container">
+    <form @submit.prevent="goToCheckout" class="cart-total-container">
         <div class="cart-total-wrapper">
-            <div class="rows">
-                <label class="required" for="firsy-name">First name</label>
-                <input class="requiredw" type="text" v-model="firstName">
-            </div>
-            <div class="row">
-                <label class="required" for="firsy-name">Last name</label>
-                <input class="requiredw" type="text" v-model="lastName">
-            </div>
-            <div class="row">
-                <label class="required" for="firsy-name">Country / Region</label>
-                <input type="text" placeholder="Apartment, suite, unit, etc (optional)">
-            </div>
-            <div class="row">
-                <label class="required" for="firsy-name">Street address</label>
-                <input type="text" placeholder="House number and street name">
-            </div>
-            <div class="row">
-                <label for="firsy-name">Apartment, suite, unit, etc. (optional)</label>
-                <input type="text">
-            </div>
-            <div class="row">
-                <label class="required" for="firsy-name">Town / Street</label>
-                <input type="text">
-            </div>
-            <div class="row">
-                <label class="required" for="firsy-name">Province</label>
-                <input type="text">
-            </div>
-            <div class="row">
-                <label class="required" for="firsy-name">Postalcode / ZIP</label>
-                <input type="text">
-            </div>
-            <div class="row">
-                <label class="required" for="firsy-name">Phone number</label>
-                <input type="text">
+            <div v-for="(field, index) in fields" :key="index" class="rows">
+                <label class="required" for="firsy-name">{{field.for}}</label>
+                <input type="text" :required="field.filedRequired"  v-model="field.value" :placeholder="field.placeholder">
             </div>
             <div class="row">
                 <label class="required" for="firsy-name">Email</label>
-                <input type="email">
+                <input type="email" v-model="email">
             </div>
         </div>
         <div class="cart-total-wrapper-bottom">
             <input type="checkbox" id="periph1" name="peripherals" value="screen">
             <label for="periph1">Create an account?</label>
-            <textarea  cols="30" rows="10" placeholder="Special notes about the order"></textarea>
-            <input @click="goToCheckout" type="button" value="place order">
+            <textarea v-model="notes"  cols="30" rows="10" placeholder="Special notes about the order"></textarea>
+            <input type="submit" value="place order">
         </div>
     </form>
 </template>
 
 <script>
+    import {mapActions, mapGetters} from 'vuex'
+    import OrderService from '../../services/OrderService'
     export default {
         name: 'PersonalInformation',
-        props: {
-            subtotal: {
-                type: Number
-            },
-            shipping: {
-                type: Number
-            },
-            total: {
-                type: Number
+        data() {
+            return {
+                fields: [
+                    {
+                        name: "firstName", 
+                        value: '',
+                        for: 'First name',
+                        filedRequired: true
+                    },
+                    {
+                        name: "lastName", 
+                        value: '',
+                        for: 'Last name',
+                        filedRequired: true
+                    },
+                    {
+                        name: "address", 
+                        value: '',
+                        placeholder: "House number and street name",
+                        for: 'Street address',
+                        filedRequired: true
+                    },
+            
+                    {
+                        name: "houseNumber", 
+                        value: '',
+                        placeholder: "Apartment, suite, unit, etc. (optional)",
+                        for: 'Apartment, suite, unit, etc. (optional)',
+                        notRequired: true,
+                        filedRequired: false
+                    },
+                    {
+                        name: "town", 
+                        value: '',
+                        for: 'Town / City',
+                        filedRequired: true
+                    },
+                    {
+                        name: "province", 
+                        value: '',
+                        for: 'Province',
+                        filedRequired: true
+                    },
+                    {
+                        name: "phoneNumber", 
+                        value: '',
+                        for: 'Phone Number',
+                        filedRequired: true
+                    },
+                    {
+                        name: "zipcode", 
+                        value: '',
+                        for: 'Zipcode',
+                        filedRequired: true
+                    },
+                    
+                ],
+                email: '',
+                notes: ''
             }
         },
         methods: {
-            goToCheckout(){
-                this.$emit('gotocheckout')
+            ...mapActions(['setLoadingPage', 'setRequestFeedBack', 'restItemsInShoppingCart']),
+            ...mapGetters(['getTotalCostWithShipping', 'getShippingCost', 'getitemsInShoppingCart']),
+            async goToCheckout(){
+                
+                this.setLoadingPage(true)
+                try {
+                    const order = await OrderService.post({
+                        firstName: this.fields[0].value,
+                        lastName: this.fields[0].value,
+                        address: this.fields[0].value,
+                        houseNumber: this.fields[0].value,
+                        town: this.fields[0].value,
+                        province: this.fields[0].value,
+                        phoneNumber: this.fields[0].value,
+                        zipcode: this.fields[0].value,
+                        notes: this.notes,
+                        email: this.email,
+                        item: this.getitemsInShoppingCart(),
+                        shipping: this.getShippingCost(),
+                        toatlAmount: this.getTotalCostWithShipping()
+                    })
+                    // this.setRequestFeedBack({
+                    //     firstName: this.fields[0].value,
+                    //     lastName: this.fields[1].value,
+                    //     address: this.fields[2].value,
+                    //     houseNumber: this.fields[3].value,
+                    //     town: this.fields[4].value,
+                    //     province: this.fields[5].value,
+                    //     phoneNumber: this.fields[6].value,
+                    //     zipcode: this.fields[7].value,
+                    //     notes: this.notes,
+                    //     email: this.email,
+                    //     item: this.getitemsInShoppingCart(),
+                    //     shipping: this.getShippingCost(),
+                    //     toatlAmount: this.getTotalCostWithShipping()
+                    // })
+                    this.setLoadingPage(false)
+                    this.restItemsInShoppingCart([])
+                    this.$emit('gotocheckout', order.data.order)
+                } catch (error) {
+                    this.setLoadingPage(false)
+                    this.setRequestFeedBack(error)
+                }
             }
         },
     }
 </script>
 
 <style scoped>
+
+    /* .filedMissing {
+        background-color: #eca4a5;
+    }
+    .success {
+        
+    }
+
+    textarea {
+        background-color: #f7f7f7;
+    } */
 
     @media (max-width: 600px){
 
@@ -141,8 +213,8 @@
 
     input[type="text"], input[type="email"], textarea {
         padding: 19px 15px;
-        box-shadow: rgba(0, 0, 0, 0.024) 0px 2px 1px 0px inset;
         background-color: #f7f7f7;
+        box-shadow: rgba(0, 0, 0, 0.024) 0px 2px 1px 0px inset;
         width: 100%;
         color: #777777;
         margin: .5em 0;
@@ -152,7 +224,7 @@
         font-family: 'Roboto', sans-serif;
     }
 
-    input[type="button"] {
+    input[type="submit"] {
         margin-top: 1em;
         color: #dfdfdf;
         padding: 1.5em ;

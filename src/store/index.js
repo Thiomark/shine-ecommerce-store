@@ -18,7 +18,9 @@ export default new Vuex.Store({
         totalCost: 0,
         totalCostWithShipping: 0,
         shippingCost: 200,
-        hideNavbarAndFooter: false
+        hideNavbarAndFooter: false,
+        pageLoading: false,
+        requestFeedBack: null
     },
 
     mutations: {
@@ -59,6 +61,15 @@ export default new Vuex.Store({
         },
         setNavbarAndFooter(state, user) {
             state.hideNavbarAndFooter = user
+        },
+        setLoadingPage(state, loading) {
+            state.pageLoading = loading
+        },
+        setRequestFeedBack(state, loading) {
+            state.requestFeedBack = loading
+        },
+        restItemsInShoppingCart(state, payLoad) {
+            state.itemsInShoppingCart = payLoad
         }
     },
 
@@ -89,6 +100,16 @@ export default new Vuex.Store({
         setNavbarAndFooter({commit}, user) {
             commit('setNavbarAndFooter', user)
         },
+        setLoadingPage({commit}, loading) {
+            commit('setLoadingPage', loading)
+        },
+        setRequestFeedBack({commit}, loading) {
+            commit('setRequestFeedBack', loading)
+        },
+        restItemsInShoppingCart({commit}, loading) {
+            commit('restItemsInShoppingCart', loading)
+        },
+        
     },
     
     modules: {
@@ -105,5 +126,7 @@ export default new Vuex.Store({
         getTotalCostWithShipping: state => state.totalCostWithShipping,
         getShippingCost: state => state.shippingCost,
         getNavBarInfo: state => state.hideNavbarAndFooter,
+        getLoadingPage: state => state.pageLoading,
+        getRequestFeedBack: state => state.requestFeedBack,
     }
 })

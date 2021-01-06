@@ -2,14 +2,14 @@
     <div class="order-container">
         <h1>Thank you!</h1>
         <p>Your order has been placed</p>
-        <p>Your oder number is <span>25358456</span></p>
+        <p>Your oder number is <span>{{orderNumber}}</span></p>
         <div class="details">
             <h2>Items</h2>
-            <h2>4</h2>
+            <h2>{{numberOfItems}}</h2>
             <h2>Total</h2>
-            <h2>R 2345</h2>
+            <h2>R {{totalAmount}}</h2>
         </div>
-        <h3>Estimated delivery <span>5 days</span></h3>
+        <h3>Estimated delivery <span>{{deleveryDate}}</span></h3>
         <input type="button" @click="eventEmitted('Home')" value="Go to Home">
         <input type="button" @click="eventEmitted('')" value="Track Order">
     </div>
@@ -19,6 +19,20 @@
 
     export default {
         name: 'OrderPlaced',
+        props: {
+            orderNumber: {
+                type: String
+            },
+            numberOfItems: {
+                type: Number
+            },
+            totalAmount: {
+                type: String
+            },
+            deleveryDate: {
+                type: String
+            }
+        },
         methods: {
             eventEmitted(event){
                 this.$emit('eventemitted', event)

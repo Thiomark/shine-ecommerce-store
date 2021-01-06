@@ -1,6 +1,6 @@
 <template>
     <div class="cart-container" :style="{paddingBottom: `${footerHeight}px`}">
-        <div v-if="getitemsInShoppingCart.length === 0" class="empty-cart">
+        <div v-if="getitemsInShoppingCart.length === 0 && !checkOut" class="empty-cart">
             <h1>Cart is Empty</h1>
             <input @click="navigate('Home')" type="button"  value="Go To Products">
         </div>
@@ -35,7 +35,14 @@
             :total="getTotalCostWithShipping()" 
             @emitproceed="goToTheNextPage"
         />
-        <OrderPlaced v-if="checkOut" @eventemitted="navigate"/>
+        <OrderPlaced 
+            v-if="checkOut" 
+            @eventemitted="navigate"   
+            :deleveryDate="checkOutItems.estimatedDelivery"
+            :totalAmount="checkOutItems.toatlAmount"
+            :numberOfItems="checkOutItems.item.length"
+            :orderNumber="checkOutItems.orderNumber"
+        />
     </div>
 </template>
 
@@ -63,17 +70,21 @@
                 footerHeight: null,
                 confirmOrder: true,
                 yourDetails: false,
-                checkOut: false
-                
+                checkOut: false,
+                checkOutItems: null
             }
         },
         methods: {
             ...mapActions(['removeFromCart', 'setNavbarAndFooter']),
             ...mapGetters(['getFooterHeight', 'getToalCost', 'getTotalCostWithShipping', 'getShippingCost']),
             removeItem(payload){
+                
                 this.removeFromCart(payload)
             },
             navigate(page) {
+                // this.checkOut = false
+                // this.yourDetails = false
+
                 this.$router.push({
                     name: page
                 })
@@ -81,7 +92,9 @@
             goToTheNextPage(){
                 this.yourDetails = true
             },
-            goToCheckOut() {
+            goToCheckOut(event) {
+                console.log(event)
+                this.checkOutItems = event
                 this.checkOut = true
             }
         },

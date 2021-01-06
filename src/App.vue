@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <RequestFeedBack v-if="getRequestFeedBack" :resposeMessage="getRequestFeedBack"/>
+    <Loading v-if="getLoadingPage"/>
     <Navbar storeName="leavealot.com" v-if="!getNavBarInfo"/>
     <router-view/>
     <Footer v-if="!getNavBarInfo" class="put-at-the-bottom"/>
@@ -11,19 +13,23 @@
   require('../src/assets/icofont/icofont.css')
   import Footer from './components/Footer'
   import Navbar from './components/landingpage/Navbar'
+  import Loading from './components/Loading'
+  import RequestFeedBack from './components/RequestFeedBack'
   import {mapGetters} from 'vuex'
 
   export default {
       components: {
         Footer,
-        Navbar
+        Navbar,
+        Loading,
+        RequestFeedBack
       },
       data() {
         return {
           currentRoute: null
         }
       },
-      computed: mapGetters(['getNavBarInfo']),
+      computed: mapGetters(['getNavBarInfo', 'getLoadingPage', 'getRequestFeedBack']),
 
   }
 
