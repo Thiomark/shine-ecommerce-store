@@ -4,7 +4,14 @@
             <h1>Cart is Empty</h1>
             <input @click="navigate('Home')" type="button"  value="Go To Products">
         </div>
-        <div class="items-in-a-cart">
+        <CheckoutProcessBar 
+            v-if="getitemsInShoppingCart.length > 0"
+            :confirmOrder="confirmOrder" 
+            :yourDetails="yourDetails"
+            :checkOut="checkOut" 
+        />
+        <PersonalInformation v-if="yourDetails && !checkOut" @gotocheckout="goToCheckOut" />
+        <div v-if="!yourDetails && !checkOut" class="items-in-a-cart">
             <ItemsInCart
                 :productImage="product.productImage"
                 :totalPrice="product.totalPrice"
@@ -17,16 +24,18 @@
             />
             
         </div>
-        <div v-if="getitemsInShoppingCart.length > 0" class="coupon-code">
+        <div  v-if="getitemsInShoppingCart.length > 0 && !yourDetails && !checkOut" class="coupon-code">
             <input type="text" placeholder="Coupon code">
             <input type="button" value="apply coupon">
         </div>
-        <CartTotal :style="{paddingBottom: `${footerHeight}px`}" 
-            class="add-padding" v-if="getitemsInShoppingCart.length > 0" 
+        <CartTotal v-if="getitemsInShoppingCart.length > 0 && !yourDetails && !checkOut" :style="{paddingBottom: `${footerHeight}px`}" 
+            class="add-padding"
             :subtotal="getToalCost()" 
             :shipping="getShippingCost()" 
             :total="getTotalCostWithShipping()" 
+            @emitproceed="goToTheNextPage"
         />
+        <OrderPlaced v-if="checkOut" @eventemitted="navigate"/>
     </div>
 </template>
 
@@ -35,17 +44,26 @@
     import CartTotal from '../components/cart/CartTotal'
     import { mapActions, mapGetters } from 'vuex'
     import ItemsInCart from '../components/cart/ItemsInCart'
+    import CheckoutProcessBar from '../components/cart/CheckoutProcessBar'
+    import PersonalInformation from '../components/cart/PersonalInformation'
+    import OrderPlaced from '../components/cart/OrderPlaced'
 
     export default {
         name: "Cart",
         components: {
             CartTotal,
-            ItemsInCart
+            ItemsInCart,
+            CheckoutProcessBar,
+            PersonalInformation,
+            OrderPlaced
         },
         data() {
             return {
                 products: [],
                 footerHeight: null,
+                confirmOrder: true,
+                yourDetails: false,
+                checkOut: false
                 
             }
         },
@@ -60,6 +78,12 @@
                     name: page
                 })
             },
+            goToTheNextPage(){
+                this.yourDetails = true
+            },
+            goToCheckOut() {
+                this.checkOut = true
+            }
         },
         mounted() {
             this.footerHeight = this.getFooterHeight()
@@ -73,6 +97,42 @@
 </script>
 
 <style scoped>
+
+    .process {
+        display: flex;
+        /* background-color: #f1f1f1; */
+        justify-content: center;
+        margin-bottom: 3em;
+        border-radius: 6px;
+    }
+
+    .confirm-order {
+        color: #57a1a3;
+        border-right: 4px solid #57a1a3;
+        font-weight: bold;
+    }
+
+    .Check-out {
+        color: #9b9b9b;
+        border-right: 4px solid rgb(192, 192, 192);
+    }
+
+    .stages {
+        background-color: rgb(228, 228, 228);
+        display: flex;
+        padding: .5em;
+        margin-right: 3px;
+        
+        border-radius: 4px;
+    }
+
+    .process h1, h2 {
+        
+        font-size: .9rem;
+        font-weight: 400;
+        padding: 0 .5em;
+    }
+
 
     .empty-cart {
         width: 100%;

@@ -4,9 +4,15 @@
             <input @click="navigate('Login')" type="button" value="Write a review">
         </div>
         <div class="reviews">
-            <ReviewTemplate />
-            <ReviewTemplate />
-            <ReviewTemplate />
+            <ReviewTemplate 
+                v-for="review in productReviews" 
+                :key="review._id" 
+                :name="review.name" 
+                :date="review.createdAt"
+                :review="review.review" 
+                :stars="review.rating" 
+                @popupmenuevent="reviewSettings"
+            />
         </div>
         <h1 v-if="$store.state.user" >add a review</h1>
         <div v-if="$store.state.user" class="add-review">
@@ -17,30 +23,41 @@
             <i @mouseover="starHover(5)" @mouseleave="removeTheHover"  class="far fa-star"></i>
             <form >
                 <label for="name">TITLE *</label>
-                <input type="text">
+                <input v-model="title" type="text">
                 <label for="name">review *</label>
-                <textarea name="" cols="30" rows="10"></textarea>
-                <input type="button" value="submit">
+                <textarea v-model="review" name="" cols="30" rows="10"></textarea>
+                <input @click="createAReview" type="button" value="submit">
             </form>
         </div>
     </div>
 </template>
 
 <script>
+
     import ReviewTemplate from './reviews/ReviewTemplate'
+    import ReviewService from '../services/ReviewService'
+
     export default {
         components: {
             ReviewTemplate
+        },
+        props: {
+            productReviews: {
+                type: Array
+            }
         },
         data() {
             return {
                 numberOfSelectedStars: 0,
                 makeit: true,
+                productID: this.$route.params.productID,
+                review: '',
+                title: ''
             }
         },
-        created() {
+        async created() {
             const allStars = document.querySelectorAll('.far')
-                allStars.forEach(star => star.style.color = "red")
+            allStars.forEach(star => star.style.color = "red")
         },
         methods: {
             starHover(index){
@@ -54,6 +71,54 @@
                     allStars[i].style.color = "#ffa534"
                 }
             },
+            navigate(page) {
+                this.$router.push({
+                    name: page
+                })
+            },
+            async createAReview(){
+                try {
+                    const review = await ReviewService.post({
+                        "product": this.productID,
+                        "title": this.title,
+                        "review": this.review,
+                        "rating": 5
+                    })
+                    this.productReviews.push(review.data.data)
+
+                } catch (error) {
+                    console.log(error)
+                }
+            },
+            async reviewSettings(event){
+                if(event === "delete"){
+                    try {
+                        console.log('delet')
+                        const review = await ReviewService.delete(this.productID)
+                        console.log(review)
+                        // this.productReviews.push(review.data.data)
+    
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                if(event === "edit"){
+                    console.log('edit')
+                    // try {
+                    //     const review = await ReviewService.post({
+                    //         "product": this.productID,
+                    //         "title": this.title,
+                    //         "review": this.review,
+                    //         "rating": 5
+                    //     })
+                    //     this.productReviews.push(review.data.data)
+    
+                    // } catch (error) {
+                    //     console.log(error)
+                    // }
+                }
+            },
+
             removeTheHover(){
                 // const allStars = document.querySelectorAll('.far')
 

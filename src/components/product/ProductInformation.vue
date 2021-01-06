@@ -6,7 +6,7 @@
         <div class="quantity">
             <!-- <input v-model.number="productQuantity" type="number" min="1" > -->
             <input type="button" @click="addToCart({price, title, productImage, productID})" value="add to cat">
-            <input type="button" value="buy now">
+            <input type="button" @click="navigate('Cart')" value="buy now">
         </div>
         <div class="wishlist">
             <i class="far fa-heart"></i>
@@ -80,7 +80,12 @@
                 }
                 const totalPrice =  price * parseInt(this.productQuantity, 10)
                 this.addedItemToCart({price, title, productImage, productID, quantity: this.productQuantity, totalPrice })
-            }
+            },
+            navigate(page) {
+                this.$router.push({
+                    name: page
+                })
+            },
         }
     }
 </script>

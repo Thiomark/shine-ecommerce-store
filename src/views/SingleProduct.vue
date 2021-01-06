@@ -23,7 +23,7 @@
         
         <div class="product-info">
             <ProductDescription v-if="getOneProducts && description" :description="getOneProducts.description" class="switch"/>
-            <ReviewsContainer v-if="reviews" class="switch"/>
+            <ReviewsContainer :productReviews="productReviews" v-if="reviews" class="switch"/>
         </div>
         <RelatedProduct />   
     </div>
@@ -36,6 +36,8 @@
     import ProductDescription from '../components/product/ProductDescription'
     import RelatedProduct from '../components/RelatedProduct'
     import ReviewsContainer from '../components/ReviewsContainer'
+
+    import ReviewService from '../services/ReviewService'
 
     import {mapGetters, mapActions} from 'vuex'
 
@@ -53,7 +55,8 @@
                 reviews: false,
                 description: true,
                 productID: this.$route.params.productID,
-                footerHeight: 0
+                footerHeight: 0,
+                productReviews: []
             }
         },
         methods: {
@@ -74,9 +77,13 @@
                 })
             },
         },
-        created() {
+        async created() {
             this.setNavbarAndFooter(false)
             this.fetchASingleProduct(this.productID)
+            const response = await ReviewService.get(this.productID)
+            this.productReviews = await response.data.fetcheQuerys
+            console.log(response.data)
+
         },
         computed: mapGetters(['getOneProducts']),
         mounted() {

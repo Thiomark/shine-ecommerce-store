@@ -17,7 +17,7 @@
                 <h1>Total</h1>
                 <h1>R {{total}}</h1>
             </div>
-            <input type="button" value="Proceed to checkout">
+            <input @click="submitTotal" type="button" value="Proceed to checkout">
         </div>
     </div>
 </template>
@@ -35,7 +35,12 @@
             total: {
                 type: Number
             }
-        }
+        },
+        methods: {
+            submitTotal(){
+                this.$emit('emitproceed')
+            }
+        },
         
     }
 </script>

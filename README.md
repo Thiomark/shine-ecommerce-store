@@ -1,18 +1,23 @@
-# untitledapp
+# eCommerce store
 
-[X] Represent Done [ ] Represents yet not Done
+## The backend
+
+```
+https://github.com/Thiomark/store-api
+```
+
+## Admin access
+
+```
+email/username = admin
+Password = notadmin
+```
 
 ## Front End
 
+[X] Represent Done [ ] Represents yet not Done
+
 ```
-
-site link: https://awesome-agnesi-fe97a2.netlify.app
-
-For Admins - email/username = admin && email/username = notadmin
-[ ]Admin Dashboard https://awesome-agnesi-fe97a2.netlify.app/dashboard
-
-
-
 [X] The website is responsive
 [X] Products routes
 [X] Review section
