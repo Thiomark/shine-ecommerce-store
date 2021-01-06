@@ -1,6 +1,12 @@
 # eCommerce store
 
-## The backend
+## The Store
+
+```
+https://github.com/Thiomark/ecommerce-store
+```
+
+## The backend Api
 
 ```
 https://github.com/Thiomark/store-api
