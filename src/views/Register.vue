@@ -15,6 +15,7 @@
 </template>
 
 <script>
+
     import { mapGetters, mapActions } from 'vuex'
     import AuthService from '../services/AuthService'
 
@@ -35,28 +36,26 @@
         methods: {
             ...mapGetters(['getFooterHeight']),
             ...mapActions(['setNavbarAndFooter', 'setLoadingPage', 'setRequestFeedBack']),
+
             async submitTheDetails(){
                 if(this.name && this.email && this.password && this.reEnterPassword){
                     if(this.password === this.reEnterPassword){
+                        this.setLoadingPage(true)
                         try {
-                            this.setLoadingPage(true)
                             const response = await AuthService.register({
                                 name: this.name,
-                                email: this.username, 
+                                email: this.email, 
                                 password: this.password
-                            })
-
+                            });
                             this.$store.dispatch('setToken', response.data.token)
                             this.$store.dispatch('setUser', response.data.user)
                             this.setLoadingPage(false)
                             this.$router.push({
                                 name: 'Home'
                             })
-                        } 
-                        catch (err) {
-                            console.log(err)
+                        } catch (error) {
                             this.setLoadingPage(false)
-                            this.setRequestFeedBack("err")
+                            this.setRequestFeedBack(error.response.data.error)
                         }
                     }else {
                         this.submissionError = 'Passwords do not match'
@@ -65,6 +64,7 @@
             }
         },
         created() {
+            this.setLoadingPage(false)
             this.setNavbarAndFooter(false)
             this.footerHeight = this.getFooterHeight()
         },

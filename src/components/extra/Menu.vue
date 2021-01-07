@@ -40,6 +40,7 @@
     a {
         color: rgb(68, 68, 68);
         font-size: .8rem;
+        text-transform: capitalize;
     }
 
 </style>

@@ -109,6 +109,10 @@
 
 <style scoped>
 
+.selected {
+    color: #5bc995;
+}
+
 h1 {
     font-size: 1.5em;
     color: #6b6b6b;

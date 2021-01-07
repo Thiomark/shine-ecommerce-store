@@ -52,10 +52,9 @@
                     }
                     
                 } 
-                catch (err) {
+                catch (error) {
                     this.setLoadingPage(false)
-                    this.setRequestFeedBack('Invalid credentials')
-                    console.log(err)
+                    this.setRequestFeedBack(error.response.data.error)
                 }
             },
         },

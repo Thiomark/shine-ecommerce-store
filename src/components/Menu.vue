@@ -53,6 +53,7 @@
         color: #3b3b3b;
         font-size: .9rem;  
         font-weight: 500;
+        text-transform: capitalize;
     }
 
     .Menu-wrapper li {

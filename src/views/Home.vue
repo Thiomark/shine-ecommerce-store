@@ -10,14 +10,14 @@
     import { mapGetters, mapActions } from 'vuex'
     import LandingPage from '../components/LandingPage'
     import ProductContainer from '../components/ProductContainer'
-    //import NewsLetter from '../components/NewsLetter'
+    import NewsLetter from '../components/NewsLetter'
 
     export default {
         name: 'Home',
         components: {
             LandingPage,
             ProductContainer,
-            //NewsLetter,
+            NewsLetter,
         },
         data() {
             return {

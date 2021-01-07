@@ -36,6 +36,7 @@
 
     import ReviewTemplate from './reviews/ReviewTemplate'
     import ReviewService from '../services/ReviewService'
+    import {mapActions} from 'vuex'
 
     export default {
         components: {
@@ -60,6 +61,7 @@
             allStars.forEach(star => star.style.color = "red")
         },
         methods: {
+            ...mapActions(['setRequestFeedBack', 'setLoadingPage']),
             starHover(index){
                 const allStars = document.querySelectorAll('.far')
 
@@ -91,15 +93,22 @@
                 }
             },
             async reviewSettings(event){
+                this.setLoadingPage(true)
                 if(event === "delete"){
                     try {
-                        console.log('delet')
                         const review = await ReviewService.delete(this.productID)
-                        console.log(review)
+
+                        this.setRequestFeedBack(review)
+                        this.setLoadingPage(false)
+                        
                         // this.productReviews.push(review.data.data)
     
                     } catch (error) {
+                        this.setLoadingPage(false)
+                        console.log(error.data.error)
+                        console.log(error.data)
                         console.log(error)
+                        this.setRequestFeedBack(error.data.error)
                     }
                 }
                 if(event === "edit"){

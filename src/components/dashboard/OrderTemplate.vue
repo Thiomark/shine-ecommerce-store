@@ -53,9 +53,8 @@
             totalPrice: {
                 type: Number
             },
-            
             orderNumber: {
-                type: String
+                type: Number
             }
         },
         methods: {
@@ -85,7 +84,14 @@
         width: 100%;
         border-radius: 4px;
         padding: 2em;
-
+        transition: box-shadow .3s ease-in-out, width .3s ease-in-out;
+        cursor: pointer;
+    }
+    
+    .cart-total-wrapper:hover {
+        width: 101%;
+        -webkit-box-shadow: 0px 6px 15px -2px rgba(0,0,0,0.22); 
+        box-shadow: 0px 6px 15px -2px rgba(0,0,0,0.22);
     }
 
     input {

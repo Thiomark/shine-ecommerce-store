@@ -15,7 +15,7 @@
   import Navbar from './components/landingpage/Navbar'
   import Loading from './components/Loading'
   import RequestFeedBack from './components/RequestFeedBack'
-  import {mapGetters} from 'vuex'
+  import {mapActions, mapGetters} from 'vuex'
 
   export default {
       components: {
@@ -29,6 +29,12 @@
           currentRoute: null
         }
       },
+      methods: {
+        ...mapActions(['setLoadingPage'])
+      },
+      // mounted() {
+      //   this.setLoadingPage(false)
+      // },
       computed: mapGetters(['getNavBarInfo', 'getLoadingPage', 'getRequestFeedBack']),
 
   }
