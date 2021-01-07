@@ -29,24 +29,33 @@
         },
         methods: {
             ...mapGetters(['getFooterHeight']),
-            ...mapActions(['setNavbarAndFooter']),
+            ...mapActions(['setNavbarAndFooter', 'setLoadingPage', 'setRequestFeedBack']),
             async submitTheDetails(){
                 try {
-                    this.buffer = true
+                    this.setLoadingPage(true)
                     const response = await AuthService.login({
                         email: this.username, 
                         password: this.password
                     })
                     this.$store.dispatch('setToken', response.data.token)
                     this.$store.dispatch('setUser', response.data.user)
-                    this.buffer = false
-                    this.$router.push({
-                        name: 'Home'
-                    })
+                    this.setLoadingPage(false)
+                    if(response.data.user.role === 'admin'){
+                        this.$router.push({
+                            name: 'Dashboard'
+                        })
+                    }
+                    else {
+                        this.$router.push({
+                            name: 'Home'
+                        })
+                    }
+                    
                 } 
                 catch (err) {
-                    this.buffer = false
-                    this.errorMessage = err
+                    this.setLoadingPage(false)
+                    this.setRequestFeedBack('Invalid credentials')
+                    console.log(err)
                 }
             },
         },

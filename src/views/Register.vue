@@ -1,7 +1,7 @@
 <template>
     <div class="login-page" :style="{paddingBottom: `${footerHeight}px`}">
         <div class="form">
-            <form @submit.prevent="submitDetails" class="register-form">
+            <form @submit.prevent="submitTheDetails" class="register-form">
                 <h1 v-if="submissionError">{{submissionError}}</h1>
                 <input type="text" v-bind:class="[name ? 'success' : 'error']" v-model="name" placeholder="name"/>
                 <input type="email" v-model="email" v-bind:class="[email ? 'success' : 'error']" placeholder="email address"/>
@@ -34,31 +34,29 @@
         },
         methods: {
             ...mapGetters(['getFooterHeight']),
-            ...mapActions(['setNavbarAndFooter']),
+            ...mapActions(['setNavbarAndFooter', 'setLoadingPage', 'setRequestFeedBack']),
             async submitTheDetails(){
                 if(this.name && this.email && this.password && this.reEnterPassword){
                     if(this.password === this.reEnterPassword){
                         try {
-                            this.buffer = true
+                            this.setLoadingPage(true)
                             const response = await AuthService.register({
                                 name: this.name,
                                 email: this.username, 
                                 password: this.password
                             })
 
-                            console.log(response)
-
                             this.$store.dispatch('setToken', response.data.token)
                             this.$store.dispatch('setUser', response.data.user)
-                            this.buffer = false
+                            this.setLoadingPage(false)
                             this.$router.push({
                                 name: 'Home'
                             })
                         } 
                         catch (err) {
                             console.log(err)
-                            this.buffer = false
-                            this.errorMessage = err
+                            this.setLoadingPage(false)
+                            this.setRequestFeedBack("err")
                         }
                     }else {
                         this.submissionError = 'Passwords do not match'

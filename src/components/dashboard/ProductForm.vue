@@ -1,6 +1,6 @@
 <template>
     <div class="product-wrapper">
-        <h1>Add A Product</h1>
+    
             <form class="cf">
             <input type="text" placeholder="Product title">
             <input type="text" placeholder="Categories, separated by a comma">

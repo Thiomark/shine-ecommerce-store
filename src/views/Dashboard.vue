@@ -3,41 +3,61 @@
         <nav class="menu" tabindex="0">
             <div class="smartphone-menu-trigger"></div>
         <header class="avatar">
-            <h2>John D</h2>
+            <h2>{{getTheUser.name}}</h2>
         </header>
         <ul>
             <li @click="navigate('Home') " tabindex="0"><i class="fas fa-home"></i><span>Home</span></li>
-            <li tabindex="0"><i class="fas fa-shopping-cart"></i><span>Products</span></li>
-            <li tabindex="0"><i class="fas fa-plus"></i><span>Add Product</span></li>
-            <li tabindex="0"><i class="fas fa-comments"></i><span>Reviews</span></li>
-            <li tabindex="0"><i class="fas fa-shipping-fast"></i><span>Orders</span></li>
-            <li tabindex="0"><i class="fas fa-users"></i><span>Customers</span></li>
-            <li tabindex="0"><i class="fas fa-cogs"></i><span>Settings</span></li>
+            <li @click="toggleButtons('orders')" tabindex="0"><i class="fas fa-shipping-fast"></i><span>Orders</span></li>
+            <li @click="toggleButtons('products')" tabindex="0"><i class="fas fa-shopping-cart"></i><span>Products</span></li>
+            <li @click="toggleButtons('addProduct')" tabindex="0"><i class="fas fa-plus"></i><span>Add Product</span></li>
+            <li @click="toggleButtons('reviews')" tabindex="0"><i class="fas fa-comments"></i><span>Reviews</span></li>
+            <li @click="toggleButtons('statistic')" tabindex="0"><i class="far fa-chart-bar"></i><span>Statistic</span></li>
+            <li @click="toggleButtons('settings')" tabindex="0"><i class="fas fa-cogs"></i><span>Settings</span></li>
         </ul>
         </nav>
         <main>
-            <!-- <ProductForm /> -->
-            <AllProducts />
+            <h1 v-if="statistic" >Performance & Statistic</h1>
+            <h1 v-if="settings" >Settings</h1>
+            <ProductForm v-if="addProduct"/>
+            <ProductsContainer v-if="products"/>
+            <ReviewsContainer v-if="reviews"/>
+            <OrderContainer v-if="orders"/>
         </main>
     </div>
 </template>
 
 <script>
 
-    import {mapActions} from 'vuex'
-    //import ProductForm from '../components/dashboard/ProductForm'
-    import AllProducts from '../components/dashboard/AllProducts'
+    import ReviewsContainer from '../components/dashboard/ReviewsContainer'
+    import ProductsContainer from '../components/dashboard/ProductsContainer'
+    import {mapActions, mapGetters} from 'vuex'
+    import ProductForm from '../components/dashboard/ProductForm'
+
+    import OrderContainer from '../components/dashboard/OrderContainer'
 
     export default {
-        data() {
-            return {
-                somethi: ''
+        name: "Dashboard",
+        props: {
+            loggedInUser: {
+                type: String
             }
         },
         components: {
-            //ProductForm,
-            AllProducts
+            ProductForm,
+            ReviewsContainer,
+            OrderContainer,
+            ProductsContainer
 
+        },
+        data() {
+            return {
+                products: false,
+                addProduct: false,
+                reviews: false,
+                orders: true,
+                statistic: false,
+                settings: false,
+            }
         },
         methods: {
             ...mapActions(['setNavbarAndFooter']),
@@ -46,15 +66,59 @@
                     name: page
                 })
             },
+            toggleButtons(button){
+                this.products = false
+                this.addProduct = false
+                this.reviews =false
+                this.orders =false
+                this.statistic = false
+                this.settings = false
+                switch (button) {
+                    case 'products':
+                        this.products = true
+                        break;
+                    case 'addProduct':
+                        this.addProduct = true
+                        break;
+                    case 'reviews':
+                        this.reviews = true
+                        break;
+                    case 'orders':
+                        this.orders = true
+                        break;
+                    case 'statistic':
+                        this.statistic = true
+                        break;
+                    case 'settings':
+                        this.settings = true
+                        break;
+                
+                    default:
+                        break;
+                }
+             
+            }
         },
-        created() {
+        async created() {
             this.setNavbarAndFooter(true)
         },
+        computed: mapGetters(['getTheUser', 'getAllProducts'])
     }
 
 </script>
 
 <style scoped>
+
+h1 {
+    font-size: 1.5em;
+    color: #6b6b6b;
+    text-transform: uppercase;
+    font-weight: 600;
+    top: 50%;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 
 .dashboard-container {
     background: #f0f0f0;
@@ -65,7 +129,7 @@
 }
 main {
     position: relative;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 i {
@@ -128,7 +192,7 @@ i {
 }
 
 @media screen and (max-width: 900px) and (min-width: 400px) {
-    body {
+    .dashboard-container {
         padding-left: 90px;
     }
 
@@ -202,7 +266,7 @@ i {
 }
 @media screen and (max-width: 400px) {
 
-    body {
+    .dashboard-container {
         padding-left: 0;
     }
 

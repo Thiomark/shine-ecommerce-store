@@ -24,6 +24,9 @@ Password = notadmin
 [X] Represent Done [ ] Represents yet not Done
 
 ```
+[ ] Add Animation and make everything smooth
+[ ] re-do the UI Design and make everything more appealing and more responsise
+[ ] Fix every error ignored that wasnt affecting anything
 [X] The website is responsive
 [X] Products routes
 [X] Review section

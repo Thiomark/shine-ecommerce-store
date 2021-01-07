@@ -2,47 +2,59 @@
     <div class="item-container">
         <div class="cart-total-wrapper">
             <div class="subtotal all">
-                <img :src="productImage" alt="">
+                <h1 class="for-mobile">Order Number</h1>
+                <h1>{{orderNumber}}</h1>
             </div>
             <div class="subtotal all">
                 <h1 class="for-mobile">Name</h1>
-                <h1>{{name}}</h1>
+                <h1>{{firstName}} {{lastName}}</h1>
             </div>
             <div class="shipping all">
-                <h1 class="for-mobile">Price</h1>
-                <h1>R {{unitPrice}}</h1>
+                <h1 class="for-mobile">Unit Price</h1>
+                <h1>{{address}}, {{city}}, {{province}}</h1>
             </div>
-            <div class="total all hide-for-mobile">
-                <a @click="emitRemoveEvent(productID)" href="javascript:void(0)"><i class="far fa-trash-alt"></i></a>
+            <div class="shipping all">
+                <h1 class="for-mobile">Quantity</h1>
+                <h1>{{date}}</h1>
             </div>
-            <div class="total all hide-for-mobile">
-                <a @click="emitRemoveEvent(productID)" href="javascript:void(0)"><i class="far fa-edit"></i></a>
+            <div class="total all">
+                <h1 class="for-mobile">Amount</h1>
+                <h1>R {{totalPrice}}</h1>
             </div>
-            <input @click="emitRemoveEvent(productID)" type="button" value="Remove Item">
         </div>
     </div>
 </template>
 
 <script>
     export default {
-        name: "ItemsInCart",
+        name: "OrderTemplate",
         props: {
             productID: {
                 type: String
             },
-            name: {
+            firstName: {
                 type: String
             },
-            unitPrice: {
-                type: Number
+            lastName: {
+                type: String
             },
-            quantity: {
-                type: Number
+            address: {
+                type: String
+            },
+            city: {
+                type: String
+            },
+            province: {
+                type: String
+            },
+            date: {
+                type: String
             },
             totalPrice: {
                 type: Number
             },
-            productImage: {
+            
+            orderNumber: {
                 type: String
             }
         },
@@ -56,14 +68,6 @@
 
 <style scoped>
 
-    .far {
-        font-size: 1.4rem;
-    }
-
-    .far:hover {
-        color: rgb(50, 138, 165);
-    }
-
      .header {
         color: #303133;
         font-size: 1.5rem;
@@ -74,13 +78,14 @@
     .item-container {
         width: 100%;
         font-family: 'Poppins', sans-serif;
+    
     }
 
     .cart-total-wrapper {
         width: 100%;
         border-radius: 4px;
         padding: 2em;
- 
+
     }
 
     input {
@@ -108,9 +113,16 @@
     .all h1 {
         /* font-family: 'Poppins', sans-serif; */
         font-family: 'Roboto', sans-serif;
-        font-weight: 400;
+        font-weight: 500;
         font-size: 13px;
-        color: #303133;
+        color: #1b1b1b;
+    }
+
+    @media (min-width: 1113px) {
+        .cart-total-wrapper {
+            grid-template-columns: auto auto auto auto auto;
+
+        }
     }
 
     @media (max-width: 500px) { 
@@ -132,16 +144,17 @@
 
         .cart-total-wrapper {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+            grid-template-columns: 70px 170px auto 200px 80px;
             width: 100%;
-
-            /* border-bottom: 1px solid rgb(219, 219, 219); */
-            padding: 0 ;
-            place-items: center;
+            border-radius: 5px;
+            border: 1px solid rgb(219, 219, 219); 
+            padding: .4em 1em;
         }
 
         /* .item-container {
-            padding: 0 2.6em;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
         } */
 
         img {
