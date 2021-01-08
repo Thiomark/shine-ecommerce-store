@@ -16,7 +16,9 @@ export default new Vuex.Store({
         user: null,
         singleProduct: {},
         itemsInShoppingCart: [],
-        totalCost: 0,
+        itemsInFavouriteCart: [],
+        shoppingCartCost: 0,
+        favouriteCartCost: 0,
         totalCostWithShipping: 0,
         shippingCost: 200,
         hideNavbarAndFooter: false,
@@ -39,8 +41,16 @@ export default new Vuex.Store({
             for(const product of state.itemsInShoppingCart){
                 total = total + product.price
             }
-            state.totalCost = total
+            state.shoppingCartCost = total
             state.totalCostWithShipping = total + state.shippingCost
+        },
+        setProductInTheFavouritetCart(state, payload){
+            state.itemsInFavouriteCart.push(payload)
+            let total = 0
+            for(const product of state.itemsInFavouriteCart){
+                total = total + product.price
+            }
+            state.favouriteCartCost = total
         },
         removeItemFromCart(state, payload){
             state.itemsInShoppingCart = state.itemsInShoppingCart.filter(function(product) {
@@ -50,7 +60,7 @@ export default new Vuex.Store({
             for(const product of state.itemsInShoppingCart){
                 total = total + product.price
             }
-            state.totalCost = total
+            state.shoppingCartCost = total
             state.totalCostWithShipping = total + state.shippingCost
         },
         setFooterheight(state, payload){
@@ -112,6 +122,9 @@ export default new Vuex.Store({
         addedItemToCart({commit}, product){
             commit('setProductInTheCart', product)
         },
+        addedItemToFavouritesCart({commit}, product){
+            commit('setProductInTheFavouritetCart', product)
+        },
         removeFromCart({commit}, product){
             commit('removeItemFromCart', product)
         },
@@ -156,12 +169,14 @@ export default new Vuex.Store({
         getitemsInShoppingCart: state => state.itemsInShoppingCart,
         getTheUser: state => state.user,
         getFooterHeight: state => state.footerHeight,
-        getToalCost: state => state.totalCost,
+        getToalCost: state => state.shoppingCartCost,
         getTotalCostWithShipping: state => state.totalCostWithShipping,
         getShippingCost: state => state.shippingCost,
         getNavBarInfo: state => state.hideNavbarAndFooter,
         getLoadingPage: state => state.pageLoading,
         getRequestFeedBack: state => state.requestFeedBack,
-        getProductReviews: state => state.productReviews
+        getProductReviews: state => state.productReviews,
+        getItemsInFavouriteList: state => state.itemsInFavouriteCart,
+        getFavouriteCartCost: state => state.favouriteCartCost,
     }
 })

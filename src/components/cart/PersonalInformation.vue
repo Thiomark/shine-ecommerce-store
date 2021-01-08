@@ -20,6 +20,7 @@
 </template>
 
 <script>
+
     import {mapActions, mapGetters} from 'vuex'
     import OrderService from '../../services/OrderService'
     export default {
@@ -107,21 +108,6 @@
                         shipping: this.getShippingCost(),
                         toatlAmount: this.getTotalCostWithShipping()
                     })
-                    // this.setRequestFeedBack({
-                    //     firstName: this.fields[0].value,
-                    //     lastName: this.fields[1].value,
-                    //     address: this.fields[2].value,
-                    //     houseNumber: this.fields[3].value,
-                    //     town: this.fields[4].value,
-                    //     province: this.fields[5].value,
-                    //     phoneNumber: this.fields[6].value,
-                    //     zipcode: this.fields[7].value,
-                    //     notes: this.notes,
-                    //     email: this.email,
-                    //     item: this.getitemsInShoppingCart(),
-                    //     shipping: this.getShippingCost(),
-                    //     toatlAmount: this.getTotalCostWithShipping()
-                    // })
                     this.setLoadingPage(false)
                     this.restItemsInShoppingCart([])
                     this.$emit('gotocheckout', order.data.order)
@@ -136,32 +122,16 @@
 
 <style scoped>
 
-    /* .filedMissing {
-        background-color: #eca4a5;
-    }
-    .success {
-        
-    }
-
-    textarea {
-        background-color: #f7f7f7;
-    } */
-
     @media (max-width: 600px){
 
         .cart-total-wrapper {
             display: flex;
             flex-direction: column;
-            /* grid-template-columns: 1fr;
-            column-gap: 30px; */
         }
 
         .cart-total-container  {
             padding-bottom: 5em;
         }
-
-        
-        
     }
 
     
@@ -190,7 +160,7 @@
     .cart-total-container {
         width: 100%;
         font-family: 'Poppins', sans-serif;
-        margin-bottom: 3em;
+        margin: 2em 0;
     }
 
     .cart-total-wrapper {
@@ -236,10 +206,6 @@
         font-size: 13px;
         max-width: 200px;
     }
-
-    
-
-    
 
     @media (max-width: 500px) {
         input[type="button"] {

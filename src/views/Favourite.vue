@@ -1,7 +1,7 @@
 <template>
     <div class="cart-container" :style="{paddingBottom: `${footerHeight}px`}">
-        <div v-if="getitemsInShoppingCart.length === 0 && !checkOut" class="empty-cart">
-            <h1>Cart is Empty</h1>
+        <div v-if="getItemsInFavouriteList.length === 0 && !checkOut" class="empty-cart">
+            <h1>No Items Added Yet</h1>
             <input @click="navigate('Home')" type="button"  value="Go To Products">
         </div>
         <div>
@@ -12,16 +12,14 @@
                 :unitPrice="product.price"
                 :name="product.title"
                 :productID="product.productID"
-                @emitremoveevent="removeItem"
-                v-for="product in getitemsInShoppingCart" :key="product.productID"
+               
+                v-for="product in getItemsInFavouriteList" :key="product.productID"
             />
         </div>
-         <CartTotal v-if="getitemsInShoppingCart.length"
+         <CartTotal v-if="getItemsInFavouriteList.length"
             class="add-padding"
-            :showCheckout="true"
-            :subtotal="getToalCost()" 
-            :shipping="getShippingCost()" 
-            :total="getTotalCostWithShipping()" 
+         
+            :total="getFavouriteCartCost()"
             @emitproceed="navigate('Checkout')"
         />
     </div>
@@ -34,7 +32,7 @@
     import ItemsInCart from '../components/cart/ItemsInCart'
 
     export default {
-        name: "Cart",
+        name: "Favourite",
         components: {
             CartTotal,
             ItemsInCart,
@@ -48,7 +46,7 @@
         },
         methods: {
             ...mapActions(['removeFromCart', 'setNavbarAndFooter']),
-            ...mapGetters(['getFooterHeight', 'getToalCost', 'getTotalCostWithShipping', 'getShippingCost']),
+            ...mapGetters(['getFooterHeight', 'getFavouriteCartCost']),
             removeItem(payload){
                 this.removeFromCart(payload)
             },
@@ -61,7 +59,7 @@
         mounted() {
             this.footerHeight = this.getFooterHeight()
         },
-        computed: mapGetters(['getitemsInShoppingCart']),
+        computed: mapGetters(['getItemsInFavouriteList']),
         created() {
             this.setNavbarAndFooter(false)
         },

@@ -71,6 +71,7 @@
     .item-container {
         width: 100%;
         font-family: 'Poppins', sans-serif;
+        margin: 1em 0;
     
     }
 

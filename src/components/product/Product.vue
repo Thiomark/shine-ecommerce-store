@@ -3,7 +3,7 @@
         <div class="image-shape image-position"
             :style="{'background-image': `url('${productImage}')`}"
             >   
-            <i @mouseover="disableNavigation" @mouseleave="disableNavigation" class="far fa-heart" :style="{opacity: buttonOpacity}"></i>
+            <i @mouseover="disableNavigation" @mouseleave="disableNavigation" @click="addItemToFavourite({price, title, productImage, productID})" class="far fa-heart" :style="{opacity: buttonOpacity}"></i>
             <input @mouseover="disableNavigation" @mouseleave="disableNavigation" @click="addItemToCart({price, title, productImage, productID})" type="button" :style="{opacity: buttonOpacity}" value="add to cart">
         </div>
         <div class="product-info">
@@ -42,7 +42,7 @@
             }
         },
         methods: {
-            ...mapActions(['addedItemToCart']),
+            ...mapActions(['addedItemToCart', 'addedItemToFavouritesCart']),
             showButtons(){
                 return this.buttonOpacity = 1
             },
@@ -69,6 +69,16 @@
                     }
                 }
                 this.addedItemToCart({price, title, productImage, productID, quantity: 1, totalPrice:  price})
+            },
+            addItemToFavourite(item){
+                const {price, title, productImage, productID} = item
+
+                for(const product of this.$store.state.itemsInFavouriteCart){
+                    if(product.productID === productID){
+                        return
+                    }
+                }
+                this.addedItemToFavouritesCart({price, title, productImage, productID, quantity: 1, totalPrice:  price})
             }
         }
     }

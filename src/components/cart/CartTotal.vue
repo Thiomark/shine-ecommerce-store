@@ -17,7 +17,7 @@
                 <h1>Total</h1>
                 <h1>R {{total}}</h1>
             </div>
-            <input @click="submitTotal" type="button" value="Proceed to checkout">
+            <input v-if="showCheckout" @click="submitTotal" type="button" value="Proceed to checkout">
         </div>
     </div>
 </template>
@@ -34,6 +34,9 @@
             },
             total: {
                 type: Number
+            },
+            showCheckout: {
+                type: Boolean
             }
         },
         methods: {
@@ -57,7 +60,8 @@
     .cart-total-container {
         width: 100%;
         font-family: 'Poppins', sans-serif;
-        padding: 0 2em;
+        padding: 2em;
+        margin-bottom: 1em;
     }
 
     .cart-total-wrapper {
@@ -65,7 +69,6 @@
         background-color: #f7f7f7;
         border-radius: 4px;
         padding: 2em;
-
     }
 
     input {
@@ -77,7 +80,6 @@
         border-radius: 4px;
         border: none;
         font-size: 13px;
-        max-width: 200px;
     }
 
     .all {
@@ -91,11 +93,16 @@
     }
 
     .all h1 {
-        /* font-family: 'Poppins', sans-serif; */
         font-family: 'Roboto', sans-serif;
         font-weight: 400;
         font-size: 13px;
         color: #303133;
+    }
+
+    @media (min-width: 500px) {
+        input {
+            max-width: 200px;
+        }
     }
 
     @media (max-width: 500px) {
@@ -104,11 +111,6 @@
         }
     }
 
-    @media (max-width: 500px) {
-        input {
-             max-width: 1100px;
-             float: right;
-        }
-    }
+
 
 </style>
