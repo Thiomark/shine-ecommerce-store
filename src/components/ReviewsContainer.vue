@@ -1,5 +1,6 @@
 <template>
     <div class="reviews-container">
+        <RastingSection />
         <div v-if="!$store.state.user" class="add-a-review">
             <input @click="navigate('Login')" type="button" value="Write a review">
         </div>
@@ -36,6 +37,7 @@
 
 <script>
 
+import RastingSection from '../components/RatingSection'
     import ReviewTemplate from './reviews/ReviewTemplate'
     import ReviewService from '../services/ReviewService'
     import {mapActions} from 'vuex'
@@ -43,7 +45,8 @@
 
     export default {
         components: {
-            ReviewTemplate
+            ReviewTemplate,
+            RastingSection
         },
         props: {
             productReviews: {

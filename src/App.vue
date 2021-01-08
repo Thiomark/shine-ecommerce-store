@@ -2,7 +2,7 @@
   <div id="app">
     <RequestFeedBack v-if="getRequestFeedBack" :resposeMessage="getRequestFeedBack"/>
     <Loading v-if="getLoadingPage"/>
-    <Navbar storeName="leavealot.com" v-if="!getNavBarInfo"/>
+    <Navbar storeName="leavealot" v-if="!getNavBarInfo"/>
     <router-view/>
     <Footer v-if="!getNavBarInfo" class="put-at-the-bottom"/>
   </div>
@@ -12,7 +12,7 @@
 
   require('../src/assets/icofont/icofont.css')
   import Footer from './components/Footer'
-  import Navbar from './components/landingpage/Navbar'
+  import Navbar from './components/landingpage/Navbard'
   import Loading from './components/Loading'
   import RequestFeedBack from './components/RequestFeedBack'
   import {mapActions, mapGetters} from 'vuex'

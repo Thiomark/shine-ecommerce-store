@@ -5,6 +5,9 @@
                 <a>Shipping</a>
                 <a>FAQ</a>
                 <a>Terms & conditions</a>
+                <a>Track Order</a>
+                <a>About</a>
+                <a>Contact</a>
             </ul>
             <div class="bottom-section">
                 <div class="bottom-section-wrapper">
