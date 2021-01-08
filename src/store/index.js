@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import createPersistedState from "vuex-persistedstate";
+import ReviewService from '../services/ReviewService'
 
 Vue.use(Vuex)
 
@@ -20,7 +21,9 @@ export default new Vuex.Store({
         shippingCost: 200,
         hideNavbarAndFooter: false,
         pageLoading: false,
-        requestFeedBack: null
+        requestFeedBack: null,
+        productReviews: [],
+        isAdmin: false
     },
 
     mutations: {
@@ -57,6 +60,9 @@ export default new Vuex.Store({
             state.token = token
         },
         setUser(state, user) {
+            if(user.role === 'admin'){
+                state.isAdmin = true
+            }
             state.user = user
         },
         setNavbarAndFooter(state, user) {
@@ -70,6 +76,27 @@ export default new Vuex.Store({
         },
         restItemsInShoppingCart(state, payLoad) {
             state.itemsInShoppingCart = payLoad
+        },
+        fetchProductReviewsFromApi(state, reviews){
+    
+            if(state.user){
+                reviews.forEach(review => {
+                    if(review.user === state.user._id || state.user.role === 'admin'){
+                        review.modifyReview = true
+                    }else {
+                        review.modifyReview = false
+                    }
+                });
+                
+            }else {
+                reviews.forEach(review => {
+                    review.modifyReview = false
+                });
+            }  
+            state.productReviews = reviews      
+        },
+        updatedReviewState(state, review){
+            state.requestFeedBack = review
         }
     },
 
@@ -109,6 +136,13 @@ export default new Vuex.Store({
         restItemsInShoppingCart({commit}, loading) {
             commit('restItemsInShoppingCart', loading)
         },
+        async fetchProductReviewsFromApi({commit}, id){
+            const response = await ReviewService.get(id)
+            commit('fetchProductReviewsFromApi', response.data.fetcheQuerys)
+        },
+        updatedReviewState({commit}, review){
+            commit('updatedReviewState', review)
+        }
         
     },
     
@@ -128,5 +162,6 @@ export default new Vuex.Store({
         getNavBarInfo: state => state.hideNavbarAndFooter,
         getLoadingPage: state => state.pageLoading,
         getRequestFeedBack: state => state.requestFeedBack,
+        getProductReviews: state => state.productReviews
     }
 })

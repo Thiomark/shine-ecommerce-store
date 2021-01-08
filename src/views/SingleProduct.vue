@@ -60,7 +60,7 @@
             }
         },
         methods: {
-            ...mapActions(['fetchASingleProduct', 'setNavbarAndFooter']),
+            ...mapActions(['fetchASingleProduct', 'setNavbarAndFooter', 'setLoadingPage']),
             ...mapGetters(['getFooterHeight']),
 
             switchToReview(){
@@ -78,12 +78,11 @@
             },
         },
         async created() {
+            this.setLoadingPage(false)
             this.setNavbarAndFooter(false)
             this.fetchASingleProduct(this.productID)
             const response = await ReviewService.get(this.productID)
             this.productReviews = await response.data.fetcheQuerys
-            console.log(response.data)
-
         },
         computed: mapGetters(['getOneProducts']),
         mounted() {

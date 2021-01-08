@@ -12,7 +12,7 @@
             </ul>
             <ul class="icons">
                 <li><i class="fas fa-heart justico pri-colour "></i></li>
-                <li @click="navigate('Dashboard')" ><i class="icofont-dashboard-web pri-colour"></i></li>
+                <li v-if="$store.state.isAdmin" @click="navigate('Dashboard')" ><i class="icofont-dashboard-web pri-colour"></i></li>
                 <li><i class="icofont-user-alt-7 pri-colour  justico"></i></li>
                 <li class="cart"><i @click="navigate('Cart')" class="icofont-shopping-cart ico pri-colour "></i><h6 class="items-the-cart pri-colour ">{{getShoppingcart}}</h6></li>
                 <div class="menu-button">

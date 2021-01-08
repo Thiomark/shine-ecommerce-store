@@ -1,23 +1,60 @@
 <template>
     <div class="product-wrapper">
-    
-            <form class="cf">
-            <input type="text" placeholder="Product title">
-            <input type="text" placeholder="Categories, separated by a comma">
-            <input type="text" placeholder="Tags, separated by a comma">
-            <input type="text" placeholder="Section">
-            <input type="text" placeholder="Product image url">
-            <input type="number" placeholder="Product Price">
-            <textarea name="message" type="text" placeholder="Product description"></textarea>
-            <textarea name="message" type="text" placeholder="Product summary"></textarea>
+        <form @submit.prevent="sumbitTheProduct">
+            <input v-model="title" type="text" placeholder="Product title">
+            <input v-model="categories" type="text" placeholder="Categories, separated by a comma">
+            <input v-model="tags" type="text" placeholder="Tags, separated by a comma">
+            <input v-model="section" type="text" placeholder="Section">
+            <input v-model="image" type="text" placeholder="Product image url">
+            <input v-model="productCost" type="number" placeholder="Product Price">
+            <textarea v-model="description" name="message" type="text" placeholder="Product description"></textarea>
+            <textarea v-model="summary" name="message" type="text" placeholder="Product summary"></textarea>
             <input type="submit" value="Submit" >
         </form>
     </div>
 </template>
 
 <script>
+    import ProductService from '../../services/ProductService'
+    import {mapActions} from 'vuex'
     export default {
-        name: "ProductForm"
+        name: "ProductForm",
+        data() {
+            return {
+                title: '',
+                categories: '',
+                tags: '',
+                section: '',
+                image: '',
+                productCost: '',
+                description: '',
+                summary: '',
+            }
+        },
+        methods: {
+            ...mapActions(['setRequestFeedBack', 'setLoadingPage']),
+            async sumbitTheProduct(){
+                this.setLoadingPage(true)
+                try {
+                    const product = await ProductService.post({
+                        title: this.title,
+                        categories: this.categories,
+                        tags: this.tags,
+                        section: this.section,
+                        image: this.image,
+                        productCost: parseInt(this.productCost, 10),
+                        description: this.description,
+                        summary: this.summary,
+                    })
+                    this.setRequestFeedBack(product.data.message)
+                    this.setLoadingPage(false)
+                } catch (error) {
+                    this.setLoadingPage(false)
+                    this.setRequestFeedBack(error.response.data.error)
+                    
+                }
+            }
+        },
         
     }
 </script>

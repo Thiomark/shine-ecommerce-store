@@ -5,12 +5,14 @@
         </div>
         <div class="reviews">
             <ReviewTemplate 
-                v-for="review in productReviews" 
+                v-for="review in reviews" 
                 :key="review._id" 
                 :name="review.name" 
                 :date="review.createdAt"
                 :review="review.review" 
                 :stars="review.rating" 
+                :reviewID="review._id"
+                :modifyReview="review.modifyReview"
                 @popupmenuevent="reviewSettings"
             />
         </div>
@@ -38,6 +40,7 @@
     import ReviewService from '../services/ReviewService'
     import {mapActions} from 'vuex'
 
+
     export default {
         components: {
             ReviewTemplate
@@ -53,15 +56,36 @@
                 makeit: true,
                 productID: this.$route.params.productID,
                 review: '',
+                reviews: '',
                 title: ''
             }
         },
         async created() {
-            const allStars = document.querySelectorAll('.far')
-            allStars.forEach(star => star.style.color = "red")
+            try {
+                const response = await ReviewService.get(this.productID)
+                let reviews = response.data.fetcheQuerys
+
+                if(this.$store.state.user){
+                    reviews.forEach(review => {
+                        if(review.user === this.$store.state.user._id || this.$store.state.user.role === 'admin'){
+                            review.modifyReview = true
+                        }else {
+                            review.modifyReview = false
+                        }
+                    });
+                    
+                }else {
+                    reviews.forEach(review => {
+                        review.modifyReview = false
+                    });
+                }  
+                this.reviews = reviews 
+            } catch (error) {
+                this.setRequestFeedBack(error.response.data.error)
+            } 
         },
         methods: {
-            ...mapActions(['setRequestFeedBack', 'setLoadingPage']),
+            ...mapActions(['setRequestFeedBack', 'setLoadingPage', 'setProductReviews', 'updatedReviewState']),
             starHover(index){
                 const allStars = document.querySelectorAll('.far')
 
@@ -80,51 +104,36 @@
             },
             async createAReview(){
                 try {
-                    const review = await ReviewService.post({
+                    const newReview = await ReviewService.post({
                         "product": this.productID,
                         "title": this.title,
                         "review": this.review,
                         "rating": 5
                     })
-                    this.productReviews.push(review.data.data)
-
+                    let review = newReview.data.data
+                    review.modifyReview = true
+                    this.reviews.push(review)
                 } catch (error) {
-                    console.log(error)
+                    this.setRequestFeedBack(error.response.data.error)
                 }
             },
             async reviewSettings(event){
-                this.setLoadingPage(true)
-                if(event === "delete"){
+                if(event.event === "delete"){
                     try {
-                        const review = await ReviewService.delete(this.productID)
-
-                        this.setRequestFeedBack(review)
-                        this.setLoadingPage(false)
+                        await ReviewService.delete(event.reviewID)
+                        this.reviews = this.reviews.filter((review) => {
+                            return review._id !== event.reviewID
+                        })
                         
-                        // this.productReviews.push(review.data.data)
-    
+
                     } catch (error) {
                         this.setLoadingPage(false)
-                        console.log(error.data.error)
-                        console.log(error.data)
-                        console.log(error)
-                        this.setRequestFeedBack(error.data.error)
+                        this.setRequestFeedBack(error.response.data.error)
                     }
                 }
                 if(event === "edit"){
                     console.log('edit')
-                    // try {
-                    //     const review = await ReviewService.post({
-                    //         "product": this.productID,
-                    //         "title": this.title,
-                    //         "review": this.review,
-                    //         "rating": 5
-                    //     })
-                    //     this.productReviews.push(review.data.data)
-    
-                    // } catch (error) {
-                    //     console.log(error)
-                    // }
+
                 }
             },
 

@@ -15,22 +15,60 @@
             :unitPrice="product.productCost"
             :name="product.title"
             @emitremoveevent="removeItem"
-            v-for="product in getAllProducts"
+            v-for="product in products"
         />
     </div>
 </template>
 
 <script>
 
-    import { mapGetters} from 'vuex'
+    import { mapActions} from 'vuex'
     import AllProducts from '../dashboard/AllProducts'
+    import ProductService from '../../services/ProductService'
 
     export default {
         name: "ProductsContainer",
+        data() {
+            return {
+                products: []
+            }
+        },
         components: {
             AllProducts
         },
-        computed: mapGetters(['getAllProducts'])
+        methods: {
+            ...mapActions(['setLoadingPage', 'setRequestFeedBack']),
+            async removeItem(event){
+                if(event.event === "delete"){
+                    this.setLoadingPage(true)
+                    try {
+                        const response = await ProductService.delete(event.productID)
+                        this.products = this.products.filter((product) => {
+                            return product._id !== event.productID
+                        })
+                        this.setLoadingPage(false)
+                        this.setRequestFeedBack(response.data.data)
+                    } catch (error) {
+                        this.setLoadingPage(false)
+                        this.setRequestFeedBack(error.response.data.error)
+                    }
+                }
+                if(event === "edit"){
+                    console.log('edit')
+                }
+            }
+        },
+        async created() {
+            try {
+                this.setLoadingPage(true)
+                const response = await ProductService.getAll()
+                this.setLoadingPage(false)
+                this.products = response.data.fetcheQuerys
+            } catch (error) {
+                this.setLoadingPage(false)
+                this.setRequestFeedBack('Something went wrong')
+            }
+        },
     }
 
 </script>

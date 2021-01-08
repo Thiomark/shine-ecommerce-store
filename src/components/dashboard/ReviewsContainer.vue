@@ -33,13 +33,26 @@
             }
         },
         methods: {
-            ...mapActions(['setLoadingPage'])
+            ...mapActions(['setLoadingPage', 'setRequestFeedBack'])
         },
         async created() {
-            this.setLoadingPage(true)
-            const response = await ReviewService.getAll()
-            await this.setLoadingPage(false)
-            this.allReviews = response.data.fetcheQuerys
+            try {
+                this.setLoadingPage(true)
+                const response = await ReviewService.getAll()
+                await this.setLoadingPage(false)
+                let reviews = response.data.fetcheQuerys
+
+                reviews.forEach(review => {
+                    review.modifyReview = true
+                });
+
+                this.allReviews = reviews 
+            } catch (error) {
+                this.setRequestFeedBack(error.response.data.error)
+            } 
+
+
+            
         },
     }
 </script>

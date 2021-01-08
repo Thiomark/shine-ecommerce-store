@@ -13,12 +13,12 @@
                 <h1>R {{unitPrice}}</h1>
             </div>
             <div class="total all hide-for-mobile">
-                <a @click="emitRemoveEvent(productID)" href="javascript:void(0)"><i class="far fa-trash-alt"></i></a>
+                <a @click="emitRemoveEvent({productID, event: 'delete'})" href="javascript:void(0)"><i class="far fa-trash-alt"></i></a>
             </div>
             <div class="total all hide-for-mobile">
-                <a @click="emitRemoveEvent(productID)" href="javascript:void(0)"><i class="far fa-edit"></i></a>
+                <a @click="emitRemoveEvent({productID, event: 'edit'})" href="javascript:void(0)"><i class="far fa-edit"></i></a>
             </div>
-            <input @click="emitRemoveEvent(productID)" type="button" value="Remove Item">
+            <input @click="emitRemoveEvent({productID, event: 'delete'})" type="button" value="Remove Item">
         </div>
     </div>
 </template>

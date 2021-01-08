@@ -8,9 +8,9 @@
                 <p>{{review}}</p>
             </div>
         </div>
-        <div class="ellipsis-menu">
+        <div v-if="modifyReview" class="ellipsis-menu">
             <i @click="showOptionMenu" @blur="showOptionMenu" class="fas fa-ellipsis-v"></i>
-            <Menu @event="clickDetected" v-if="showOptions" :listItems="['delete', 'edit']" item="elete" class="popup-menu"/>
+            <Menu @event="clickDetected" v-if="showOptions" :listItems="['delete']" item="elete" class="popup-menu"/>
         </div>
     </div>
 </template>
@@ -36,6 +36,12 @@
             },
             stars: {
                 type: Number
+            },
+            reviewID: {
+                type: String
+            },
+            modifyReview: {
+                type: Boolean
             }
         },
         data() {
@@ -48,7 +54,7 @@
                 this.showOptions = !this.showOptions
             },
             clickDetected(event){
-                this.$emit('popupmenuevent', event)
+                this.$emit('popupmenuevent', {event, reviewID: this.reviewID})
             }
         },
     }

@@ -59,6 +59,7 @@
             },
         },
         created() {
+            this.setLoadingPage(false)
             this.setNavbarAndFooter(false)
             this.footerHeight = this.getFooterHeight()
         },
