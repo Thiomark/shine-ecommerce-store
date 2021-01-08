@@ -1,18 +1,22 @@
 <template>
     <div  class="reviews-container">
         <div class="buttons">
-            <input type="button" value="Delete All Reviews">
+            <input type="button" @click="reviewSettings({event: 'deletAll'})" value="Delete All Reviews">
             <input type="button" value="Add Reviews">
         </div>
-        <ReviewTemplate 
-            v-for="review in allReviews" 
-            :key="review._id" 
-            :name="review.name" 
-            :date="review.createdAt"
-            :review="review.review" 
-            :stars="review.rating" 
-            @popupmenuevent="reviewSettings"
-        />
+        <div class="review" v-if="allReviews">
+            <ReviewTemplate 
+                v-for="review in allReviews" 
+                :key="review._id" 
+                :name="review.name" 
+                :date="review.createdAt"
+                :review="review.review" 
+                :stars="review.rating" 
+                :modifyReview="true"
+                :reviewID="review._id"
+                @popupmenuevent="reviewSettings"
+            />
+        </div>
     </div>
 </template>
 
@@ -33,26 +37,41 @@
             }
         },
         methods: {
-            ...mapActions(['setLoadingPage', 'setRequestFeedBack'])
+            ...mapActions(['setLoadingPage', 'setRequestFeedBack']),
+            async reviewSettings(event){
+                if(event.event === "delete"){
+                    try {
+                        await ReviewService.delete(event.reviewID)
+                        this.allReviews = this.allReviews.filter((review) => {
+                            return review._id !== event.reviewID
+                        })
+                    } catch (error) {
+                        this.setRequestFeedBack(error.response.data.error)
+                    }
+                }else if(event === "edit"){
+                    console.log('edit')
+                }else if(event.event === "deletAll"){
+                    try {
+                        this.setLoadingPage(true)
+                        await ReviewService.delete('')
+                        this.allReviews = []
+                        this.setLoadingPage(false)
+                    } catch (error) {
+                        this.setLoadingPage(false)
+                        this.setRequestFeedBack(error.response.data.error)
+                    }
+                }
+            },
         },
         async created() {
             try {
                 this.setLoadingPage(true)
                 const response = await ReviewService.getAll()
                 await this.setLoadingPage(false)
-                let reviews = response.data.fetcheQuerys
-
-                reviews.forEach(review => {
-                    review.modifyReview = true
-                });
-
-                this.allReviews = reviews 
+                this.allReviews = response.data.fetcheQuerys 
             } catch (error) {
                 this.setRequestFeedBack(error.response.data.error)
             } 
-
-
-            
         },
     }
 </script>

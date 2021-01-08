@@ -27,6 +27,7 @@ Password = notadmin
 [ ] Add Animation and make everything smooth
 [ ] re-do the UI Design and make everything more appealing and more responsise
 [ ] Fix every error ignored that wasnt affecting anything
+[ ] star review system
 [X] The website is responsive
 [X] Products routes
 [X] Review section
@@ -35,13 +36,13 @@ Password = notadmin
 [X] Login and register routes
 [X] authenticate the user and store token
 [X] Implement local storage
-[ ] Dashboard section for admins to add products
+[X] Dashboard section for admins to add products
 [ ] Add to favourite
 [ ] favourite route
 [ ] Menu for mobile
 [ ] filter and sort products
-[ ] The user who created the review can delete or edit the review
-[ ] show everthing in the dashboard: reviews, products and orders and settings
+[X] The user who created the review can delete or edit the review
+[X] show everthing in the dashboard: reviews, products and orders and settings
 
 ```
 
@@ -52,7 +53,7 @@ Password = notadmin
 [X] Create Reviews model
 [X] Create Products model
 [X] Create Users model
-[ ] Create Order model
+[X] Create Order model
 [X] Users can login and register
 [X] Reviews are linked to products
 [X] Users are linked to reviews

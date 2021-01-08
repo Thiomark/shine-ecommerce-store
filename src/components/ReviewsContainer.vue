@@ -3,7 +3,7 @@
         <div v-if="!$store.state.user" class="add-a-review">
             <input @click="navigate('Login')" type="button" value="Write a review">
         </div>
-        <div class="reviews">
+        <div class="reviews" v-if="reviews">
             <ReviewTemplate 
                 v-for="review in reviews" 
                 :key="review._id" 

@@ -1,7 +1,7 @@
 <template>
     <div class="comment-container">
         <div class="template-wrapper">
-            <img src="https://pbs.twimg.com/media/DZotU1hW0AEDN5F.jpg:large" alt="" srcset="">
+            <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="" srcset="">
             <div class="right-section">
                 <h1>{{name}}</h1>
                 <h2>{{date}}</h2>
@@ -70,6 +70,7 @@
     .fa-ellipsis-v {
         align-self: center;
         cursor: pointer;
+        color: rgb(36, 36, 36);
     }
 
     .popup-menu {
