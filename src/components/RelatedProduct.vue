@@ -122,12 +122,14 @@
         font-size: 1.3rem;
         color: rgb(100, 100, 100);
         padding: 1rem;
+        text-transform: uppercase;
+        font-weight: 400;
     }
 
     .related-products-container {
         width: 100%;
         max-width: 1100px;
-        border-top: 1px solid rgb(221, 221, 221);
+        border-top: 1px solid rgb(236, 236, 236);
         margin: 0 auto; 
         padding-bottom: 2em;
     }

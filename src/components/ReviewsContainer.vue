@@ -1,9 +1,9 @@
 <template>
     <div class="reviews-container">
- 
-        <div v-if="!$store.state.user" class="add-a-review">
-            <input @click="navigate('Login')" type="button" value="Write a review">
-        </div>
+        <AverageRating 
+            :sumOfReviews="sumOfReviews" 
+            :numberOfReviews="reviews.length" 
+        />
         <div class="buffer" v-if="buffer">
             <Buffer />
         </div>
@@ -20,19 +20,15 @@
                 @popupmenuevent="reviewSettings"
             />
         </div>
-        <h1 v-if="$store.state.user" >add a review</h1>
         <div v-if="$store.state.user" class="add-review">
-
             <i @mouseover="addTheHoverEffect(1)" @click="selectStars(1)" @mouseleave="removeTheHoverEffect" class="far hoverstar fa-star"></i>
             <i @mouseover="addTheHoverEffect(2)" @click="selectStars(2)" @mouseleave="removeTheHoverEffect" class="far hoverstar fa-star"></i>
             <i @mouseover="addTheHoverEffect(3)" @click="selectStars(3)" @mouseleave="removeTheHoverEffect" class="far hoverstar fa-star"></i>
             <i @mouseover="addTheHoverEffect(4)" @click="selectStars(4)" @mouseleave="removeTheHoverEffect" class="far hoverstar fa-star"></i>
             <i @mouseover="addTheHoverEffect(5)" @click="selectStars(5)" @mouseleave="removeTheHoverEffect" class="far hoverstar fa-star"></i>
-
             <form >
-                <label for="name">review *</label>
-                <textarea v-model="review" name="" cols="30" rows="10"></textarea>
-                <input @click="createAReview" type="button" value="submit">
+                <textarea v-model="review" name="" cols="30" rows="10" placeholder="Write a review"></textarea>
+                <input @click="createAReview" type="button" value="submit" >
             </form>
         </div>
     </div>
@@ -41,6 +37,7 @@
 <script>
 
     import ReviewTemplate from './reviews/ReviewTemplate'
+    import AverageRating from './reviews/AverageRating'
     import ReviewService from '../services/ReviewService'
     import Buffer from './extra/Buffer'
     import {mapActions} from 'vuex'
@@ -49,6 +46,7 @@
     export default {
         components: {
             ReviewTemplate,
+            AverageRating,
             Buffer
      
         },
@@ -66,16 +64,20 @@
                 reviews: '',
                 rating: null,
                 starHover: false,
-                buffer: true
+                buffer: true,
+                sumOfReviews: 0,
+                numberOfReviews: 0
             }
         },
         async created() {
             try {
                 const response = await ReviewService.get(this.productID)
                 let reviews = response.data.fetcheQuerys
+                let sumOfReviews = 0
 
                 if(this.$store.state.user){
                     reviews.forEach(review => {
+                        sumOfReviews = sumOfReviews + review.rating
                         if(review.user === this.$store.state.user._id || this.$store.state.user.role === 'admin'){
                             review.modifyReview = true
                         }else {
@@ -87,6 +89,8 @@
                         review.modifyReview = false
                     });
                 }  
+                this.numberOfReviews = reviews.length
+                this.sumOfReviews = sumOfReviews
                 this.buffer = false
                 this.reviews = reviews 
             } catch (error) {
@@ -195,30 +199,6 @@
         color: rgb(182, 182, 182);
     }
 
-    .add-a-review {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-bottom: 1px solid rgb(221, 221, 221);
-        padding: 2em;
-    }
-
-    .add-a-review input[type="button"] {
-        padding: 1em;
-        color: rgb(224, 224, 224);
-        border: none;
-        background-color: rgb(36, 36, 36);
-        font-size: .7rem;
-        text-transform: uppercase;
-        width: auto;
-    }
-
-    .add-review {
-        padding: 1em 0;
-    }
-
-
     .far {
         font-size: 1.3rem;
         opacity: .6;
@@ -227,19 +207,11 @@
     .reviews-container {
         max-width: 1100px;
         width: 100%;
-        padding: 0 2em;
-    }
-
-    h1 {
-        color: rgb(20, 20, 20);
-        font-size: .8rem;
-        font-weight: 400;
-        text-transform: uppercase;
-        padding: 1.4em 0;
-        border-bottom: 1px solid rgb(207, 207, 207);
+        padding: 2em;
     }
 
     form {
+        padding-top: 2em;
         display: flex;
         flex-direction: column;
     }
@@ -260,15 +232,18 @@
         font-size: .7rem;
         text-transform: uppercase;
         width: 100px;
-        margin: 2em 0;
+        margin-top: 2em;
+        border-radius: 4px;
     }
 
     textarea {
-        padding: .6em;
+        padding: 1.5em;
         color: rgb(39, 39, 39);
         border: 1px solid rgb(228, 228, 228);
         width: 100%;
         resize: none;
+        font-size: 1rem;
+        font-family: 'Merriweather', sans-serif;
     }
 
     label {
