@@ -63,6 +63,19 @@ export default new Vuex.Store({
             state.shoppingCartCost = total
             state.totalCostWithShipping = total + state.shippingCost
         },
+
+        // Removes Favourite items added
+        removeItemFromFavourites(state, payload){
+            state.itemsInFavouriteCart = state.itemsInFavouriteCart.filter(function(product) {
+                return product.productID !== payload
+            })
+            let total = 0
+            for(const product of state.itemsInFavouriteCart){
+                total = total + product.price
+            }
+            state.favouriteCartCost = total
+        },
+
         setFooterheight(state, payload){
             state.footerHeight = payload
         },
@@ -127,6 +140,9 @@ export default new Vuex.Store({
         },
         removeFromCart({commit}, product){
             commit('removeItemFromCart', product)
+        },
+        removeFromFavouritesCart({commit}, product){
+            commit('removeItemFromFavourites', product)
         },
         addFooterheight({commit}, height){
             commit('setFooterheight', height)

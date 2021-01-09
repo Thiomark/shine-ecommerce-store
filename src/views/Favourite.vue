@@ -5,37 +5,30 @@
             <input @click="navigate('Home')" type="button"  value="Go To Products">
         </div>
         <div>
-            <ItemsInCart
+            <FavouriteItems
                 :productImage="product.productImage"
-                :totalPrice="product.totalPrice"
-                :quantity="product.quantity"
-                :unitPrice="product.price"
-                :name="product.title"
+                :price="product.price"
+                :title="product.title"
                 :productID="product.productID"
-               
                 v-for="product in getItemsInFavouriteList" :key="product.productID"
             />
         </div>
-         <CartTotal v-if="getItemsInFavouriteList.length"
-            class="add-padding"
-         
-            :total="getFavouriteCartCost()"
-            @emitproceed="navigate('Checkout')"
-        />
+         <FavouriteTotal v-if="getItemsInFavouriteList.length"/>
     </div>
 </template>
 
 <script>
 
-    import CartTotal from '../components/cart/CartTotal'
+  
     import { mapActions, mapGetters } from 'vuex'
-    import ItemsInCart from '../components/cart/ItemsInCart'
+    import FavouriteItems from '../components/favourites/FavouriteItems'
+    import FavouriteTotal from '../components/favourites/FavouriteTotal'
 
     export default {
         name: "Favourite",
         components: {
-            CartTotal,
-            ItemsInCart,
+            FavouriteTotal,
+            FavouriteItems,
         },
         data() {
             return {
@@ -78,6 +71,7 @@
     }
 
     .empty-cart h1{
+        font-size: 1rem;
         text-transform: uppercase;
         align-self: center;
         color: #c9c9c9;

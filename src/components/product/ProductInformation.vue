@@ -156,6 +156,14 @@
         font-size: .9em;
     }
 
+    .fa-heart:hover {
+        cursor: pointer;
+    }
+
+    .fa-heart:hover {
+        color: rgb(231, 37, 37);
+    }
+
     .wishlist a {
         margin-left: 1em;
     }

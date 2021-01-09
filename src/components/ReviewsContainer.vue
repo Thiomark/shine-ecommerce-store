@@ -1,6 +1,6 @@
 <template>
     <div class="reviews-container">
-        <RastingSection />
+ 
         <div v-if="!$store.state.user" class="add-a-review">
             <input @click="navigate('Login')" type="button" value="Write a review">
         </div>
@@ -19,11 +19,13 @@
         </div>
         <h1 v-if="$store.state.user" >add a review</h1>
         <div v-if="$store.state.user" class="add-review">
-            <i @mouseover="starHover(1)" @mouseleave="removeTheHover"  class="selected-stars far fa-star"></i>
-            <i @mouseover="starHover(2)" @mouseleave="removeTheHover"  class="far fa-star"></i>
-            <i @mouseover="starHover(3)" @mouseleave="removeTheHover"  class="far fa-star"></i>
-            <i @mouseover="starHover(4)" @mouseleave="removeTheHover"  class="far fa-star"></i>
-            <i @mouseover="starHover(5)" @mouseleave="removeTheHover"  class="far fa-star"></i>
+
+            <i @mouseover="addTheHoverEffect(1)" @click="selectStars(1)" @mouseleave="removeTheHoverEffect" class="far hoverstar fa-star"></i>
+            <i @mouseover="addTheHoverEffect(2)" @click="selectStars(2)" @mouseleave="removeTheHoverEffect" class="far hoverstar fa-star"></i>
+            <i @mouseover="addTheHoverEffect(3)" @click="selectStars(3)" @mouseleave="removeTheHoverEffect" class="far hoverstar fa-star"></i>
+            <i @mouseover="addTheHoverEffect(4)" @click="selectStars(4)" @mouseleave="removeTheHoverEffect" class="far hoverstar fa-star"></i>
+            <i @mouseover="addTheHoverEffect(5)" @click="selectStars(5)" @mouseleave="removeTheHoverEffect" class="far hoverstar fa-star"></i>
+
             <form >
                 <label for="name">TITLE *</label>
                 <input v-model="title" type="text">
@@ -37,7 +39,6 @@
 
 <script>
 
-import RastingSection from '../components/RatingSection'
     import ReviewTemplate from './reviews/ReviewTemplate'
     import ReviewService from '../services/ReviewService'
     import {mapActions} from 'vuex'
@@ -46,7 +47,7 @@ import RastingSection from '../components/RatingSection'
     export default {
         components: {
             ReviewTemplate,
-            RastingSection
+     
         },
         props: {
             productReviews: {
@@ -60,7 +61,9 @@ import RastingSection from '../components/RatingSection'
                 productID: this.$route.params.productID,
                 review: '',
                 reviews: '',
-                title: ''
+                title: '',
+                rating: null,
+                starHover: false
             }
         },
         async created() {
@@ -76,7 +79,6 @@ import RastingSection from '../components/RatingSection'
                             review.modifyReview = false
                         }
                     });
-                    
                 }else {
                     reviews.forEach(review => {
                         review.modifyReview = false
@@ -84,21 +86,45 @@ import RastingSection from '../components/RatingSection'
                 }  
                 this.reviews = reviews 
             } catch (error) {
-                this.setRequestFeedBack(error.response.data.error)
+                console.log(error.response.data.error)
             } 
         },
         methods: {
             ...mapActions(['setRequestFeedBack', 'setLoadingPage', 'setProductReviews', 'updatedReviewState']),
-            starHover(index){
-                const allStars = document.querySelectorAll('.far')
+            addTheHoverEffect(index){
+                //this.starHover = true
+
+                const allStars = document.querySelectorAll('.hoverstar')
 
                 for(let i = 0; i < allStars.length; i++){
-                    allStars[i].style.color = "rgb(182, 182, 182)"
+                    allStars[i].classList.remove('hoverable')
+                    allStars[i].classList.remove('selected-stars')
+                    //allStars[i].classList.remove('not-selected-stars')
                 }
 
-                for(let i = 0; i <= index; i++){
-                    allStars[i].style.color = "#ffa534"
+                for(let i = 1; i <= index; i++){
+                    allStars[i - 1].classList.add('hoverable')
                 }
+            },
+            selectStars(index){
+
+                this.rating = index
+                const allStars = document.querySelectorAll('.hoverstar')
+                for(let i = 0; i < allStars.length; i++){
+                    allStars[i].classList.remove('hoverable')
+                }
+                for(let i = 1; i <= index; i++){
+                    allStars[i - 1].classList.add('selected-stars')
+                }
+            },
+            removeTheHoverEffect(){
+                // this.starHover = false
+                const allStars = document.querySelectorAll('.fa-star')
+
+                for(let i = 0; i < allStars.length; i++){
+                    allStars[i].classList.remove('hoverable')
+                }
+                
             },
             navigate(page) {
                 this.$router.push({
@@ -111,8 +137,13 @@ import RastingSection from '../components/RatingSection'
                         "product": this.productID,
                         "title": this.title,
                         "review": this.review,
-                        "rating": 5
+                        "rating": this.rating
                     })
+
+                    this.title = ''
+                    this.review = ''
+                    this.rating = null
+                    
                     let review = newReview.data.data
                     review.modifyReview = true
                     this.reviews.push(review)
@@ -138,29 +169,23 @@ import RastingSection from '../components/RatingSection'
                     console.log('edit')
 
                 }
-            },
-
-            removeTheHover(){
-                // const allStars = document.querySelectorAll('.far')
-
-                // for(let i = 0; i < allStars.length; i++){
-                //     allStars[i].style.color = "rgb(182, 182, 182)"
-                // }
-            },
-            Selected(index){
-                const allStars = document.querySelectorAll('.far')
-                for(let i = 0; i < allStars.length; i++){
-                    allStars[i].className = "far fa-star not-selected-stars"
-                }
-                for(let i = 0; i <= index; i++){
-                    allStars[i].className = "far fa-star selected-stars"
-                }
-            }
+            },  
         },
     }
 </script>
 
 <style  scoped>
+
+    .hoverable {
+        color: #ffa534;
+    }
+    .selected-stars {
+        color: #ffa534;
+    }
+
+    .not-selected-stars {
+        color: rgb(182, 182, 182);
+    }
 
     .add-a-review {
         width: 100%;
@@ -186,23 +211,16 @@ import RastingSection from '../components/RatingSection'
         border-bottom: 1px solid rgb(221, 221, 221);
     }
 
-    .selected-stars {
-        color: #ffa534;
-    }
-
-    .not-selected-stars {
-        color: rgb(182, 182, 182);
-    }
-
-    .stars {
+    /* .stars {
         display: grid;
-        grid-template-columns: auto auto auto auto auto;
+        grid-template-columns: repeat(5, auto);
         grid-column-gap: .8em;
-    }
+    } */
 
     .far {
-        font-size: 1.1rem;
-        color: rgb(182, 182, 182);
+        font-size: 1.3rem;
+        opacity: .6;
+        /* color: rgb(182, 182, 182); */
     }
 
     .reviews-container {

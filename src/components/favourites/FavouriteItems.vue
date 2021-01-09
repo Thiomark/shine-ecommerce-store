@@ -6,45 +6,37 @@
             </div>
             <div class="subtotal all">
                 <h1 class="for-mobile">Name</h1>
-                <h1>{{name}}</h1>
-            </div>
-            <div class="shipping all">
-                <h1 class="for-mobile">Unit Price</h1>
-                <h1>R {{unitPrice}}</h1>
-            </div>
-            <div class="shipping all">
-                <h1 class="for-mobile">Quantity</h1>
-                <h1>{{quantity}}</h1>
+                <h1>{{title}}</h1>
             </div>
             <div class="total all">
-                <h1 class="for-mobile">Total Price</h1>
-                <h1>R {{totalPrice}}</h1>
+                <h1 class="for-mobile">Price</h1>
+                <h1>R {{price}}</h1>
+            </div>
+            <div class="shipping all">
+                <input @click="moveItemToCart({price, title, productImage, productID})" type="button" value="Move to cart">
             </div>
             <div class="total all hide-for-mobile">
-                <a @click="emitRemoveEvent(productID)" href="javascript:void(0)">&times;</a>
+                <a @click="removeItemFromTheList(productID)" href="javascript:void(0)">&times;</a>
             </div>
-            <input @click="emitRemoveEvent(productID)" type="button" value="Remove Item">
+            <input class="removeItem" @click="removeItemFromTheList(productID)" type="button" value="Remove Item">
         </div>
     </div>
 </template>
 
 <script>
+
+    import { mapActions } from 'vuex'
+    
     export default {
         name: "ItemsInCart",
         props: {
             productID: {
                 type: String
             },
-            name: {
+            title: {
                 type: String
             },
-            unitPrice: {
-                type: Number
-            },
-            quantity: {
-                type: Number
-            },
-            totalPrice: {
+            price: {
                 type: Number
             },
             productImage: {
@@ -52,9 +44,20 @@
             }
         },
         methods: {
-            emitRemoveEvent(productID){
-                this.$emit('emitremoveevent', productID)
-            }
+            ...mapActions(['removeFromFavouritesCart', 'addedItemToCart']),
+            removeItemFromTheList(productID){
+                this.removeFromFavouritesCart(productID)
+            },
+            moveItemToCart(items){
+                const {price, title, productImage, productID} = items
+                for(const product of this.$store.state.itemsInShoppingCart){
+                    if(product.productID === productID){
+                        return
+                    }
+                }     
+                this.addedItemToCart({price, title, productImage, productID, quantity: 1, totalPrice: price })
+                this.removeFromFavouritesCart(productID)
+            },
         },
     }
 </script>
@@ -131,7 +134,7 @@
 
         .cart-total-wrapper {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+            grid-template-columns: repeat(5, 1fr);
             width: 100%;
 
             /* border-bottom: 1px solid rgb(219, 219, 219); */
@@ -153,7 +156,7 @@
             align-items: center;
         }
 
-        input {
+        .removeItem {
             display: none;
         }
     }

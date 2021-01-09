@@ -5,6 +5,9 @@
             <div class="right-section">
                 <h1>{{name}}</h1>
                 <h2>{{date}}</h2>
+                <div class="reviews">
+                    <i v-for="index in 5" :key="index" class="far fa-star" :class="[showStarRating(stars, index) ? 'selectedStars' : 'not-selected-stars']"></i>
+                </div>
                 <p>{{review}}</p>
             </div>
         </div>
@@ -55,12 +58,26 @@
             },
             clickDetected(event){
                 this.$emit('popupmenuevent', {event, reviewID: this.reviewID})
+            },
+            showStarRating(numberOfStars, starPostion){
+                if(numberOfStars >= starPostion){
+                    return true
+                }
+                return false
             }
         },
     }
 </script>
 
 <style scoped>
+
+    .selectedStars {
+        color: #ffa534;
+    }
+
+    .not-selected-stars {
+        color: rgb(182, 182, 182);
+    }
 
     .ellipsis-menu {
         display: flex;
@@ -71,6 +88,10 @@
         align-self: center;
         cursor: pointer;
         color: rgb(36, 36, 36);
+    }
+
+    .reviews {
+        padding: .2em 0;
     }
 
     .popup-menu {
@@ -125,6 +146,7 @@
     .right-section  p {
         font-size: .8rem;
         color: rgb(36, 36, 36);
+        padding-top: .2em;
     }
 
 </style>
