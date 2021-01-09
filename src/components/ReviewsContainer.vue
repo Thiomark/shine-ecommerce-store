@@ -4,6 +4,9 @@
         <div v-if="!$store.state.user" class="add-a-review">
             <input @click="navigate('Login')" type="button" value="Write a review">
         </div>
+        <div class="buffer" v-if="buffer">
+            <Buffer />
+        </div>
         <div class="reviews" v-if="reviews">
             <ReviewTemplate 
                 v-for="review in reviews" 
@@ -27,8 +30,6 @@
             <i @mouseover="addTheHoverEffect(5)" @click="selectStars(5)" @mouseleave="removeTheHoverEffect" class="far hoverstar fa-star"></i>
 
             <form >
-                <label for="name">TITLE *</label>
-                <input v-model="title" type="text">
                 <label for="name">review *</label>
                 <textarea v-model="review" name="" cols="30" rows="10"></textarea>
                 <input @click="createAReview" type="button" value="submit">
@@ -41,12 +42,14 @@
 
     import ReviewTemplate from './reviews/ReviewTemplate'
     import ReviewService from '../services/ReviewService'
+    import Buffer from './extra/Buffer'
     import {mapActions} from 'vuex'
 
 
     export default {
         components: {
             ReviewTemplate,
+            Buffer
      
         },
         props: {
@@ -61,9 +64,9 @@
                 productID: this.$route.params.productID,
                 review: '',
                 reviews: '',
-                title: '',
                 rating: null,
-                starHover: false
+                starHover: false,
+                buffer: true
             }
         },
         async created() {
@@ -84,6 +87,7 @@
                         review.modifyReview = false
                     });
                 }  
+                this.buffer = false
                 this.reviews = reviews 
             } catch (error) {
                 console.log(error.response.data.error)
@@ -135,7 +139,6 @@
                 try {
                     const newReview = await ReviewService.post({
                         "product": this.productID,
-                        "title": this.title,
                         "review": this.review,
                         "rating": this.rating
                     })
@@ -176,6 +179,11 @@
 
 <style  scoped>
 
+    .buffer {
+        display: flex;
+        justify-content: center;
+    }
+
     .hoverable {
         color: #ffa534;
     }
@@ -193,7 +201,7 @@
         justify-content: center;
         align-items: center;
         border-bottom: 1px solid rgb(221, 221, 221);
-        padding-bottom: 2em;
+        padding: 2em;
     }
 
     .add-a-review input[type="button"] {
@@ -208,24 +216,16 @@
 
     .add-review {
         padding: 1em 0;
-        border-bottom: 1px solid rgb(221, 221, 221);
     }
 
-    /* .stars {
-        display: grid;
-        grid-template-columns: repeat(5, auto);
-        grid-column-gap: .8em;
-    } */
 
     .far {
         font-size: 1.3rem;
         opacity: .6;
-        /* color: rgb(182, 182, 182); */
     }
 
     .reviews-container {
         max-width: 1100px;
-        margin: 2em auto;
         width: 100%;
         padding: 0 2em;
     }

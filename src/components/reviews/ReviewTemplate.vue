@@ -4,7 +4,7 @@
             <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="" srcset="">
             <div class="right-section">
                 <h1>{{name}}</h1>
-                <h2>{{date}}</h2>
+                <h2>{{whenWasPosted(date)}}</h2>
                 <div class="reviews">
                     <i v-for="index in 5" :key="index" class="far fa-star" :class="[showStarRating(stars, index) ? 'selectedStars' : 'not-selected-stars']"></i>
                 </div>
@@ -64,6 +64,32 @@
                     return true
                 }
                 return false
+            },
+            whenWasPosted(date){
+                const  months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                return `${new Date(date).getDate()} ${months[new Date(date).getMonth()]} ${new Date(date).getFullYear()}`
+                //const diffrenceBetweenDates = new Date().getTime() - new Date(date).getTime();
+                // if(diffrenceBetweenDates < 86400000){
+                //     return 'Today'
+                // }
+                // else if(diffrenceBetweenDates >= 86400000 && diffrenceBetweenDates < (86400000 * 2)){
+                //     return '1 Day ago'
+                // }
+                // else if(diffrenceBetweenDates >= (86400000 * 2) && diffrenceBetweenDates < (86400000 * 3)){
+                //     return '2 Day ago'
+                // }
+                // else if(diffrenceBetweenDates >= (86400000 * 3) && diffrenceBetweenDates < (86400000 * 4)){
+                //     return '3 Day ago'
+                // }
+                // else if(diffrenceBetweenDates >= (86400000 * 4) && diffrenceBetweenDates < (86400000 * 5)){
+                //     return '4 Day ago'
+                // }
+                // else if(diffrenceBetweenDates >= (86400000 * 5) && diffrenceBetweenDates < (86400000 * 6)){
+                //     return '5 Day ago'
+                // }
+                // else{
+                //     return date
+                // }
             }
         },
     }
