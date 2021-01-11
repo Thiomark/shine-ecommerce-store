@@ -49,6 +49,7 @@
   }
   body {
     font-family: 'Roboto', sans-serif;
+    background-color: #fdfdfd;
     /* min-width: 100vw;
     min-height: 100vh;
     overflow-x: hidden; */

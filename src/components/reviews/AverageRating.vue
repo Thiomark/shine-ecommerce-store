@@ -5,7 +5,7 @@
         <div class="reviews">
             <i v-for="index in 5" :key="index" class="far fa-star" :class="[showStarRating(averageCalculator(sumOfReviews, numberOfReviews), index) ? 'selectedStars' : 'not-selected-stars']"></i>
         </div>
-        <input v-if="!$store.state.user" @click="navigate('Login')" type="button" value="Write a review">
+        <input v-if="!$store.state.user.isloggedIn" @click="navigate('Login')" type="button" value="Write a review">
     </div>
 </template>
 
@@ -22,14 +22,19 @@
         },
         methods: {
             showStarRating(numberOfStars, starPostion){
-                if(numberOfStars >= starPostion){
+                if(Math.round(numberOfStars)  >= starPostion){
                     return true
                 }
                 return false
             },
             averageCalculator(sumOfReviews, numberOfReviews){
-                return sumOfReviews / numberOfReviews
-            }
+                return (sumOfReviews / numberOfReviews).toFixed(1);
+            },
+            navigate(page) {
+                this.$router.push({
+                    name: page
+                })
+            },
         },
         
     }

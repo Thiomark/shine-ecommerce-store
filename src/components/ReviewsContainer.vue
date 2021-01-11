@@ -16,16 +16,13 @@
                 :review="review.review" 
                 :stars="review.rating" 
                 :reviewID="review._id"
+                :reviewModified="review.reviewModified"
                 :modifyReview="review.modifyReview"
                 @popupmenuevent="reviewSettings"
             />
         </div>
-        <div v-if="$store.state.user" class="add-review">
-            <i @mouseover="addTheHoverEffect(1)" @click="selectStars(1)" @mouseleave="removeTheHoverEffect" class="far hoverstar fa-star"></i>
-            <i @mouseover="addTheHoverEffect(2)" @click="selectStars(2)" @mouseleave="removeTheHoverEffect" class="far hoverstar fa-star"></i>
-            <i @mouseover="addTheHoverEffect(3)" @click="selectStars(3)" @mouseleave="removeTheHoverEffect" class="far hoverstar fa-star"></i>
-            <i @mouseover="addTheHoverEffect(4)" @click="selectStars(4)" @mouseleave="removeTheHoverEffect" class="far hoverstar fa-star"></i>
-            <i @mouseover="addTheHoverEffect(5)" @click="selectStars(5)" @mouseleave="removeTheHoverEffect" class="far hoverstar fa-star"></i>
+        <div v-if="$store.state.user.isloggedIn" class="add-review">
+            <StarRating @numberofstars="numberofstars"/>
             <form >
                 <textarea v-model="review" name="" cols="30" rows="10" placeholder="Write a review"></textarea>
                 <input @click="createAReview" type="button" value="submit" >
@@ -36,6 +33,7 @@
 
 <script>
 
+    import StarRating from '../components/reviews/StarRating'
     import ReviewTemplate from './reviews/ReviewTemplate'
     import AverageRating from './reviews/AverageRating'
     import ReviewService from '../services/ReviewService'
@@ -47,8 +45,8 @@
         components: {
             ReviewTemplate,
             AverageRating,
-            Buffer
-     
+            Buffer,
+            StarRating
         },
         props: {
             productReviews: {
@@ -78,7 +76,7 @@
                 if(this.$store.state.user){
                     reviews.forEach(review => {
                         sumOfReviews = sumOfReviews + review.rating
-                        if(review.user === this.$store.state.user._id || this.$store.state.user.role === 'admin'){
+                        if(review.user === this.$store.state.user.user._id || this.$store.state.user.user.role === 'admin'){
                             review.modifyReview = true
                         }else {
                             review.modifyReview = false
@@ -99,45 +97,13 @@
         },
         methods: {
             ...mapActions(['setRequestFeedBack', 'setLoadingPage', 'setProductReviews', 'updatedReviewState']),
-            addTheHoverEffect(index){
-                //this.starHover = true
-
-                const allStars = document.querySelectorAll('.hoverstar')
-
-                for(let i = 0; i < allStars.length; i++){
-                    allStars[i].classList.remove('hoverable')
-                    allStars[i].classList.remove('selected-stars')
-                    //allStars[i].classList.remove('not-selected-stars')
-                }
-
-                for(let i = 1; i <= index; i++){
-                    allStars[i - 1].classList.add('hoverable')
-                }
-            },
-            selectStars(index){
-
-                this.rating = index
-                const allStars = document.querySelectorAll('.hoverstar')
-                for(let i = 0; i < allStars.length; i++){
-                    allStars[i].classList.remove('hoverable')
-                }
-                for(let i = 1; i <= index; i++){
-                    allStars[i - 1].classList.add('selected-stars')
-                }
-            },
-            removeTheHoverEffect(){
-                // this.starHover = false
-                const allStars = document.querySelectorAll('.fa-star')
-
-                for(let i = 0; i < allStars.length; i++){
-                    allStars[i].classList.remove('hoverable')
-                }
-                
-            },
             navigate(page) {
                 this.$router.push({
                     name: page
                 })
+            },
+            numberofstars(numberOfStars){
+                this.rating = numberOfStars
             },
             async createAReview(){
                 try {
@@ -151,8 +117,10 @@
                     this.review = ''
                     this.rating = null
                     
+               
                     let review = newReview.data.data
                     review.modifyReview = true
+                    review.createdAt = new Date()
                     this.reviews.push(review)
                 } catch (error) {
                     this.setRequestFeedBack(error.response.data.error)
@@ -165,16 +133,21 @@
                         this.reviews = this.reviews.filter((review) => {
                             return review._id !== event.reviewID
                         })
-                        
-
                     } catch (error) {
                         this.setLoadingPage(false)
                         this.setRequestFeedBack(error.response.data.error)
                     }
                 }
-                if(event === "edit"){
-                    console.log('edit')
+                if(event.event === "edit"){
 
+                    this.reviews = this.reviews.map((review) => {
+                        if(review._id === event.reviewID){
+                            review.review = event.updatedReview.review
+                            review.rating = event.updatedReview.rating
+                            review.reviewModified = true
+                        }
+                        return review
+                    })
                 }
             },  
         },
@@ -188,7 +161,7 @@
         justify-content: center;
     }
 
-    .hoverable {
+    /* .hoverable {
         color: #ffa534;
     }
     .selected-stars {
@@ -202,7 +175,7 @@
     .far {
         font-size: 1.3rem;
         opacity: .6;
-    }
+    } */
 
     .reviews-container {
         max-width: 1100px;
@@ -214,6 +187,10 @@
         padding-top: 2em;
         display: flex;
         flex-direction: column;
+    }
+
+    .add-review {
+        padding-top: 1em;
     }
 
     .add-review input[type="text"], input[type="email"] {

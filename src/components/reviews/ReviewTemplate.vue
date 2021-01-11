@@ -2,17 +2,27 @@
     <div class="comment-container">
         <section>
             <div class="header">
-                <h1>{{name}}</h1>
-                <div class="reviews">
+                <h1>{{name}} <span v-if="reviewModified">(edited)</span></h1>
+                <div v-if="skeletonEffect" class="skeleton-stars">
+                    <Skeleton height="1.3em" class="" />
+                </div>
+                <StarRating @numberofstars="numberofstars" class="add-padding-left" v-if="editReview"/>
+                <div v-if="!skeletonEffect && !editReview" class="reviews">
                     <i v-for="index in 5" :key="index" class="far fa-star" :class="[showStarRating(stars, index) ? 'selectedStars' : 'not-selected-stars']"></i>
                 </div>
             </div>
             <h2>{{whenWasPosted(date)}}</h2>
-            <p>{{review}}</p>
+            <Skeleton v-if="skeletonEffect" height="8em" />
+            <textarea v-if="editReview && !skeletonEffect" name="edit review" v-model="theReview" cols="30" rows="10" placeholder="Edit your review"></textarea>
+            <div v-if="editReview" class="buttons">
+                <input @click="editTheReview('save')" type="button" value="Save">
+                <input @click="editTheReview('cancel')" type="button" value="Cancel">
+            </div>
+            <p v-if="!editReview && !skeletonEffect">{{review}}</p>
         </section>
         <div v-if="modifyReview" class="ellipsis-menu">
-            <i @click="showOptionMenu" @blur="showOptionMenu" class="fas fa-ellipsis-v"></i>
-            <Menu @event="clickDetected" v-if="showOptions" :listItems="['delete']" item="elete" class="popup-menu"/>
+            <i v-if="!skeletonEffect" @click="showOptionMenu" @blur="showOptionMenu" v-click-outside="closeThePopUp" class="fas fa-ellipsis-v"></i>
+            <Menu @event="clickDetected" v-if="showOptions"  :listItems="['delete', 'edit']"  class="popup-menu"/>
         </div>
     </div>
 </template>
@@ -20,11 +30,16 @@
 <script>
 
     import Menu from '../Menu'
+    import Skeleton from '../extra/Skeleton'
+    import ReviewService from '../../services/ReviewService'
+    import StarRating from '../reviews/StarRating'
     
     export default {
         name: "ReviewTemplate",
         components: {
-            Menu
+            Menu,
+            Skeleton,
+            StarRating
         },
         props: {
             name: {
@@ -44,19 +59,63 @@
             },
             modifyReview: {
                 type: Boolean
+            },
+            reviewModified: {
+                type: Boolean
             }
         },
         data() {
             return {
-                showOptions: false
+                showOptions: false,
+                editReview: false,
+                skeletonEffect: false,
+                theReview: this.review,
+                numberOfStars: this.stars
             }
         },
         methods: {
+            numberofstars(stars) {
+                this.numberOfStars = stars
+            },
             showOptionMenu(){
                 this.showOptions = !this.showOptions
             },
+            closeThePopUp(){
+                this.showOptions = false
+            },
             clickDetected(event){
-                this.$emit('popupmenuevent', {event, reviewID: this.reviewID})
+                if(event === 'edit'){
+                    this.editReview = true 
+                }else{
+                    this.$emit('popupmenuevent', {event, reviewID: this.reviewID})
+                }
+            },
+            async editTheReview(event){
+                if(event === 'cancel'){
+                    this.editReview = false
+                }else{
+                    if(this.review !== ''){
+                        try {
+                            this.skeletonEffect = true
+                            this.editReview = false
+                            const response = await ReviewService.update(this.reviewID, {
+                                review: this.theReview,
+                                rating: this.numberOfStars
+                            })
+                            let updatedReview = response.data.newUpdatedReview
+                            updatedReview.review = this.theReview
+                            updatedReview.rating = this.numberOfStars
+                            this.skeletonEffect = false
+                            this.$emit('popupmenuevent', {event: 'edit', updatedReview, reviewID: this.reviewID})
+                           
+                        } catch (error) {
+                            console.log(error)
+                            this.skeletonEffect = false
+                        }                        
+                    }else{
+                        this.editReview = false
+                    }
+                }
             },
             showStarRating(numberOfStars, starPostion){
                 if(numberOfStars >= starPostion){
@@ -73,6 +132,48 @@
 </script>
 
 <style scoped>
+
+    h1 span {
+        font-size: .7rem;
+        color: rgb(148, 148, 148);
+        padding-left: .7em;
+        align-self: center;
+    }
+
+    .add-padding-left {
+        padding-left: 1em;
+    }
+
+    .skeleton-stars {
+        height: .9em;
+        width: 10em;
+        margin-left: 2em;
+    }
+
+    input[type="button"] {
+        padding: 1.5em;
+        color: rgb(224, 224, 224);
+        border: none;
+        background-color: rgb(36, 36, 36);
+        max-width: 300px;
+        font-size: .7rem;
+        text-transform: uppercase;
+        width: 100px;
+        margin-top: 1em;
+        margin-right: 1em;
+        border-radius: 4px;
+    }
+
+    textarea {
+        border-radius: 4px;
+        padding: 1.5em;
+        color: rgb(39, 39, 39);
+        border: 1px solid rgb(228, 228, 228);
+        width: 95%;
+        resize: none;
+        font-size: 1rem;
+        font-family: 'Merriweather', sans-serif;
+    }
 
     .comment-container {
         border-radius: .5em;
@@ -110,6 +211,7 @@
         align-self: center;
         cursor: pointer;
         color: rgb(36, 36, 36);
+        padding: .4em;
     }
 
     .reviews {
@@ -124,6 +226,7 @@
     }
 
     section  h1 {
+        display: flex;
         font-size: 1.1rem;
         font-weight: 500;
         color: rgb(36, 36, 36);
@@ -138,9 +241,11 @@
     }
 
     section  p {
-        font-size: .8rem;
+        font-size: 1rem;
         color: rgb(36, 36, 36);
         padding-top: .2em;
     }
 
 </style>
+
+

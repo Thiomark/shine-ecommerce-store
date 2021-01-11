@@ -9,8 +9,8 @@
             <input type="button" @click="navigate('Cart')" value="buy now">
         </div>
         <div class="wishlist">
-            <i class="far fa-heart"></i>
-            <a href="javascript:void(0)">Add to Wishlist</a>
+            <i @click="addItemToFavourite" class="far fa-heart"></i>
+            <a @click="addItemToFavourite" href="javascript:void(0)">Add to Wishlist</a>
         </div>
         <hr>
         <div class="product-tags">
@@ -67,7 +67,7 @@
             }
         },
         methods: {
-            ...mapActions(['addedItemToCart']),
+            ...mapActions(['addedItemToCart', 'addedItemToFavouritesCart']),
 
             addToCart(item){
 
@@ -80,6 +80,16 @@
                 }
                 const totalPrice =  price * parseInt(this.productQuantity, 10)
                 this.addedItemToCart({price, title, productImage, productID, quantity: this.productQuantity, totalPrice })
+            },
+            addItemToFavourite(item){
+                const {price, title, productImage, productID} = item
+
+                for(const product of this.$store.state.itemsInFavouriteCart){
+                    if(product.productID === productID){
+                        return
+                    }
+                }
+                this.addedItemToFavouritesCart({price, title, productImage, productID, quantity: 1, totalPrice:  price})
             },
             navigate(page) {
                 this.$router.push({
@@ -103,20 +113,22 @@
     }
     .product-information h1 {
         color: rgb(75, 75, 75);
-        font-size: 1.5rem;
+        font-size: 1.8rem;
     }
 
     .product-information h2 {
-        color: rgb(75, 75, 75);
-        font-size: 1rem;
+        color: rgb(214, 80, 80);
+        font-weight: 500;
+        font-size: 1.4rem;
         margin: .7em 0;
     }
 
     p {
-        color: rgb(75, 75, 75);
-        font-size: 13px;
+        color: rgb(102, 102, 102);
+        font-size: 1rem;
         margin-bottom: 1.3em;
         line-height: 2;
+        font-weight: 400;
     }
 
     input {
@@ -127,7 +139,7 @@
         font-weight: bold;
         font-size: .7rem;
         background-color: rgb(44, 44, 44);
-        border-radius: 3px;
+        border-radius: 6px;
     }
 
     input[type="button"] {
@@ -151,13 +163,15 @@
         align-items: center;
     }
 
-    .wishlist a, .product-tags a, .fa-heart{
+    .wishlist a, .product-tags a{
+        font-size: 1em;
         color: rgb(109, 109, 109);
-        font-size: .9em;
     }
 
-    .fa-heart:hover {
+    .fa-heart {
+        color: rgb(109, 109, 109);
         cursor: pointer;
+        font-size: 1.4em;
     }
 
     .fa-heart:hover {
@@ -186,9 +200,9 @@
     } 
 
     .product-tags h1{
-        color: rgb(75, 75, 75);
-        font-weight: bold;
-        font-size: .9rem;
+        color: rgb(26, 26, 26);
+        font-weight: 500;
+        font-size: 1rem;
     }
 
     hr {

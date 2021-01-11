@@ -113,7 +113,7 @@
     .product-wrapper {
         width: 100%;
         min-height: 100vh;
-        padding-top: 3em;
+        padding-top: 5em;
         max-width: 1100px;
         margin: auto;
     }
