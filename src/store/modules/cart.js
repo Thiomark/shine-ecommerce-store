@@ -4,6 +4,7 @@ const state = {
     shoppingCartCost: 0,
     favouriteCartCost: 0,
     totalCostWithShipping: 0,
+    token: 'h',
 }
 
 const mutations = {

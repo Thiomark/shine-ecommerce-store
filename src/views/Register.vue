@@ -74,9 +74,18 @@
 
 <style scoped>
 
-    h1 {
-        font-size: 13px;
-        padding-bottom: 2em;
+     @media(max-width: 500px) {
+        .form {
+            margin: 3em auto;
+            /* top: 50% */
+        }
+    }
+
+    @media(min-width: 500px) {
+        .form {
+            margin: 0 auto 3em auto ;
+            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+        }
     }
 
     .login-page {
@@ -91,27 +100,19 @@
         z-index: 1;
         background: #FFFFFF;
         max-width: 360px;
-        margin: 0 auto 100px;
         padding: 45px;
         text-align: center;
-        box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-    }
-
-    .success {
-        border: none;
         
-    }
-    .error {
-        border: 1px solid #ff8282;
     }
 
     .form input {
-        background: #f2f2f2;
         font-family: "Roboto", sans-serif;
         outline: 0;
+        background: #f2f2f2;
         width: 100%;
-        margin: 0 0 15px;
-        padding: 15px;
+        border: 0;
+        margin: 0 0 1em;
+        padding: 1em;
         box-sizing: border-box;
         font-size: 14px;
     }
@@ -123,7 +124,7 @@
         background: #4CAF50;
         width: 100%;
         border: 0;
-        padding: 15px;
+        padding: 1em;
         color: #FFFFFF;
         font-size: 14px;
         -webkit-transition: all 0.3 ease;
@@ -136,9 +137,9 @@
     }
 
     .form .message {
-        margin: 15px 0 0;
+        margin: 1em 0 0;
         color: #b3b3b3;
-        font-size: 12px;
+        font-size: .9rem;
     }
 
     .form .message a {
@@ -160,14 +161,14 @@
     }
 
     .container .info {
-        margin: 50px auto;
+        margin: 3em auto;
         text-align: center;
     }
 
     .container .info h1 {
-        margin: 0 0 15px;
+        margin: 0 0 1em;
         padding: 0;
-        font-size: 36px;
+        font-size: 2.25rem;
         font-weight: 300;
         color: #1a1a1a;
     }
@@ -184,16 +185,5 @@
 
     .container .info span .fa {
         color: #EF3B3A;
-    }
-    
-    body {
-        background: #76b852; /* fallback for old browsers */
-        background: -webkit-linear-gradient(right, #76b852, #8DC26F);
-        background: -moz-linear-gradient(right, #76b852, #8DC26F);
-        background: -o-linear-gradient(right, #76b852, #8DC26F);
-        background: linear-gradient(to left, #76b852, #8DC26F);
-        font-family: "Roboto", sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;      
     }
 </style>

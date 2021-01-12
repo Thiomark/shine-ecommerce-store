@@ -1,44 +1,23 @@
 <template>
     <div class="landing-page-container">
-        <div class="overlay">
-            <Welcome />
-        </div>
-        <i class="icofont-scroll-bubble-down"></i>
     </div>
 </template>
 
 <script>
-    import Welcome from '../components/landingpage/Welcome'
 
     export default {
         name: 'LandingPage',
-        components: {
-            Welcome
-        }
     }
+
 </script>
 
 <style scoped>
 
-    .overlay {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: rgba(0, 0, 0, 0.7);
-        transition: opacity 500ms;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-    }
-
     .landing-page-container {
         width: 100%;
-        height: 100vh;
+        height: 75vh;
         /* background-image: url('https://images.pexels.com/photos/994517/pexels-photo-994517.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260'); */
-        background-image: url('https://images.pexels.com/photos/1884584/pexels-photo-1884584.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260');
+        background-image: url('https://images.pexels.com/photos/1488463/pexels-photo-1488463.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940');
         background-size: cover;
         background-repeat: no-repeat;
         background-position: 50%20%;
@@ -47,6 +26,7 @@
         align-items: center;
         justify-content: center;
         overflow: hidden;
+        border-bottom: .2em solid black;
 
     }
 

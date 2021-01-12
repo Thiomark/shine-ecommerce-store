@@ -4,11 +4,11 @@
             <router-link class="logo" to="/">{{storeName}}</router-link>
             <section>
                 <ul>
-                    <li v-if="!$store.state.user.isloggedIn" class="login special"><router-link to="/login">Sign In</router-link></li>
-                    <li v-if="$store.state.user.isloggedIn" @click="logoutTheUser" class="signup special"><a to="javascript:void(0)">Log Out</a></li>
+                    <li v-if="!$store.state.account.isloggedIn" class="login special"><router-link to="/login">Sign In</router-link></li>
+                    <li v-if="$store.state.account.isloggedIn" @click="logoutTheUser" class="signup special"><a to="javascript:void(0)">Log Out</a></li>
                     <li @click="navigate('Favourite')"><i class="fas fa-heart justico"></i></li>
-                    <li v-if="$store.state.user.isAdmin" @click="navigate('Dashboard')" ><i class="icofont-dashboard-web pri-colour"></i></li>
-                    <li v-if="$store.state.user.isloggedIn"><i class="icofont-user-alt-7 justico"></i></li>
+                    <li v-if="$store.state.account.isAdmin" @click="navigate('Dashboard')" ><i class="icofont-dashboard-web pri-colour"></i></li>
+                    <li v-if="$store.state.account.isloggedIn"><i class="icofont-user-alt-7 justico"></i></li>
                     <li class="cart"><i @click="navigate('Cart')" class="icofont-shopping-cart ico"></i><h1 class="items-the-cart">{{getShoppingcart}}</h1></li>
                 </ul>
             </section>
@@ -79,12 +79,12 @@
     .logo {
         font-family: 'Montserrat Alternates', sans-serif;
         color: var(--font-colour);
-        font-size: 1.3rem;
+        font-size: 1.1rem;
         text-transform: uppercase;
     }
 
     .special {
-        font-size: 1.1rem;
+        font-size: 1rem;
     }
 
     a:hover {

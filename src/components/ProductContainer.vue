@@ -1,6 +1,6 @@
 <template>
     <section class="product-wrapper">
-        <!-- <ProductHeader  v-if="menuOpen" @click="showMenu"/> -->
+        <OptionsMenu />
         <div class="product-section">
             <Product 
                 v-for="product in getAllProducts" 
@@ -18,12 +18,14 @@
 
     import {mapGetters, mapActions} from 'vuex'
     //import ProductHeader from './product/ProductHeader'
+    import OptionsMenu from './extra/OptionsMenu'
     import Product from './product/Product'
 
     export default {
         name: 'ProductContainer',
         components: {
            // ProductHeader,
+           OptionsMenu,
             Product,
         },
         data() {
@@ -53,8 +55,7 @@
         width: 100%;
         max-width: 1100px;
         overflow-x: hidden;
-        margin: 2em auto;
-        padding: 0 2em;
+        margin: 0 auto 2em auto;
     }
 
     .product-section {
@@ -64,12 +65,19 @@
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     }
 
+    @media (min-width: 577px){
+        .product-wrapper {
+            padding: 0 2em;
+        }
+    }
+
     @media (max-width: 577px) and (min-width: 300px){
         .product-section {
             width: 100%;
             display: grid;
             gap: 10px;
             grid-template-columns: repeat(2, 1fr);
+            padding: 0 1em;
         }
     }
     

@@ -5,7 +5,7 @@ export default () => {
     return axios.create({
         baseURL: `https://ecomstoreapi.herokuapp.com/api/v1/`,
         headers: {
-            authorization: `Bearer ${store.state.user.token}`
+            authorization: `Bearer ${store.state.account.token}`
         }   
     })
 }

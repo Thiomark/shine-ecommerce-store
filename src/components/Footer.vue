@@ -2,12 +2,12 @@
     <footer :style="{marginTop: `${-footerHeight}px`}">
         <div class="footer-wrapper">
             <ul class="top-section">
-                <a>Shipping</a>
-                <a>FAQ</a>
-                <a>Terms & conditions</a>
-                <a>Track Order</a>
-                <a>About</a>
-                <a>Contact</a>
+                <a href="javascript:void(0);">Track Order</a>
+                <a href="javascript:void(0);">FAQ</a>
+                <a href="javascript:void(0);">Terms & conditions</a>
+                <a href="javascript:void(0);">Shipping</a>
+                <a href="javascript:void(0);">About</a>
+                <a href="javascript:void(0);">Contact</a>
             </ul>
             <div class="bottom-section">
                 <div class="bottom-section-wrapper">

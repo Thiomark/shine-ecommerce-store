@@ -10,6 +10,8 @@
 
 <script>
 
+
+
   require('../src/assets/icofont/icofont.css')
   import Footer from './components/Footer'
   import Navbar from './components/landingpage/Navbard'
@@ -32,6 +34,7 @@
       methods: {
         ...mapActions(['setLoadingPage'])
       },
+     
       // mounted() {
       //   this.setLoadingPage(false)
       // },

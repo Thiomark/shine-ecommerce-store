@@ -103,12 +103,15 @@
     }
 
     .product-info {
+    
         display: grid;
         grid-template-columns: 1fr;
         margin: .4em 0 .6em 0;
         border-radius: .3em;
         padding: .8em .8em;
-        background-color: rgb(236, 236, 236);
+        -moz-box-shadow: rgba(17, 17, 18, 0.151) 0 .3em .6em, rgba(19, 20, 20, 0.06) 0 .1em .1em;
+        -webkit-box-shadow: rgba(17, 17, 18, 0.151) 0 .3em .6em, rgba(19, 20, 20, 0.06) 0 .1em .1em;
+        box-shadow: rgba(17, 17, 18, 0.151) 0 .3em .6em, rgba(19, 20, 20, 0.06) 0 .1em .1em;
     }
 
     .image-position {
@@ -122,6 +125,9 @@
         background-position: 50% 50%;
         cursor: pointer;
         border-radius: .3em;
+        -moz-box-shadow: rgba(17, 17, 18, 0.068) 0 .3em .6em, rgba(19, 20, 20, 0.06) 0 .1em .1em;
+        -webkit-box-shadow: rgba(17, 17, 18, 0.068) 0 .3em .6em, rgba(19, 20, 20, 0.06) 0 .1em .1em;
+        box-shadow: rgba(17, 17, 18, 0.068) 0 .3em .6em, rgba(19, 20, 20, 0.06) 0 .1em .1em;
     }
 
     .image-shape:after {
@@ -136,6 +142,7 @@
         
         /* max-width: 20em; */
         
+        
         display: flex;
         flex-direction: column;
     }
@@ -148,6 +155,9 @@
 
 
     .fa-heart {
+        -moz-box-shadow: rgba(17, 17, 18, 0.068) 0 .3em .6em, rgba(19, 20, 20, 0.06) 0 .1em .1em;
+        -webkit-box-shadow: rgba(17, 17, 18, 0.068) 0 .3em .6em, rgba(19, 20, 20, 0.06) 0 .1em .1em;
+        box-shadow: rgba(17, 17, 18, 0.068) 0 .3em .6em, rgba(19, 20, 20, 0.06) 0 .1em .1em;
         top: 1em;
         right: 1em;
         color: rgb(212, 212, 212);
