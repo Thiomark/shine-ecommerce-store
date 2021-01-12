@@ -1,19 +1,25 @@
 <template>
     <div class="image-wrapper">
-        <div class="third-shape imagePosition" :style="{ backgroundImage: `url('${productImage}')`}">
+        <Skeleton v-if="!productImage" height="35em" class=" imagePosition"/>
+        <div v-if="productImage" class="third-shape imagePosition" :style="{ backgroundImage: `url('${productImage}')`}">
         </div>
     </div>
 </template>
 
 <script>
 
+    import Skeleton from '../extra/Skeleton'
+
     export default {
 
         name: "ProductImage",
+        components: {
+            Skeleton
+        },
         props: {
             productImage: {
                 type: String
-            }
+            },
         }
        
     }

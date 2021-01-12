@@ -1,7 +1,13 @@
 <template>
     <section class="product-wrapper">
         <OptionsMenu />
-        <div class="product-section">
+        <div v-if="!fetchAllProducts" class="product-section">
+            <Product 
+                v-for="(product, index) in 8" 
+                :key="index" 
+            />
+        </div>
+        <div v-if="fetchAllProducts" class="product-section">
             <Product 
                 v-for="product in getAllProducts" 
                 :key="product._id" 

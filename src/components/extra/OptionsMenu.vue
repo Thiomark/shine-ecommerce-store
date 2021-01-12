@@ -1,7 +1,7 @@
 <template>
     <div class="options-container">
         <div class="options-wrapper">
-            <a class="mobile" href="javascript:void(0)">Filter<i class="fas fa-sort-down"></i>
+            <a v-click-outside="closeForFilter"  @click="showMenu('filter')" class="mobile" href="javascript:void(0)">Filter<i class="fas fa-sort-down"></i>
                 <Menu 
                     v-if="filter"
                     class="absolute filter"
@@ -10,9 +10,9 @@
                     :listItems="['Price to high', 'Price high to low', 'A - Z', 'Z - A']" 
                 />
             </a>
-            <a v-click-outside="closeForGender" @click="showMenu('gender')" class="mobile" href="javascript:void(0)">Department<i class="fas fa-sort-down">
+            <a v-click-outside="closeForDepartment" @click="showMenu('department')" class="mobile" href="javascript:void(0)">Department<i class="fas fa-sort-down">
                 <Menu 
-                    v-if="gender"
+                    v-if="department"
                     class="absolute Gender"
                     backgroundColour="white" 
                     :shadow="true"
@@ -23,9 +23,9 @@
             </a>
             <a class="mobile" href="javascript:void(0)"><i class="fas fa-th-large"></i></a>
             <ul class="desktop right-side">
-                <li v-click-outside="closeForGender" @click="showMenu('gender')"><a href="javascript:void(0)"></a>Department
+                <li v-click-outside="closeForDepartment" @click="showMenu('department')"><a href="javascript:void(0)"></a>Department
                     <Menu 
-                        v-if="gender"
+                        v-if="department"
                         class="absolute Gender"
                         backgroundColour="white" 
                         :shadow="true"
@@ -68,7 +68,7 @@
         },
         data() {
             return {
-                gender: false,
+                department: false,
                 category: false,
                 filter: false,
                 customStyle: [
@@ -80,24 +80,26 @@
         },
         methods: {
             showMenu(menu){
-                if(menu === 'gender'){
+                if(menu === 'department'){
+                    console.log('department')
                     this.category = false
                     this.filter = false
-                    this.gender = !this.gender
+                    this.department = !this.department
                 }
                 else if(menu === 'category'){
-                    this.gender = false
+                    this.department = false
                     this.filter = false
                     this.category = !this.category
                 }
                 else if(menu === 'filter'){
+
                     this.category = false
-                     this.gender = false
+                     this.department = false
                     this.filter = !this.filter
                 }
             },
-            closeForGender(){  
-                this.gender = false
+            closeForDepartment(){  
+                this.department = false
             },
             closeForCategory(){  
                 this.category = false

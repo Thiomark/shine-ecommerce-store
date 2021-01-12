@@ -1,8 +1,11 @@
 <template>
     <div class="product-information">
-        <h1>{{title}}</h1>
-        <h2>R {{price}}</h2>
-        <p>{{description}}</p>
+        <Skeleton v-if="!title" class="skeleton" height="2em"/>
+        <Skeleton v-if="!price" class="skeleton" height="1.6em"/>
+        <Skeleton v-if="!description" class="skeleton" height="6em"/>
+        <h1 v-if="title">{{title}}</h1>
+        <h2 v-if="price">R {{price}}</h2>
+        <p v-if="description">{{description}}</p>
         <div class="quantity">
             <!-- <input v-model.number="productQuantity" type="number" min="1" > -->
             <input type="button" @click="addToCart({price, title, productImage, productID})" value="add to cat">
@@ -14,12 +17,14 @@
         </div>
         <hr>
         <div class="product-tags">
-            <h1 v-if="categories">Categories</h1>
-            <div v-if="categories" class="categories">
+            <h1>Categories</h1>
+            <div class="categories">
+                <Skeleton v-if="!categories" height="2em"/>
                 <a v-for="(item, index) in categories" :key="index" href="javascript:void(0)">{{item}},</a>
             </div>
             <h1>Tags</h1>
             <div class="categories">
+                <Skeleton v-if="!categories" height="2em"/>
                 <a v-for="(item, index) in tags" :key="index" href="javascript:void(0)">{{item}},</a>
             </div>
         </div>
@@ -29,9 +34,13 @@
 
 <script>
     import { mapActions } from 'vuex'
+    import Skeleton from '../extra/Skeleton'
     
     export default {
         name: "SelectProduct",
+        components: {
+            Skeleton
+        },
         props: {
             title: {
                 type: String
@@ -101,6 +110,10 @@
 </script>
 
 <style scoped>
+
+    .skeleton {
+        margin-bottom: 1em;
+    }
 
     .categories a {
         padding-right: 1em;

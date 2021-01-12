@@ -1,14 +1,19 @@
 <template>
     <div @mouseover="showButtons" @mouseleave="hideButtons" @click="navigateToTheProduct" class="product-container">
-        <div class="image-shape image-position"
+        <div class="skeletonImage" v-if="!productImage">
+            <Skeleton height="12em"/>
+        </div>
+        <div v-if="productImage" class="image-shape image-position"
             :style="{'background-image': `url('${productImage}')`}"
             >   
             <i @mouseover="disableNavigation" @mouseleave="disableNavigation" @click="addItemToFavourite({price, title, productImage, productID})" class="far fa-heart" :style="{opacity: buttonOpacity}"></i>
             <input @mouseover="disableNavigation" @mouseleave="disableNavigation" @click="addItemToCart({price, title, productImage, productID})" type="button" :style="{opacity: buttonOpacity}" value="add to cart">
         </div>
         <div class="product-info">
-            <h1>R {{price}}</h1>
-            <h2>{{title}}</h2>
+            <Skeleton class="skeleton" v-if="!price" height="2em"/>
+            <Skeleton v-if="!title" height="1em"/>
+            <h1 v-if="price" >R {{price}}</h1>
+            <h2 v-if="title" >{{title}}</h2>
         </div>
     </div>
 </template>
@@ -16,10 +21,14 @@
 <script>
 
     import { mapActions } from 'vuex'
+    import Skeleton from '../extra/Skeleton'
 
     export default {
 
-        name: "Product",
+        name: "Product", 
+        components: {
+            Skeleton
+        },
         props: {
             productImage: {
                 type: String
@@ -32,7 +41,7 @@
             },
             productID: {
                 type: String
-            }
+            },
         },
         data() {
             return {
@@ -86,6 +95,14 @@
 </script>
 
 <style scoped>
+
+    .skeleton {
+        margin-bottom: .5em;
+    }
+
+    .skeletonImage {
+        padding: .5em;
+    }
 
     h1, h2 {
         text-transform: capitalize;
