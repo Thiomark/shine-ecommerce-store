@@ -25,9 +25,9 @@ Password = notadmin
 
 ```
 [ ] Add Animation and make everything smooth
-[ ] re-do the UI Design and make everything more appealing and more responsise
-[ ] Fix every error ignored that wasnt affecting anything
-[ ] star review system
+[x] re-do the UI Design and make everything more appealing and more responsive
+[x] Fix every error ignored that wasnt affecting anything
+[x] star review system
 [X] The website is responsive
 [X] Products routes
 [X] Review section
@@ -37,8 +37,8 @@ Password = notadmin
 [X] authenticate the user and store token
 [X] Implement local storage
 [X] Dashboard section for admins to add products
-[ ] Add to favourite
-[ ] favourite route
+[x] Add to favourite
+[x] favourite route
 [ ] Menu for mobile
 [ ] filter and sort products
 [X] The user who created the review can delete or edit the review
