@@ -2,11 +2,13 @@
     <div class="product-wrapper">
         <form @submit.prevent="sumbitTheProduct">
             <input v-model="title" type="text" placeholder="Product title">
-            <input v-model="categories" type="text" placeholder="Categories, separated by a comma">
-            <input v-model="tags" type="text" placeholder="Tags, separated by a comma">
-            <input v-model="section" type="text" placeholder="Section">
-            <input v-model="image" type="text" placeholder="Product image url">
-            <input v-model="productCost" type="number" placeholder="Product Price">
+            <div class="row">
+                <input v-model="categories" type="text" placeholder="Categories, separated by a comma">
+                <input v-model="tags" type="text" placeholder="Tags, separated by a comma">
+                <input v-model="section" type="text" placeholder="Section">
+                <input v-model="productCost" type="number" placeholder="Product Price">
+            </div>            
+            <input v-model="image" type="text" placeholder="Product image url">          
             <textarea v-model="description" name="message" type="text" placeholder="Product description"></textarea>
             <textarea v-model="summary" name="message" type="text" placeholder="Product summary"></textarea>
             <input type="submit" value="Submit" >
@@ -61,10 +63,17 @@
 
 <style scoped>
 
+    
 
     .product-wrapper {
         background: #f1f1f1;
         padding: 1em;
+    }
+
+    .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 15px;
     }
 
     h1 {
@@ -85,7 +94,7 @@
         padding: 1em;
         -moz-border-radius: 8px;
         -webkit-border-radius: 8px;
-        border-radius: 8px;
+        border-radius: 3px;
         display: block;
         width: 100%;
         margin-top: 1em;

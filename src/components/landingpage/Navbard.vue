@@ -4,12 +4,12 @@
             <router-link class="logo" to="/">{{storeName}}</router-link>
             <section>
                 <ul>
-                    <li v-if="!$store.state.account.isloggedIn" class="login special"><router-link to="/login">Sign In</router-link></li>
-                    <li v-if="$store.state.account.isloggedIn" @click="logoutTheUser" class="signup special"><a to="javascript:void(0)">Log Out</a></li>
+                    <li v-if="!getIsloggedIn" class="login special"><router-link to="/login">Sign In</router-link></li>
+                    <li v-if="getIsloggedIn" @click="logoutTheUser" class="signup special"><a to="javascript:void(0)">Log Out</a></li> 
                     <li @click="navigate('Favourite')"><i class="fas fa-heart justico"></i></li>
-                    <li v-if="$store.state.account.isAdmin" @click="navigate('Dashboard')" ><i class="icofont-dashboard-web pri-colour"></i></li>
-                    <li v-if="$store.state.account.isloggedIn"><i class="icofont-user-alt-7 justico"></i></li>
-                    <li class="cart"><i @click="navigate('Cart')" class="icofont-shopping-cart ico"></i><h1 class="items-the-cart">{{getShoppingcart}}</h1></li>
+                    <li v-if="getIsloggedIn && getIsAdmin" @click="navigate('Dashboard')" ><i class="icofont-dashboard-web pri-colour"></i></li>
+                    <li v-if="!getIsloggedIn"><i class="icofont-user-alt-7 justico"></i></li>
+                    <li class="cart"><i @click="navigate('Cart')" class="icofont-shopping-cart ico"></i><h1 class="items-the-cart">{{getItemsInCart.length}}</h1></li>
                 </ul>
             </section>
         </div>
@@ -18,7 +18,7 @@
 
 <script>
 
-    import { mapGetters, mapActions } from 'vuex'
+    import { mapGetters, mapMutations } from 'vuex'
 
     export default {
         
@@ -34,7 +34,7 @@
             }
         },
         methods: {
-            ...mapActions(['setToken', 'setUser']),
+            ...mapMutations(['setToken', 'setUser']),
             toggleMenu(){
                 this.showMenuIcon = !this.showMenuIcon
             },
@@ -45,12 +45,10 @@
             },
             logoutTheUser(){
                 this.setToken(null)
-                this.setUser({})
-                //this.$store.dispatch('setToken', null)
-                //this.$store.dispatch('setUser', null)
+                this.setUser(null)
             },
         },
-        computed: mapGetters(['getShoppingcart', 'getTheUser']),
+        computed: mapGetters(['getItemsInCart', 'getTheUser', 'getIsloggedIn', 'getIsAdmin']),
         
     }
 </script>

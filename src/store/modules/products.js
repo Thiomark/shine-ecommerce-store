@@ -1,59 +1,41 @@
 import ProductService from '../../services/ProductService'
-import ReviewService from '../../services/ReviewService'
 
 const state = {
-    allProducts: [],
-    productReviews: [],
-    singleProduct: {},
+    products: null,
+    product: {},
+    loading: false,
 }
 
-
 const mutations = {
-    fetchProductReviewsFromApi(state, reviews){
-    
-        if(state.user){
-            reviews.forEach(review => {
-                if(review.user === state.user._id || state.user.role === 'admin'){
-                    review.modifyReview = true
-                }else {
-                    review.modifyReview = false
-                }
-            });
-            
-        }else {
-            reviews.forEach(review => {
-                review.modifyReview = false
-            });
-        }  
-        state.productReviews = reviews      
+    setProducts(state, products){
+        state.products = products
     },
-    setAllProducts(state, payload){
-        state.allProducts = payload
+    setProduct(state, product){
+        state.product = product
     },
-    setASingleProduct(state, payload){
-        state.singleProduct = payload
-    },
+    setLoading(state, loadingState){
+        state.loading = loadingState
+    }
 }
 
 const actions = {
-    async fetchProductReviewsFromApi({commit}, id){
-        const response = await ReviewService.get(id)
-        commit('fetchProductReviewsFromApi', response.data.fetcheQuerys)
-    },
-    async fetchAllProducts({commit}){
+    async fetchProducts({commit}){
         const response = await ProductService.getAll()
-        commit('setAllProducts', response.data.fetcheQuerys)
+        commit('setProducts', response.data.fetcheQuerys)  
     },
-    async fetchASingleProduct({commit}, id){
-        const response = await ProductService.get(id)
-        commit('setASingleProduct', response.data.product)
-    },
+    async fetchProduct({commit}, productID){
+        commit('setLoading', true) 
+        commit('setProduct', {}) 
+        const product = await ProductService.get(productID)
+        commit('setLoading', false) 
+        commit('setProduct', product.data.product)   
+    }
 }
 
 const getters = {
-    getProductReviews: state => state.productReviews,
-    getAllProducts: state => state.allProducts,
-    getOneProducts: state => state.singleProduct,
+    getProducts: state => state.products,
+    getProduct: state => state.product,
+    getLoadingState: state => state.loading
 }
 
 export default {

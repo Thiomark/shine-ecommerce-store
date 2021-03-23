@@ -1,26 +1,20 @@
 <template>
-    <div class="cart-container" :style="{paddingBottom: `${footerHeight}px`}">
-        <div v-if="getItemsInFavouriteList.length === 0 && !checkOut" class="empty-cart">
+    <div class="cart-container" :style="{paddingBottom: `${getFooterHeight}px`}">
+        <div v-if="getItemsInFavCart.length === 0" class="empty-cart">
             <h1>No Items Added Yet</h1>
             <input @click="navigate('Home')" type="button"  value="Go To Products">
         </div>
         <div>
-            <FavouriteItems
-                :productImage="product.productImage"
-                :price="product.price"
-                :title="product.title"
-                :productID="product.productID"
-                v-for="product in getItemsInFavouriteList" :key="product.productID"
-            />
+            <FavouriteItems :product="product" v-for="product in getItemsInFavCart" :key="product._id" />
         </div>
-         <FavouriteTotal v-if="getItemsInFavouriteList.length"/>
+         <FavouriteTotal v-if="getItemsInFavCart.length !== 0"/>
     </div>
 </template>
 
 <script>
 
   
-    import { mapActions, mapGetters } from 'vuex'
+    import { mapGetters, mapMutations } from 'vuex'
     import FavouriteItems from '../components/favourites/FavouriteItems'
     import FavouriteTotal from '../components/favourites/FavouriteTotal'
 
@@ -38,8 +32,7 @@
             }
         },
         methods: {
-            ...mapActions(['removeFromCart', 'setNavbarAndFooter']),
-            ...mapGetters(['getFooterHeight', 'getFavouriteCartCost']),
+            ...mapMutations(['removeFromCart']),
             removeItem(payload){
                 this.removeFromCart(payload)
             },
@@ -49,13 +42,7 @@
                 })
             },
         },
-        mounted() {
-            this.footerHeight = this.getFooterHeight()
-        },
-        computed: mapGetters(['getItemsInFavouriteList']),
-        created() {
-            this.setNavbarAndFooter(false)
-        },
+        computed: mapGetters(['getItemsInFavCart', 'getItemsInFavCart', 'getFooterHeight'])
     }
 
 </script>

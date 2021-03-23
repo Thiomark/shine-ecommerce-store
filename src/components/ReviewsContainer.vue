@@ -1,9 +1,6 @@
 <template>
     <div class="reviews-container">
-        <AverageRating 
-            :sumOfReviews="sumOfReviews" 
-            :numberOfReviews="reviews.length" 
-        />
+        <AverageRating :reviewAvarage="reviewAvarage"/>
         <div class="buffer" v-if="buffer">
             <Buffer />
         </div>
@@ -21,7 +18,7 @@
                 @popupmenuevent="reviewSettings"
             />
         </div>
-        <div v-if="$store.state.user.isloggedIn" class="add-review">
+        <div v-if="getIsloggedIn" class="add-review">
             <StarRating @numberofstars="numberofstars"/>
             <form >
                 <textarea v-model="review" name="" cols="30" rows="10" placeholder="Write a review"></textarea>
@@ -38,8 +35,7 @@
     import AverageRating from './reviews/AverageRating'
     import ReviewService from '../services/ReviewService'
     import Buffer from './extra/Buffer'
-    import {mapActions} from 'vuex'
-
+    import { mapGetters, mapActions } from 'vuex'
 
     export default {
         components: {
@@ -54,29 +50,26 @@
             }
         },
         data() {
-            return {
-                numberOfSelectedStars: 0,
-                makeit: true,
+            return{
                 productID: this.$route.params.productID,
                 review: '',
                 reviews: '',
                 rating: null,
-                starHover: false,
                 buffer: true,
-                sumOfReviews: 0,
-                numberOfReviews: 0
+                reviewAvarage: 0
             }
+        },
+        computed: {
+            ...mapGetters(['getIsloggedIn', 'getTheUser', 'isAdmin'])
         },
         async created() {
             try {
                 const response = await ReviewService.get(this.productID)
                 let reviews = response.data.fetcheQuerys
-                let sumOfReviews = 0
 
-                if(this.$store.state.user){
+                if(this.getIsloggedIn){
                     reviews.forEach(review => {
-                        sumOfReviews = sumOfReviews + review.rating
-                        if(review.user === this.$store.state.user.user._id || this.$store.state.user.user.role === 'admin'){
+                        if(review.user === this.getTheUser._id || this.getTheUser.role === 'admin'){
                             review.modifyReview = true
                         }else {
                             review.modifyReview = false
@@ -87,8 +80,9 @@
                         review.modifyReview = false
                     });
                 }  
-                this.numberOfReviews = reviews.length
-                this.sumOfReviews = sumOfReviews
+
+                this.updateReviews(reviews)
+                
                 this.buffer = false
                 this.reviews = reviews 
             } catch (error) {
@@ -102,8 +96,23 @@
                     name: page
                 })
             },
+            updateReviews(reviews){
+                let reviewSum = 0
+                for(const review of reviews){
+                    reviewSum = reviewSum + review.rating
+                }
+                const checkIfHasDecimal = this.hasDecimal(reviewSum / reviews.length)
+                if(!checkIfHasDecimal){
+                    this.reviewAvarage = reviewSum / reviews.length
+                }else {
+                    this.reviewAvarage = parseFloat(reviewSum / reviews.length).toFixed(1)
+                }
+            },
             numberofstars(numberOfStars){
                 this.rating = numberOfStars
+            },
+            hasDecimal(num) {
+                return !!(num % 1);
             },
             async createAReview(){
                 try {
@@ -117,11 +126,11 @@
                     this.review = ''
                     this.rating = null
                     
-               
                     let review = newReview.data.data
                     review.modifyReview = true
-                    review.createdAt = new Date()
+                    review.createdAt = new Date().toString()
                     this.reviews.push(review)
+                    this.updateReviews(this.reviews)
                 } catch (error) {
                     this.setRequestFeedBack(error.response.data.error)
                 }
@@ -133,6 +142,7 @@
                         this.reviews = this.reviews.filter((review) => {
                             return review._id !== event.reviewID
                         })
+                        this.updateReviews(this.reviews)
                     } catch (error) {
                         this.setLoadingPage(false)
                         this.setRequestFeedBack(error.response.data.error)

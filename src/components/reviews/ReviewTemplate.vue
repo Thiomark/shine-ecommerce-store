@@ -21,7 +21,7 @@
             <p v-if="!editReview && !skeletonEffect">{{review}}</p>
         </section>
         <div v-if="modifyReview" class="ellipsis-menu">
-            <i v-if="!skeletonEffect" @click="showOptionMenu" @blur="showOptionMenu" v-click-outside="closeThePopUp" class="fas fa-ellipsis-v"></i>
+            <i v-if="!skeletonEffect && getIsloggedIn" @click="showOptionMenu" @blur="showOptionMenu" v-click-outside="closeThePopUp" class="fas fa-ellipsis-v"></i>
             <Menu @event="clickDetected" v-if="showOptions"  :listItems="['delete', 'edit']"  class="popup-menu"/>
         </div>
     </div>
@@ -33,6 +33,7 @@
     import Skeleton from '../extra/Skeleton'
     import ReviewService from '../../services/ReviewService'
     import StarRating from '../reviews/StarRating'
+    import { mapGetters } from 'vuex'
     
     export default {
         name: "ReviewTemplate",
@@ -72,6 +73,9 @@
                 theReview: this.review,
                 numberOfStars: this.stars
             }
+        },
+        computed: {
+            ...mapGetters(['getIsloggedIn'])
         },
         methods: {
             numberofstars(stars) {

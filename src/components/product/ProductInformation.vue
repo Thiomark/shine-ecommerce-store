@@ -1,14 +1,14 @@
 <template>
     <div class="product-information">
-        <Skeleton v-if="!title" class="skeleton" height="2em"/>
-        <Skeleton v-if="!price" class="skeleton" height="1.6em"/>
-        <Skeleton v-if="!description" class="skeleton" height="6em"/>
-        <h1 v-if="title">{{title}}</h1>
-        <h2 v-if="price">R {{price}}</h2>
-        <p v-if="description">{{description}}</p>
+        <Skeleton v-if="getLoadingState" class="skeleton" height="2em"/>
+        <Skeleton v-if="getLoadingState" class="skeleton" height="1.6em"/>
+        <Skeleton v-if="getLoadingState" class="skeleton" height="6em"/>
+        <h1 v-if="!getLoadingState">{{getProduct.title}}</h1>
+        <h2 v-if="!getLoadingState">R {{getProduct.productCost}}</h2>
+        <p v-if="!getLoadingState">{{getProduct.description}}</p>
         <div class="quantity">
             <!-- <input v-model.number="productQuantity" type="number" min="1" > -->
-            <input type="button" @click="addToCart({price, title, productImage, productID})" value="add to cat">
+            <input type="button" @click="addToCart" value="add to cat">
             <input type="button" @click="navigate('Cart')" value="buy now">
         </div>
         <div class="wishlist">
@@ -19,13 +19,17 @@
         <div class="product-tags">
             <h1>Categories</h1>
             <div class="categories">
-                <Skeleton v-if="!categories" height="2em"/>
-                <a v-for="(item, index) in categories" :key="index" href="javascript:void(0)">{{item}},</a>
+                <Skeleton v-if="getLoadingState" height="2em"/>
+                <div v-if="!getLoadingState">
+                    <a v-for="(item, index) in getProduct.categories" :key="index" href="javascript:void(0)">{{item}},</a>
+                </div>
             </div>
             <h1>Tags</h1>
             <div class="categories">
-                <Skeleton v-if="!categories" height="2em"/>
-                <a v-for="(item, index) in tags" :key="index" href="javascript:void(0)">{{item}},</a>
+                <Skeleton v-if="getLoadingState" height="2em"/>
+                <div v-if="!getLoadingState">
+                    <a v-for="(item, index) in getProduct.tags" :key="index" href="javascript:void(0)">{{item}},</a>
+                </div>
             </div>
         </div>
         <hr>
@@ -33,36 +37,13 @@
 </template>
 
 <script>
-    import { mapActions } from 'vuex'
+    import { mapGetters, mapMutations } from 'vuex'
     import Skeleton from '../extra/Skeleton'
     
     export default {
         name: "SelectProduct",
         components: {
             Skeleton
-        },
-        props: {
-            title: {
-                type: String
-            },
-            price: {
-                type: Number
-            },
-            description: {
-                type: String
-            },
-            tags: {
-                type: Array
-            },
-            categories: {
-                type: Array
-            },
-            productImage: {
-                type: String
-            },
-            productID: {
-                type: String
-            }
         },
         data() {
             return {
@@ -76,35 +57,21 @@
             }
         },
         methods: {
-            ...mapActions(['addedItemToCart', 'addedItemToFavouritesCart']),
-
-            addToCart(item){
-
-                const {price, title, productImage, productID} = item
-
-                for(const product of this.$store.state.itemsInShoppingCart){
-                    if(product.productID === productID){
-                        return
-                    }
-                }
-                const totalPrice =  price * parseInt(this.productQuantity, 10)
-                this.addedItemToCart({price, title, productImage, productID, quantity: this.productQuantity, totalPrice })
+            ...mapMutations(['addItemToCart', 'removeItemToCart']),
+            addToCart(){
+                this.addItemToCart(this.$route.params.productID)
             },
-            addItemToFavourite(item){
-                const {price, title, productImage, productID} = item
-
-                for(const product of this.$store.state.itemsInFavouriteCart){
-                    if(product.productID === productID){
-                        return
-                    }
-                }
-                this.addedItemToFavouritesCart({price, title, productImage, productID, quantity: 1, totalPrice:  price})
+            addItemToFavourite(){
+                this.removeItemToCart(this.$route.params.productID)
             },
             navigate(page) {
                 this.$router.push({
                     name: page
                 })
             },
+        },
+        computed: {
+            ...mapGetters(['getLoadingState', 'getProduct', 'getItemsInCart'])
         }
     }
 </script>

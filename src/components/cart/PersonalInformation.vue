@@ -2,7 +2,7 @@
     <form @submit.prevent="goToCheckout" class="cart-total-container">
         <div class="cart-total-wrapper">
             <div v-for="(field, index) in fields" :key="index" class="rows">
-                <label class="required" for="firsy-name">{{field.for}}</label>
+                <label :class="field.filedRequired ? 'required' : '' " for="firsy-name">{{field.for}}</label>
                 <input type="text" :required="field.filedRequired"  v-model="field.value" :placeholder="field.placeholder">
             </div>
             <div class="row">
@@ -21,7 +21,7 @@
 
 <script>
 
-    import {mapActions, mapGetters} from 'vuex'
+    import {mapActions, mapGetters, mapMutations} from 'vuex'
     import OrderService from '../../services/OrderService'
     export default {
         name: 'PersonalInformation',
@@ -87,8 +87,8 @@
             }
         },
         methods: {
-            ...mapActions(['setLoadingPage', 'setRequestFeedBack', 'restItemsInShoppingCart']),
-            ...mapGetters(['getTotalCostWithShipping', 'getShippingCost', 'getitemsInShoppingCart']),
+            ...mapActions(['setLoadingPage', 'setRequestFeedBack']),
+            ...mapMutations(['restItemsInShoppingCart']),
             async goToCheckout(){
                 
                 this.setLoadingPage(true)
@@ -104,19 +104,22 @@
                         zipcode: this.fields[0].value,
                         notes: this.notes,
                         email: this.email,
-                        item: this.getitemsInShoppingCart(),
-                        shipping: this.getShippingCost(),
-                        toatlAmount: this.getTotalCostWithShipping()
+                        item: this.getItemsInCart,
+                        shipping: this.getShippingCost,
+                        toatlAmount: this.getTotalCostWithShipping
                     })
                     this.setLoadingPage(false)
-                    this.restItemsInShoppingCart([])
+                    this.restItemsInShoppingCart()
                     this.$emit('gotocheckout', order.data.order)
                 } catch (error) {
                     this.setLoadingPage(false)
                     this.setRequestFeedBack(error)
                 }
-            }
+            },
         },
+        computed: {
+            ...mapGetters(['getItemsInCart', 'getTotalCostWithShipping', 'getShippingCost'])
+        }
     }
 </script>
 

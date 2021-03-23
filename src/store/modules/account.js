@@ -1,10 +1,9 @@
 const state = {
     isAdmin: false,
-    token: 'h',
+    token: null,
     user: null,
     isloggedIn: false
 }
-
 
 const mutations = {
     setToken(state, token) {
@@ -12,13 +11,8 @@ const mutations = {
     },
     setUser(state, user) {
         if(user === null){
-            // user = {
-            //     name: null, 
-            //     _id: null, 
-            //     email: null, 
-            //     role: null
-            // }
             state.isloggedIn = false
+            state.isAdmin = false
         }else {
             if(user.role === 'admin'){
                 state.isAdmin = true
@@ -43,6 +37,8 @@ const actions = {
 
 const getters = {
     getTheUser: state => state.user,
+    getIsloggedIn: state => state.isloggedIn,
+    getIsAdmin: state => state.isAdmin,
 }
 
 export default {

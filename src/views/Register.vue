@@ -1,5 +1,5 @@
 <template>
-    <div class="login-page" :style="{paddingBottom: `${footerHeight}px`}">
+    <div class="login-page" :style="{paddingBottom: `${getFooterHeight}px`}">
         <div class="form">
             <form @submit.prevent="submitTheDetails" class="register-form">
                 <h1 v-if="submissionError">{{submissionError}}</h1>
@@ -23,7 +23,6 @@
         name: 'Register',
         data() {
             return {
-                footerHeight: null,
                 name: '',
                 email: '',
                 password: '',
@@ -35,7 +34,7 @@
         },
         methods: {
             ...mapGetters(['getFooterHeight']),
-            ...mapActions(['setNavbarAndFooter', 'setLoadingPage', 'setRequestFeedBack']),
+            ...mapActions(['setLoadingPage', 'setRequestFeedBack']),
 
             async submitTheDetails(){
                 if(this.name && this.email && this.password && this.reEnterPassword){
@@ -63,10 +62,9 @@
                 }
             }
         },
+        computed: mapGetters(['getFooterHeight']),
         created() {
             this.setLoadingPage(false)
-            this.setNavbarAndFooter(false)
-            this.footerHeight = this.getFooterHeight()
         },
     }
 

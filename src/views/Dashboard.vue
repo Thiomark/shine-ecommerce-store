@@ -30,10 +30,9 @@
 
     import ReviewsContainer from '../components/dashboard/ReviewsContainer'
     import ProductsContainer from '../components/dashboard/ProductsContainer'
-    import {mapActions, mapGetters} from 'vuex'
     import ProductForm from '../components/dashboard/ProductForm'
-
     import OrderContainer from '../components/dashboard/OrderContainer'
+    import {mapGetters} from 'vuex'
 
     export default {
         name: "Dashboard",
@@ -47,7 +46,6 @@
             ReviewsContainer,
             OrderContainer,
             ProductsContainer
-
         },
         data() {
             return {
@@ -60,7 +58,6 @@
             }
         },
         methods: {
-            ...mapActions(['setNavbarAndFooter']),
             navigate(page) {
                 this.$router.push({
                     name: page
@@ -98,9 +95,6 @@
                 }
              
             }
-        },
-        async created() {
-            this.setNavbarAndFooter(true)
         },
         computed: mapGetters(['getTheUser', 'getAllProducts'])
     }

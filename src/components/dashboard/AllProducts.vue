@@ -24,6 +24,8 @@
 </template>
 
 <script>
+    import { mapActions, mapGetters } from 'vuex'
+
     export default {
         name: "ItemsInCart",
         props: {
@@ -47,8 +49,14 @@
             }
         },
         methods: {
+            ...mapActions(['addSelectPopupMessage']),
+            ...mapGetters(['getSelectPopupConfirm']),
             emitRemoveEvent(productID){
-                this.$emit('emitremoveevent', productID)
+                this.addSelectPopupMessage = "Are you sure you want to remove the product"
+                console.log(productID)
+                // if(this.getSelectPopupConfirm){
+                //     this.$emit('emitremoveevent', productID)
+                // }
             }
         },
     }

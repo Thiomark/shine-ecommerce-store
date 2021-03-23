@@ -6,8 +6,8 @@
         <div v-if="productImage" class="image-shape image-position"
             :style="{'background-image': `url('${productImage}')`}"
             >   
-            <i @mouseover="disableNavigation" @mouseleave="disableNavigation" @click="addItemToFavourite({price, title, productImage, productID})" class="far fa-heart" :style="{opacity: buttonOpacity}"></i>
-            <input @mouseover="disableNavigation" @mouseleave="disableNavigation" @click="addItemToCart({price, title, productImage, productID})" type="button" :style="{opacity: buttonOpacity}" value="add to cart">
+            <i @mouseover="disableNavigation" @mouseleave="disableNavigation" @click="addItemToFavCart(productID)" class="far fa-heart" :style="{opacity: buttonOpacity}"></i>
+            <input @mouseover="disableNavigation" @mouseleave="disableNavigation" @click="addItemToCart(productID)" type="button" :style="{opacity: buttonOpacity}" value="add to cart">
         </div>
         <div class="product-info">
             <Skeleton class="skeleton" v-if="!price" height="2em"/>
@@ -20,7 +20,7 @@
 
 <script>
 
-    import { mapActions } from 'vuex'
+    import { mapMutations } from 'vuex'
     import Skeleton from '../extra/Skeleton'
 
     export default {
@@ -51,7 +51,7 @@
             }
         },
         methods: {
-            ...mapActions(['addedItemToCart', 'addedItemToFavouritesCart']),
+            ...mapMutations(['addItemToFavCart', 'addItemToCart']),
             showButtons(){
                 return this.buttonOpacity = 1
             },
@@ -68,26 +68,6 @@
                         params: { productID: this.productID }
                     })
                 } 
-            },
-            addItemToCart(item){
-                const {price, title, productImage, productID} = item
-
-                for(const product of this.$store.state.itemsInShoppingCart){
-                    if(product.productID === productID){
-                        return
-                    }
-                }
-                this.addedItemToCart({price, title, productImage, productID, quantity: 1, totalPrice:  price})
-            },
-            addItemToFavourite(item){
-                const {price, title, productImage, productID} = item
-
-                for(const product of this.$store.state.itemsInFavouriteCart){
-                    if(product.productID === productID){
-                        return
-                    }
-                }
-                this.addedItemToFavouritesCart({price, title, productImage, productID, quantity: 1, totalPrice:  price})
             }
         }
     }

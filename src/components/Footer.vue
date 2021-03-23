@@ -24,7 +24,7 @@
 </template>
 
 <script>
-    import { mapActions } from 'vuex'
+    import { mapMutations } from 'vuex'
     export default {
         name: "Footer",
         data() {
@@ -33,11 +33,11 @@
             }
         },
         methods: {
-            ...mapActions(['addFooterheight'])
+            ...mapMutations(['setFooterheight'])
         },
         mounted() {
             this.footerHeight = document.querySelector('footer').offsetHeight;
-            this.addFooterheight(document.querySelector('footer').offsetHeight)
+            this.setFooterheight(document.querySelector('footer').offsetHeight)
         },
     }
 </script>

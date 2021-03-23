@@ -1,91 +1,83 @@
 const state = {
-    itemsInShoppingCart: [],
-    itemsInFavouriteCart: [],
-    shoppingCartCost: 0,
-    favouriteCartCost: 0,
+    shippingCost: 200,
+    cartAmout: 0,
     totalCostWithShipping: 0,
-    token: 'h',
+    itemsInShoppingCart: [],
+    
+    favCartAmout: 0,
+    totalFavCostWithShipping: 0,
+    itemsInFavCart: [],
 }
 
 const mutations = {
 
-    setProductInTheCart(state, payload){
-        state.itemsInShoppingCart.push(payload)
-        let total = 0
+    addItemToCart(state, productID){
+
+        // this.addedItemToCart({price, title, productImage, productID, quantity: this.productQuantity, totalPrice })
+
+        for(const item of state.itemsInShoppingCart){
+            if(item._id === productID){
+                return
+            }
+        }
+        this.state.products.products.filter(product => product._id === productID ? state.itemsInShoppingCart.push(product) : '')
+        state.cartAmout = 0
+        state.totalCostWithShipping = 0
         for(const product of state.itemsInShoppingCart){
-            total = total + product.price
+            state.cartAmout = state.cartAmout + product.productCost
         }
-        state.shoppingCartCost = total
-        state.totalCostWithShipping = total + state.shippingCost
-    },
-    setProductInTheFavouritetCart(state, payload){
-        state.itemsInFavouriteCart.push(payload)
-        let total = 0
-        for(const product of state.itemsInFavouriteCart){
-            total = total + product.price
-        }
-        state.favouriteCartCost = total
-    },
-    removeItemFromCart(state, payload){
-        state.itemsInShoppingCart = state.itemsInShoppingCart.filter(function(product) {
-            return product.productID !== payload
-        })
-        let total = 0
+        state.totalCostWithShipping = state.shippingCost + state.cartAmout
+    }, 
+    removeItemFromCart(state, productID){
+        state.itemsInShoppingCart = state.itemsInShoppingCart.filter(product => product._id !== productID)
+        state.cartAmout = 0
+        state.totalCostWithShipping = 0
         for(const product of state.itemsInShoppingCart){
-            total = total + product.price
+            state.cartAmout = state.cartAmout + product.productCost
         }
-        state.shoppingCartCost = total
-        state.totalCostWithShipping = total + state.shippingCost
-    },
+        state.totalCostWithShipping = state.shippingCost + state.cartAmout
+    }, 
+    addItemToFavCart(state, productID){
 
-    removeItemFromFavourites(state, payload){
-        state.itemsInFavouriteCart = state.itemsInFavouriteCart.filter(function(product) {
-            return product.productID !== payload
-        })
-        let total = 0
-        for(const product of state.itemsInFavouriteCart){
-            total = total + product.price
+        for(const item of state.itemsInFavCart){
+            if(item._id === productID){
+                return
+            }
         }
-        state.favouriteCartCost = total
-    },
-
-    restItemsInShoppingCart(state, payLoad) {
-        state.itemsInShoppingCart = payLoad
-    },   
-}
-
-const actions = {
-
-    addedItemToCart({commit}, product){
-        commit('setProductInTheCart', product)
-    },
-    addedItemToFavouritesCart({commit}, product){
-        commit('setProductInTheFavouritetCart', product)
-    },
-    removeFromCart({commit}, product){
-        commit('removeItemFromCart', product)
-    },
-    removeFromFavouritesCart({commit}, product){
-        commit('removeItemFromFavourites', product)
-    },
-    restItemsInShoppingCart({commit}, loading) {
-        commit('restItemsInShoppingCart', loading)
-    },
+        this.state.products.products.filter(product => product._id === productID ? state.itemsInFavCart.push(product) : '')
+        state.favCartAmout = 0
+        state.totalFavCostWithShipping = 0
+        for(const product of state.itemsInFavCart){
+            state.favCartAmout = state.favCartAmout + product.productCost
+        }
+        state.totalFavCostWithShipping = state.totalFavCostWithShipping + state.favCartAmout
+    }, 
+    removeItemFromFavCart(state, productID){
+        state.itemsInFavCart = state.itemsInFavCart.filter(product => product._id !== productID)
+        state.favCartAmout = 0
+        state.totalFavCostWithShipping = 0
+        for(const product of state.itemsInFavCart){
+            state.favCartAmout = state.favCartAmout + product.productCost
+        }
+        state.totalFavCostWithShipping = state.totalFavCostWithShipping + state.favCartAmout
+    }, 
+    restItemsInShoppingCart(state){
+        state.itemsInShoppingCart = []
+    } 
 }
 
 const getters = {
-    getShoppingcart: state => state.itemsInShoppingCart.length,
-    getitemsInShoppingCart: state => state.itemsInShoppingCart,
-    getToalCost: state => state.shoppingCartCost,
-    getTotalCostWithShipping: state => state.totalCostWithShipping,
+    getItemsInCart: state => state.itemsInShoppingCart,
+    getCartAmout: state => state.cartAmout,
     getShippingCost: state => state.shippingCost,
-    getItemsInFavouriteList: state => state.itemsInFavouriteCart,
-    getFavouriteCartCost: state => state.favouriteCartCost,
+    getTotalCostWithShipping: state => state.totalCostWithShipping,
+    getItemsInFavCart: state => state.itemsInFavCart,
+    getFavCartAmout: state => state.favCartAmout,
+    getTotalFavCostWithShipping: state => state.totalFavCostWithShipping
 }
 
 export default {
     state,
     mutations,
-    actions,
     getters
 }

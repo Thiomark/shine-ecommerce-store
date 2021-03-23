@@ -5,17 +5,17 @@
             <hr>
             <div class="subtotal all">
                 <h1>Subtotal</h1>
-                <h1>R {{subtotal}}</h1>
+                <h1>R {{getCartAmout}}</h1>
             </div>
             <hr>
             <div class="shipping all">
                 <h1>Shipping</h1>
-                <h1>R {{shipping}}</h1>
+                <h1>R {{getShippingCost}}</h1>
             </div>
             <hr>
             <div class="total all">
                 <h1>Total</h1>
-                <h1>R {{total}}</h1>
+                <h1>R {{getTotalCostWithShipping}}</h1>
             </div>
             <input v-if="showCheckout" @click="submitTotal" type="button" value="Proceed to checkout">
         </div>
@@ -23,18 +23,11 @@
 </template>
 
 <script>
+    import { mapGetters } from 'vuex'
+
     export default {
         name: 'CartTotal',
         props: {
-            subtotal: {
-                type: Number
-            },
-            shipping: {
-                type: Number
-            },
-            total: {
-                type: Number
-            },
             showCheckout: {
                 type: Boolean
             }
@@ -44,6 +37,7 @@
                 this.$emit('emitproceed')
             }
         },
+        computed: mapGetters(['getTotalCostWithShipping', 'getShippingCost', 'getCartAmout'])
         
     }
 </script>

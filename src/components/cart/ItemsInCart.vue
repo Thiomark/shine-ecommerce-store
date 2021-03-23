@@ -2,58 +2,44 @@
     <div class="item-container">
         <div class="cart-total-wrapper">
             <div class="subtotal all">
-                <img :src="productImage" alt="">
+                <img :src="product.image" :alt="product.title">
             </div>
             <div class="subtotal all">
                 <h1 class="for-mobile">Name</h1>
-                <h1>{{name}}</h1>
+                <h1>{{product.title}}</h1>
             </div>
             <div class="shipping all">
                 <h1 class="for-mobile">Unit Price</h1>
-                <h1>R {{unitPrice}}</h1>
+                <h1>R {{product.productCost}}</h1>
             </div>
             <div class="shipping all">
                 <h1 class="for-mobile">Quantity</h1>
                 <h1>{{quantity}}</h1>
             </div>
-            <div class="total all">
-                <h1 class="for-mobile">Total Price</h1>
-                <h1>R {{totalPrice}}</h1>
-            </div>
             <div class="total all hide-for-mobile">
-                <a @click="emitRemoveEvent(productID)" href="javascript:void(0)">&times;</a>
+                <a @click="removeItem(product._id)" href="javascript:void(0)">&times;</a>
             </div>
-            <input @click="emitRemoveEvent(productID)" type="button" value="Remove Item">
+            <input @click="removeItem(product._id)" type="button" value="Remove Item">
         </div>
     </div>
 </template>
 
 <script>
+    import {mapMutations} from 'vuex'
     export default {
         name: "ItemsInCart",
         props: {
-            productID: {
-                type: String
-            },
-            name: {
-                type: String
-            },
-            unitPrice: {
-                type: Number
+            product: {
+                type: Object
             },
             quantity: {
                 type: Number
-            },
-            totalPrice: {
-                type: Number
-            },
-            productImage: {
-                type: String
             }
         },
         methods: {
-            emitRemoveEvent(productID){
-                this.$emit('emitremoveevent', productID)
+            ...mapMutations(['removeItemFromCart']),
+            removeItem(productID){
+                this.removeItemFromCart(productID)
             }
         },
     }
@@ -131,7 +117,7 @@
 
         .cart-total-wrapper {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
             width: 100%;
 
             /* border-bottom: 1px solid rgb(219, 219, 219); */

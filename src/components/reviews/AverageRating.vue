@@ -1,42 +1,40 @@
 <template>
     <div  class="add-a-review">
-        <h1>Average Rating</h1>
-        <h2 v-if="sumOfReviews !== 0">{{averageCalculator(sumOfReviews, numberOfReviews)}} out of 5 stars</h2>
-        <div class="reviews">
-            <i v-for="index in 5" :key="index" class="far fa-star" :class="[showStarRating(averageCalculator(sumOfReviews, numberOfReviews), index) ? 'selectedStars' : 'not-selected-stars']"></i>
+        <h1 v-if="reviewAvarage > 0">Average Rating</h1>
+        <h2 v-if="reviewAvarage > 0">{{reviewAvarage}} out of 5 stars</h2>
+        <h2 v-if="!reviewAvarage > 0">Write the first review</h2>
+        <div v-if="reviewAvarage > 0" class="reviews">
+            <i :style="{fontSize: '1.2em', margin: '0 .1em', color: reviewAvarage >= 0.5 ? '#f8e825' : 'rgb(182, 182, 182)'}" :class="reviewAvarage >= 1 ? 'fas fa-star' : reviewAvarage >= 0.5 ? 'fas fa-star-half-alt' : 'far fa-star'"></i>
+            <i :style="{fontSize: '1.2em', margin: '0 .1em', color: reviewAvarage >= 1.5 ? '#f8e825' : 'rgb(182, 182, 182)'}" :class="reviewAvarage >= 2 ? 'fas fa-star' : reviewAvarage >= 1.5 ? 'fas fa-star-half-alt' : 'far fa-star'"></i>
+            <i :style="{fontSize: '1.2em', margin: '0 .1em', color: reviewAvarage >= 2.5 ? '#f8e825' : 'rgb(182, 182, 182)'}" :class="reviewAvarage >= 3 ? 'fas fa-star' : reviewAvarage >= 2.5 ? 'fas fa-star-half-alt' : 'far fa-star'"></i>
+            <i :style="{fontSize: '1.2em', margin: '0 .1em', color: reviewAvarage >= 3.5 ? '#f8e825' : 'rgb(182, 182, 182)'}" :class="reviewAvarage >= 4 ? 'fas fa-star' : reviewAvarage >= 3.5 ? 'fas fa-star-half-alt' : 'far fa-star'"></i>
+            <i :style="{fontSize: '1.2em', margin: '0 .1em', color: reviewAvarage >= 4.5 ? '#f8e825' : 'rgb(182, 182, 182)'}" :class="reviewAvarage >= 5 ? 'fas fa-star' : reviewAvarage >= 4.5 ? 'fas fa-star-half-alt' : 'far fa-star'"></i>
         </div>
-        <input v-if="!$store.state.user.isloggedIn" @click="navigate('Login')" type="button" value="Write a review">
+        <input v-if="!getIsloggedIn" @click="navigate('Login')" type="button" value="Write a review">
     </div>
 </template>
 
 <script>
+    
+    import {mapGetters} from 'vuex'
+
     export default {
         name: "AverageRating",
         props: {
-            numberOfReviews: {
-                type: Number
-            },
-            sumOfReviews: {
-                type: Number
+            reviewAvarage: {
+                type: [Number, String]
             }
         },
+        computed: {
+            ...mapGetters(['getIsloggedIn'])
+        },
         methods: {
-            showStarRating(numberOfStars, starPostion){
-                if(Math.round(numberOfStars)  >= starPostion){
-                    return true
-                }
-                return false
-            },
-            averageCalculator(sumOfReviews, numberOfReviews){
-                return (sumOfReviews / numberOfReviews).toFixed(1);
-            },
             navigate(page) {
                 this.$router.push({
                     name: page
                 })
             },
         },
-        
     }
 
 </script>

@@ -18,14 +18,6 @@
                 <div class="menu-button">
                     <i v-if="showMenuIcon" @click="toggleMenu" class="fas fa-bars pri-colour mobile"></i>
                     <a v-if="!showMenuIcon" @click="toggleMenu" class="mobile pri-colour close" href="javascript:void(0)">&times;</a>
-                    <!-- <ul :class="{'hideTheMenu': showMenuIcon}" class="mobile-menu">
-                        <li><router-link to="/">Home</router-link></li>
-                        <li><router-link to="/product">About</router-link></li>
-                        <li><router-link to="shipping">Shipping</router-link></li>
-                        <li v-if="!$store.state.token" class="login special"><router-link to="/login">Login</router-link></li>
-                        <li v-if="!$store.state.token" class="signup special"><router-link to="/register">Sign Up</router-link></li>
-                        <li v-if="$store.state.token" @click="logoutTheUser" class="signup special"><a to="javascript:void(0)">Log Out</a></li>
-                    </ul> -->
                 </div>
             </ul>
         </div>

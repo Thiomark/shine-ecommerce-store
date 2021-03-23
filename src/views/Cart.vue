@@ -1,27 +1,22 @@
 <template>
-    <div class="cart-container" :style="{paddingBottom: `${footerHeight}px`}">
-        <div v-if="getitemsInShoppingCart.length === 0 && !checkOut" class="empty-cart">
+    <div class="cart-container" :style="{paddingBottom: `${getFooterHeight}px`}">
+        <div v-if="getItemsInCart.length === 0" class="empty-cart">
             <h1>Cart is Empty</h1>
             <input @click="navigate('Home')" type="button"  value="Go To Products">
         </div>
         <div>
             <ItemsInCart
-                :productImage="product.productImage"
-                :totalPrice="product.totalPrice"
-                :quantity="product.quantity"
-                :unitPrice="product.price"
-                :name="product.title"
-                :productID="product.productID"
-                @emitremoveevent="removeItem"
-                v-for="product in getitemsInShoppingCart" :key="product.productID"
+                :product="product"
+                :quantity="1"
+                v-for="product in getItemsInCart" :key="product.productID"
             />
         </div>
-         <CartTotal v-if="getitemsInShoppingCart.length"
+         <CartTotal v-if="getItemsInCart.length"
             class="add-padding"
             :showCheckout="true"
-            :subtotal="getToalCost()" 
-            :shipping="getShippingCost()" 
-            :total="getTotalCostWithShipping()" 
+            :subtotal="getCartAmout" 
+            :shipping="getShippingCost" 
+            :total="getTotalCostWithShipping" 
             @emitproceed="navigate('Checkout')"
         />
     </div>
@@ -30,7 +25,7 @@
 <script>
 
     import CartTotal from '../components/cart/CartTotal'
-    import { mapActions, mapGetters } from 'vuex'
+    import { mapGetters } from 'vuex'
     import ItemsInCart from '../components/cart/ItemsInCart'
 
     export default {
@@ -42,29 +37,17 @@
         data() {
             return {
                 products: [],
-                footerHeight: null,
                 checkOutItems: null
             }
         },
         methods: {
-            ...mapActions(['removeFromCart', 'setNavbarAndFooter']),
-            ...mapGetters(['getFooterHeight', 'getToalCost', 'getTotalCostWithShipping', 'getShippingCost']),
-            removeItem(payload){
-                this.removeFromCart(payload)
-            },
             navigate(page) {
                 this.$router.push({
                     name: page
                 })
             },
         },
-        mounted() {
-            this.footerHeight = this.getFooterHeight()
-        },
-        computed: mapGetters(['getitemsInShoppingCart']),
-        created() {
-            this.setNavbarAndFooter(false)
-        },
+        computed: mapGetters(['getItemsInCart', 'getTotalCostWithShipping', 'getShippingCost', 'getCartAmout', 'getFooterHeight'])
     }
 
 </script>

@@ -5,7 +5,7 @@
             <hr>
             <div class="total all">
                 <h1>Total</h1>
-                <h1>R {{getFavouriteCartCost}}</h1>
+                <h1>R {{getTotalFavCostWithShipping}}</h1>
             </div>
         </div>
     </div>
@@ -17,12 +17,7 @@
 
     export default {
         name: 'CartTotal',
-        methods: {
-            submitTotal(){
-                this.$emit('emitproceed')
-            }
-        },
-        computed: mapGetters(['getFavouriteCartCost'])
+        computed: mapGetters(['getTotalFavCostWithShipping'])
         
     }
 </script>

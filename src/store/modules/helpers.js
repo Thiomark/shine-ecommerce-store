@@ -2,15 +2,12 @@ const state = {
     footerHeight: null,
     requestFeedBack: null,
     pageLoading: false,
-    hideNavbarAndFooter: false,
-    shippingCost: 200,
+    selectPopupConfirm: 'some',
+    selectPopupMessage: "something"
 }
 
 
 const mutations = {
-    setNavbarAndFooter(state, user) {
-        state.hideNavbarAndFooter = user
-    },
     setLoadingPage(state, loading) {
         state.pageLoading = loading
     },
@@ -22,6 +19,9 @@ const mutations = {
     },
     updatedReviewState(state, review){
         state.requestFeedBack = review
+    },
+    setSelectPopupConfirm(state, payload){
+        state.selectPopupConfirm = payload
     }
 }
 
@@ -35,19 +35,21 @@ const actions = {
     setRequestFeedBack({commit}, loading) {
         commit('setRequestFeedBack', loading)
     },
-    addFooterheight({commit}, height){
-        commit('setFooterheight', height)
-    },
     updatedReviewState({commit}, review){
         commit('updatedReviewState', review)
+    },
+    addSelectPopupConfirm({commit}, message){
+        commit('setSelectPopupConfirm', message)
     }
 }
 
 const getters = {
-    getNavBarInfo: state => state.hideNavbarAndFooter,
     getFooterHeight: state => state.footerHeight,
     getRequestFeedBack: state => state.requestFeedBack,
     getLoadingPage: state => state.pageLoading,
+    getSelectPopupMessage: state => state.selectPopupMessage,
+    getSelectPopupConfirm: state => state.selectPopupConfirm,
+    // getShippingCost: state => state.shippingCost,
 }
 
 export default {

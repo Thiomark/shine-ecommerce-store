@@ -1,21 +1,10 @@
 <template>
-    <div class="product-wrapper" :style="{paddingBottom: `${footerHeight}px`}">  
+    <div class="product-wrapper" :style="{paddingBottom: `${getFooterHeight}px`}">  
         <div class="product-section">
-            <ProductImage 
-                :productImage="getOneProducts.image"
-            />
-            <ProductInformation 
-                v-if="getOneProducts"
-                :tags="getOneProducts.tags"
-                :categories="getOneProducts.categories"
-                :description="getOneProducts.summary"
-                :price="getOneProducts.productCost"
-                :title="getOneProducts.title"
-                :productID="getOneProducts._id"
-            />
+            <ProductImage :productImage="getProduct.image"/>
+            <ProductInformation />
         </div>  
-     
-        <ReviewsContainer :productReviews="productReviews" class="switch"/>
+        <ReviewsContainer class="switch"/>
         <RelatedProduct />   
     </div>
 </template>
@@ -26,9 +15,6 @@
     import ProductImage from '../components/product/ProductImage'
     import RelatedProduct from '../components/RelatedProduct'
     import ReviewsContainer from '../components/ReviewsContainer'
-
-    import ReviewService from '../services/ReviewService'
-
     import {mapGetters, mapActions} from 'vuex'
 
     export default {
@@ -44,40 +30,17 @@
                 reviews: false,
                 description: true,
                 productID: this.$route.params.productID,
-                footerHeight: 0,
                 productReviews: []
             }
         },
         methods: {
-            ...mapActions(['fetchASingleProduct', 'setNavbarAndFooter', 'setLoadingPage']),
-            ...mapGetters(['getFooterHeight']),
-
-            switchToReview(){
-                this.reviews = true
-                this.description = false
-            },
-            switchToDescription(){
-                this.reviews = false
-                this.description = true
-            },
-            navigate(page) {
-                this.$router.push({
-                    name: page
-                })
-            },
+             ...mapActions(['fetchProduct', 'setLoadingPage']),
         },
         async created() {
             this.setLoadingPage(false)
-            this.setNavbarAndFooter(false)
-            this.fetchASingleProduct(this.productID)
-            const response = await ReviewService.get(this.productID)
-            this.productReviews = await response.data.fetcheQuerys
+            this.fetchProduct(this.productID)
         },
-        computed: mapGetters(['getOneProducts']),
-        mounted() {
-            this.footerHeight = this.getFooterHeight()
-        },
-        
+        computed: mapGetters(['getFooterHeight', 'getProduct'])
     }
 
 </script>

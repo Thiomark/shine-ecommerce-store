@@ -1,37 +1,22 @@
 <template>
-    <div class="home-container" :style="{paddingBottom: `${footerHeight}px`}">
+    <div class="home-container" :style="{paddingBottom: `${getFooterHeight}px`}">
         <LandingPage />
         <ProductContainer />
-        <!-- <NewsLetter /> -->
     </div>
 </template>
 
 <script>
-    import { mapGetters, mapActions } from 'vuex'
+    import { mapGetters } from 'vuex'
     import LandingPage from '../components/LandingPage'
     import ProductContainer from '../components/ProductContainer'
-    //import NewsLetter from '../components/NewsLetter'
 
     export default {
         name: 'Home',
         components: {
             LandingPage,
             ProductContainer,
-            //NewsLetter,
         },
-        data() {
-            return {
-                footerHeight: null
-            }
-        },
-        methods: {
-            ...mapGetters(['getFooterHeight']),
-            ...mapActions(['setNavbarAndFooter'])
-        },
-        created() { 
-            this.setNavbarAndFooter(false)
-            this.footerHeight = this.getFooterHeight()
-        },
+        computed: mapGetters(['getFooterHeight'])
     }
 </script>
 

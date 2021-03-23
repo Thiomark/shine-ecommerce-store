@@ -1,15 +1,15 @@
 <template>
     <section class="product-wrapper">
         <OptionsMenu />
-        <div v-if="!fetchAllProducts" class="product-section">
+        <div v-if="!getProducts" class="product-section">
             <Product 
                 v-for="(product, index) in 8" 
                 :key="index" 
             />
         </div>
-        <div v-if="fetchAllProducts" class="product-section">
+        <div v-if="getProducts" class="product-section">
             <Product 
-                v-for="product in getAllProducts" 
+                v-for="product in getProducts" 
                 :key="product._id" 
                 :title="product.title"
                 :price="product.productCost"
@@ -23,15 +23,13 @@
 <script>
 
     import {mapGetters, mapActions} from 'vuex'
-    //import ProductHeader from './product/ProductHeader'
     import OptionsMenu from './extra/OptionsMenu'
     import Product from './product/Product'
 
     export default {
         name: 'ProductContainer',
         components: {
-           // ProductHeader,
-           OptionsMenu,
+            OptionsMenu,
             Product,
         },
         data() {
@@ -40,15 +38,17 @@
             }
         },
         methods: {
-            ...mapActions(['fetchAllProducts']),
+            ...mapActions(['fetchProducts']),
             showMenu(){
                 this.menuOpen = !this.menuOpen
             }
         },
         created() {
-            this.fetchAllProducts()
+            this.fetchProducts()
         },
-        computed: mapGetters(['getAllProducts'])
+        computed: {
+            ...mapGetters(['getProducts'])
+        }
         
     }
 </script>

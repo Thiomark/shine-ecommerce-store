@@ -1,16 +1,11 @@
 <template>
-    <div class="cart-container" :style="{paddingBottom: `${footerHeight}px`}">
+    <div class="cart-container" :style="{paddingBottom: `${getFooterHeight}px`}">
         <CheckoutProcessBar 
             :confirmOrder="confirmOrder" 
             :yourDetails="yourDetails"
             :checkOut="checkOut" 
         />
-        <CartTotal
-            v-if="!checkOut"
-            :subtotal="getToalCost()" 
-            :shipping="getShippingCost()" 
-            :total="getTotalCostWithShipping()" 
-        />
+        <CartTotal v-if="!checkOut"/>
         <CouponCode v-if="!checkOut"/>
         <PersonalInformation v-if="!checkOut" @gotocheckout="goToCheckOut" />
         <OrderPlaced 
@@ -53,8 +48,7 @@
             }
         },
         methods: {
-            ...mapActions(['removeFromCart', 'setNavbarAndFooter']),
-            ...mapGetters(['getFooterHeight', 'getToalCost', 'getTotalCostWithShipping', 'getShippingCost']),
+            ...mapActions(['removeFromCart']),
             removeItem(payload){  
                 this.removeFromCart(payload)
             },
@@ -69,13 +63,7 @@
                 this.checkOut = true
             }
         },
-        mounted() {
-            this.footerHeight = this.getFooterHeight()
-        },
-        computed: mapGetters(['getitemsInShoppingCart']),
-        created() {
-            this.setNavbarAndFooter(false)
-        },
+        computed: mapGetters(['getitemsInShoppingCart', 'getFooterHeight']),
     }
 
 </script>

@@ -14,14 +14,13 @@
 
         name: "ProductImage",
         components: {
-            Skeleton
+           Skeleton
         },
         props: {
             productImage: {
                 type: String
-            },
-        }
-       
+            }
+        }  
     }
 
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <div class="login-page" :style="{paddingBottom: `${footerHeight}px`}">
+    <div class="login-page" :style="{paddingBottom: `${getFooterHeight}px`}">
         <div class="form">
             <form class="login-form">
                 <input v-model="username" type="text" placeholder="username"/>
@@ -20,7 +20,6 @@
         name: 'Login',
         data() {
             return {
-                footerHeight: null,
                 buffer: false,
                 errorMessage: null,
                 username: '',
@@ -28,8 +27,7 @@
             }
         },
         methods: {
-            ...mapGetters(['getFooterHeight']),
-            ...mapActions(['setNavbarAndFooter', 'setLoadingPage', 'setRequestFeedBack']),
+            ...mapActions(['setLoadingPage', 'setRequestFeedBack']),
             async submitTheDetails(){
                 try {
                     this.setLoadingPage(true)
@@ -59,10 +57,9 @@
                 }
             },
         },
+        computed: mapGetters(['getFooterHeight']),
         created() {
             this.setLoadingPage(false)
-            this.setNavbarAndFooter(false)
-            this.footerHeight = this.getFooterHeight()
         },
     }
 

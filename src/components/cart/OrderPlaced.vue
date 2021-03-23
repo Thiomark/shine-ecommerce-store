@@ -21,13 +21,13 @@
         name: 'OrderPlaced',
         props: {
             orderNumber: {
-                type: String
+                type: Number
             },
             numberOfItems: {
                 type: Number
             },
             totalAmount: {
-                type: String
+                type: Number
             },
             deleveryDate: {
                 type: String

@@ -2,62 +2,44 @@
     <div class="item-container">
         <div class="cart-total-wrapper">
             <div class="subtotal all">
-                <img :src="productImage" alt="">
+                <img :src="product.image" :alt="product.title">
             </div>
             <div class="subtotal all">
                 <h1 class="for-mobile">Name</h1>
-                <h1>{{title}}</h1>
+                <h1>{{product.title}}</h1>
             </div>
             <div class="total all">
                 <h1 class="for-mobile">Price</h1>
-                <h1>R {{price}}</h1>
+                <h1>R {{product.productCost}}</h1>
             </div>
             <div class="shipping all">
-                <input @click="moveItemToCart({price, title, productImage, productID})" type="button" value="Move to cart">
+                <input @click="moveItemToCart(product._id)" type="button" value="Move to cart">
             </div>
             <div class="total all hide-for-mobile">
-                <a @click="removeItemFromTheList(productID)" href="javascript:void(0)">&times;</a>
+                <a @click="removeItemFromFavCart(product._id)" href="javascript:void(0)">&times;</a>
             </div>
-            <input class="removeItem" @click="removeItemFromTheList(productID)" type="button" value="Remove Item">
+            <input class="removeItem" @click="removeItemFromFavCart(product._id)" type="button" value="Remove Item">
         </div>
     </div>
 </template>
 
 <script>
 
-    import { mapActions } from 'vuex'
+    import { mapMutations } from 'vuex'
     
     export default {
         name: "ItemsInCart",
         props: {
-            productID: {
-                type: String
+            product: {
+                type: Object
             },
-            title: {
-                type: String
-            },
-            price: {
-                type: Number
-            },
-            productImage: {
-                type: String
-            }
         },
         methods: {
-            ...mapActions(['removeFromFavouritesCart', 'addedItemToCart']),
-            removeItemFromTheList(productID){
-                this.removeFromFavouritesCart(productID)
-            },
-            moveItemToCart(items){
-                const {price, title, productImage, productID} = items
-                for(const product of this.$store.state.itemsInShoppingCart){
-                    if(product.productID === productID){
-                        return
-                    }
-                }     
-                this.addedItemToCart({price, title, productImage, productID, quantity: 1, totalPrice: price })
-                this.removeFromFavouritesCart(productID)
-            },
+            ...mapMutations(['removeItemFromFavCart', 'addItemToCart']),
+            moveItemToCart(productID){
+                this.addItemToCart(productID)
+                this.removeItemFromFavCart(productID)
+            }
         },
     }
 </script>

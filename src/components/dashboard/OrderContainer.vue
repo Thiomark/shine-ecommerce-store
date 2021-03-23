@@ -64,6 +64,7 @@
         grid-template-columns: 1fr;
         gap: 20px;
         padding: 1em;
+        overflow-x: hidden;
     }
 
     @media (min-width: 600px){
