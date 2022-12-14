@@ -4,6 +4,7 @@
         <RequestFeedBack v-if="getRequestFeedBack" :resposeMessage="getRequestFeedBack"/>
         <Loading v-if="getLoadingPage"/>
         <Navbar storeName="leavealot" v-if="$route.path !== '/dashboard'" />
+        <NavbarOld storeName="leavealot" v-if="$route.path !== '/dashboard'" />
         <router-view/>
         <Footer v-if="$route.path !== '/dashboard'"  class="put-at-the-bottom"/>
     </div>
@@ -14,7 +15,7 @@
     require('../src/assets/icofont/icofont.css')
     //import SelectPopup from './components/extra/SelectPopup'
     import Footer from './components/Footer'
-    import Navbar from './components/landingpage/Navbard'
+    import Navbar from './components/landingpage/Navbar'
     import Loading from './components/Loading'
     import RequestFeedBack from './components/RequestFeedBack'
     import {mapActions, mapGetters} from 'vuex'
@@ -24,8 +25,7 @@
             Footer,
             Navbar,
             Loading,
-            RequestFeedBack,
-            // SelectPopup
+            RequestFeedBack
         },
         data() {
             return {
@@ -58,6 +58,13 @@
         text-decoration: none;
         cursor: pointer;
     }
+
+    .container {
+        max-width: 1300px;
+        margin: auto;
+        padding: 0 2em;
+    }
+
 
     input[type="button"] {
         cursor: pointer;

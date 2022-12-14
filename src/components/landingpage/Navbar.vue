@@ -1,37 +1,45 @@
 <template>
-    <nav id="nav" class="header-container">
-        <div class="header-wrapper"> 
-            <router-link to="/" class="logo pri-colour" href="javascript:void(0)">{{storeName}}</router-link>
-            <ul class="desktop-menu">
-                <li><router-link to="/">Home</router-link></li>
-                <li><router-link to="">About</router-link></li>
-                <li><router-link to="">Contact</router-link></li>
-                <li v-if="!$store.state.token" class="login special"><router-link to="/login">Login</router-link></li>
-                <li v-if="!$store.state.token" class="signup special"><router-link to="/register">Sign Up</router-link></li>
-                <li v-if="$store.state.token" @click="logoutTheUser" class="signup special"><a to="javascript:void(0)">Log Out</a></li>
-            </ul>
-            <ul class="icons">
-                <li><i class="fas fa-heart justico pri-colour "></i></li>
-                <li v-if="$store.state.isAdmin" @click="navigate('Dashboard')" ><i class="icofont-dashboard-web pri-colour"></i></li>
-                <li><i class="icofont-user-alt-7 pri-colour  justico"></i></li>
-                <li class="cart"><i @click="navigate('Cart')" class="icofont-shopping-cart ico pri-colour "></i><h6 class="items-the-cart pri-colour ">{{getShoppingcart}}</h6></li>
-                <div class="menu-button">
-                    <i v-if="showMenuIcon" @click="toggleMenu" class="fas fa-bars pri-colour mobile"></i>
-                    <a v-if="!showMenuIcon" @click="toggleMenu" class="mobile pri-colour close" href="javascript:void(0)">&times;</a>
-                </div>
-            </ul>
+    <header>
+        <h1>Free shipping available on all products</h1>
+        <div class="container">
+            <button class="mobile">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                </svg>
+            </button>
+            <div class="middle">
+                <h1><router-link class="store-name" to="/">{{getStoreName}}</router-link></h1>
+                <ul class="desktop">
+                    <li>Journal</li>
+                    <li>About</li>
+                </ul>
+            </div>
+            <div class="right">
+                <button>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    </svg>
+                </button>
+                <button class="desktop">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/>
+                    </svg>
+                </button>
+                <button @click="navigate('Cart')" class="cart">
+                    <svg style="margin-right: .7em" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
+                        <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
+                      </svg>
+                    <span class="items-the-cart">{{getItemsInCart.length}}</span>
+                </button>
+            </div>
         </div>
-    </nav>
+    </header>
 </template>
 
-<script>
+<script scoped>
 
     import { mapGetters } from 'vuex'
-
-    //v-if="$store.state.user.role === 'admin'"
-
     export default {
-        
         name: "NavBar",
         props: {
             storeName: {
@@ -44,187 +52,108 @@
             }
         },
         methods: {
-            toggleMenu(){
-                this.showMenuIcon = !this.showMenuIcon
-            },
             navigate(page) {
                 this.$router.push({
                     name: page
                 })
-            },
-            logoutTheUser(){
-                this.$store.dispatch('setToken', null)
-                this.$store.dispatch('setUser', null)
-            },
+            }
         },
-        computed: mapGetters(['getShoppingcart', 'getTheUser']),
+        computed: mapGetters(['getStoreName', 'getItemsInCart']),
         
     }
 </script>
 
 <style scoped>
 
-/* 
-    li:nth-child(2) {
-        position: relative;
-    }
-
-    .icofont-dashboard-web:after {
-        transform: scale(0);
-        content: "The Dashboard";
-        position: absolute;
-        background-color: aliceblue;
-        z-index: 30;
-        color: black;
-        padding: 1em;
-        right: 150px;
-        top: 10px;
-        white-space: nowrap;
-        border-radius: 7px;
-        transition: all 0.2s ease-in-out;
-    }
-  
-    .icofont-dashboard-web:hover::after {
-        transform: scale(1);
-        right: 150px;
-        top: 55px;
-        
-    } */
-
-
-
-   
-    @media (min-width: 900px) {
-        .desktop-menu {
-            display: flex;
-        }
-        .mobile {
-            display: none;
-        }
-    }
-    @media (max-width: 900px) {
-        .desktop-menu {
-            display: none;
-        }
-        
-    }
-
-    .pri-colour {
-        color: rgb(209, 209, 209);
-    }
-
-    .header-container {
-        width: 100%;
-        padding: 1.3em;
-        overflow: hidden;
-        background-color: rgb(10, 10, 10);
-    }
-
-    .header-wrapper {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        max-width: 1100px;
-        margin: auto;
-        align-items: center;
-    }
-
-    .mobile-menu {
-        position: absolute;
-        align-items: center;
-        justify-content: center;
-        background: gray;
-        top: 1em;
-        padding: 1em;
-        width: 10em;
-
-    }
-
-    .desktop-menu li {
-        padding: 0 1.4em;
-    }
-
-    .mobile {
-        position: absolute;
-    }
-
-    .menu-button {
-        display: flex;
-        align-items: center;
-        position: relative;
-        justify-content: center;
-    }
-
-    .icons {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        grid-column-gap: 1.6em;
-        place-items: center;
-    }
-
-    .close {
-        font-size: 2rem;
-    }
-
-    .logo {
-        font-weight: 500;
-        text-transform: uppercase;
-        font-size: 1em;
-        cursor: pointer;
-        font-family: 'Poppins', sans-serif; 
-    }
-
-    .login {
-        padding: 10px .6em;
-        border-radius: 70px;
-        background-color: teal;
-        margin-right: 10px;
-    }
-
-    .signup {
-        padding: 8px .2em;
-        border-radius: 70px;
-        border: 2px solid teal;
-        margin-right: 10px;
-    }
-
     .cart {
         position: relative;
-        font-size: 1.2rem;
-        
     }
 
-    .icofont-shopping-cart {
+    .store-name {
+        cursor: pointer;
+        font-size: 2rem;
+        font-weight: bold;
+        color: black;
     }
 
-    .justico {
-        font-size: .9rem;
+    .desktop {
+        display: none;
+    }
+
+    header {
+        border-bottom: 1px solid rgb(230, 230, 230);
+    }
+
+    header > h1 {
+        text-align: center;
+        border-bottom: 1px solid rgb(230, 230, 230);
+        padding: .6em;
+        font-size: .8rem;
+        font-weight: lighter;
+        color: rgb(69, 69, 69);
+    }
+
+    header > div {
+        display: flex;
+        padding: 1em;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    button {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+    }
+
+    .right {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1em;
     }
 
     .items-the-cart {
+        font-size: .85rem;
         position: absolute;
-        top: -7px;
-        right: -10px;
-        font-size: 14px;
-        font-weight: 400;
-    }
+        top: 0;
+        right: 0;
+    } 
 
-    .desktop-menu a {
-        color: rgb(228, 228, 228);
-        font-family: 'Poppins', sans-serif; 
-    }
+    @media (min-width: 900px) {
+        .desktop {
+            display: block;
+        }
+
+        header > h1 {
+            font-size: 1rem;
+            color: rgb(12, 12, 12);
+        }
+
+        .middle {
+            display: flex;
+            align-items: center;
+            gap: 2em;
+        }
     
-    .desktop-menu a:hover {
-        color: teal;
-    }
+        .middle ul {
+            display: flex;
+            align-items: center;
+            gap: 1em;
+            cursor: pointer;
+        }
+    
+        .middle ul li:hover {
+            text-decoration: underline;
+        }
 
-    i {
-        cursor: pointer;
-    }
+        .mobile {
+            display: none;
+        }
 
-    i:hover {
-        color: teal;
+        .right {
+            gap: 1.5em;
+        }
     }
-
     
 </style>

@@ -1,6 +1,6 @@
 <template>
     <section class="product-wrapper">
-        <OptionsMenu />
+        <!-- <OptionsMenu /> -->
         <div v-if="!getProducts" class="product-section">
             <Product 
                 v-for="(product, index) in 8" 
@@ -23,13 +23,12 @@
 <script>
 
     import {mapGetters, mapActions} from 'vuex'
-    import OptionsMenu from './extra/OptionsMenu'
     import Product from './product/Product'
 
     export default {
         name: 'ProductContainer',
         components: {
-            OptionsMenu,
+            // OptionsMenu,
             Product,
         },
         data() {

@@ -3,7 +3,8 @@ const state = {
     requestFeedBack: null,
     pageLoading: false,
     selectPopupConfirm: 'some',
-    selectPopupMessage: "something"
+    selectPopupMessage: "something",
+    storeName: 'Shine'
 }
 
 
@@ -49,7 +50,7 @@ const getters = {
     getLoadingPage: state => state.pageLoading,
     getSelectPopupMessage: state => state.selectPopupMessage,
     getSelectPopupConfirm: state => state.selectPopupConfirm,
-    // getShippingCost: state => state.shippingCost,
+    getStoreName: state => state.storeName,
 }
 
 export default {
