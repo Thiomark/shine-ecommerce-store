@@ -86,7 +86,7 @@
 
     header > h1 {
         text-align: center;
-        border-bottom: 1px solid rgb(230, 230, 230);
+        border-bottom: 1px solid rgb(202, 202, 202);
         padding: .6em;
         font-size: .8rem;
         font-weight: lighter;
@@ -95,7 +95,7 @@
 
     header > div {
         display: flex;
-        padding: 1em;
+        padding: 1em 2em;
         align-items: center;
         justify-content: space-between;
     }

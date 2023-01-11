@@ -1,4 +1,4 @@
-# eCommerce store
+![thumbnail](https://res.cloudinary.com/thiomark/image/upload/v1673444417/portfolio/Shine_Store_thubnail.jpg)
 
 ## Website Preview
 

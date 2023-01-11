@@ -1,7 +1,7 @@
 import axios from 'axios'
 import store from '../store/index'
 
-const baseURL = 'https://ecomstoreapi.herokuapp.com/'
+const baseURL = 'http://localhost:5000'
 
 export default () => {
     return axios.create({

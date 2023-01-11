@@ -1,12 +1,5 @@
 <template>
     <section class="product-wrapper">
-        <!-- <OptionsMenu /> -->
-        <div v-if="!getProducts" class="product-section">
-            <Product 
-                v-for="(product, index) in 8" 
-                :key="index" 
-            />
-        </div>
         <div v-if="getProducts" class="product-section">
             <Product 
                 v-for="product in getProducts" 
@@ -58,7 +51,7 @@
 
     .product-wrapper {
         width: 100%;
-        max-width: 1100px;
+        max-width: 1330px;
         overflow-x: hidden;
         margin: 0 auto 2em auto;
     }

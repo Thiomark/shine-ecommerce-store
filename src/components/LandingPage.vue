@@ -44,6 +44,7 @@
         position: relative;
         width: 100%;
         height: 50vh;
+        max-height: 45em;
         background-image: url('https://images.pexels.com/photos/1488463/pexels-photo-1488463.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940');
         background-size: cover;
         background-repeat: no-repeat;

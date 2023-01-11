@@ -1,17 +1,12 @@
 <template>
     <div @mouseover="showButtons" @mouseleave="hideButtons" @click="navigateToTheProduct" class="product-container">
-        <div class="skeletonImage" v-if="!productImage">
-            <Skeleton height="12em"/>
-        </div>
         <div v-if="productImage" class="image-shape image-position"
             :style="{'background-image': `url('${productImage}')`}"
             >   
             <i @mouseover="disableNavigation" @mouseleave="disableNavigation" @click="addItemToFavCart(productID)" class="far fa-heart" :style="{opacity: buttonOpacity}"></i>
-            <input @mouseover="disableNavigation" @mouseleave="disableNavigation" @click="addItemToCart(productID)" type="button" :style="{opacity: buttonOpacity}" value="add to cart">
+            <input @mouseover="disableNavigation" @mouseleave="disableNavigation" @click="addItemToCart(productID)" type="button" :style="{opacity: buttonOpacity}" value="Add To Cart">
         </div>
         <div class="product-info">
-            <Skeleton class="skeleton" v-if="!price" height="2em"/>
-            <Skeleton v-if="!title" height="1em"/>
             <h1 v-if="price" >R {{price}}</h1>
             <h2 v-if="title" >{{title}}</h2>
         </div>
@@ -20,15 +15,11 @@
 
 <script>
 
-    import { mapMutations } from 'vuex'
-    import Skeleton from '../extra/Skeleton'
+    import { mapMutations } from 'vuex';
 
     export default {
 
         name: "Product", 
-        components: {
-            Skeleton
-        },
         props: {
             productImage: {
                 type: String
@@ -100,15 +91,11 @@
     }
 
     .product-info {
-    
         display: grid;
         grid-template-columns: 1fr;
         margin: .4em 0 .6em 0;
         border-radius: .3em;
-        padding: .8em .8em;
-        -moz-box-shadow: rgba(17, 17, 18, 0.151) 0 .3em .6em, rgba(19, 20, 20, 0.06) 0 .1em .1em;
-        -webkit-box-shadow: rgba(17, 17, 18, 0.151) 0 .3em .6em, rgba(19, 20, 20, 0.06) 0 .1em .1em;
-        box-shadow: rgba(17, 17, 18, 0.151) 0 .3em .6em, rgba(19, 20, 20, 0.06) 0 .1em .1em;
+        padding: .6em .2em;
     }
 
     .image-position {

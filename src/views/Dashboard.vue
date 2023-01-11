@@ -2,18 +2,18 @@
     <div class="dashboard-container">
         <nav class="menu" tabindex="0">
             <div class="smartphone-menu-trigger"></div>
-        <header class="avatar">
-            <h2>{{getTheUser.name}}</h2>
-        </header>
-        <ul>
-            <li @click="navigate('Home') " tabindex="0"><i class="fas fa-home"></i><span>Home</span></li>
-            <li @click="toggleButtons('orders')" tabindex="0"><i class="fas fa-shipping-fast"></i><span>Orders</span></li>
-            <li @click="toggleButtons('products')" tabindex="0"><i class="fas fa-shopping-cart"></i><span>Products</span></li>
-            <li @click="toggleButtons('addProduct')" tabindex="0"><i class="fas fa-plus"></i><span>Add Product</span></li>
-            <li @click="toggleButtons('reviews')" tabindex="0"><i class="fas fa-comments"></i><span>Reviews</span></li>
-            <li @click="toggleButtons('statistic')" tabindex="0"><i class="far fa-chart-bar"></i><span>Statistic</span></li>
-            <li @click="toggleButtons('settings')" tabindex="0"><i class="fas fa-cogs"></i><span>Settings</span></li>
-        </ul>
+            <header class="avatar">
+                <h2>{{getTheUser.name}}</h2>
+            </header>
+            <ul>
+                <li @click="navigate('Home') " tabindex="0"><i class="fas fa-home"></i><span>Home</span></li>
+                <li @click="toggleButtons('orders')" tabindex="0"><i class="fas fa-shipping-fast"></i><span>Orders</span></li>
+                <li @click="toggleButtons('products')" tabindex="0"><i class="fas fa-shopping-cart"></i><span>Products</span></li>
+                <li @click="toggleButtons('addProduct')" tabindex="0"><i class="fas fa-plus"></i><span>Add Product</span></li>
+                <li @click="toggleButtons('reviews')" tabindex="0"><i class="fas fa-comments"></i><span>Reviews</span></li>
+                <li @click="toggleButtons('statistic')" tabindex="0"><i class="far fa-chart-bar"></i><span>Statistic</span></li>
+                <li @click="toggleButtons('settings')" tabindex="0"><i class="fas fa-cogs"></i><span>Settings</span></li>
+            </ul>
         </nav>
         <main>
             <h1 v-if="statistic" >Performance & Statistic</h1>

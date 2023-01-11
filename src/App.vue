@@ -4,7 +4,7 @@
         <RequestFeedBack v-if="getRequestFeedBack" :resposeMessage="getRequestFeedBack"/>
         <Loading v-if="getLoadingPage"/>
         <Navbar storeName="leavealot" v-if="$route.path !== '/dashboard'" />
-        <NavbarOld storeName="leavealot" v-if="$route.path !== '/dashboard'" />
+        <!-- <NavbarOld storeName="leavealot" v-if="$route.path !== '/dashboard'" /> -->
         <router-view/>
         <Footer v-if="$route.path !== '/dashboard'"  class="put-at-the-bottom"/>
     </div>
@@ -62,7 +62,10 @@
     .container {
         max-width: 1300px;
         margin: auto;
-        padding: 0 2em;
+    }
+
+    .container-p {
+        padding: 2em;
     }
 
 
