@@ -1,16 +1,7 @@
 ![thumbnail](https://res.cloudinary.com/thiomark/image/upload/v1673444417/portfolio/Shine_Store_thubnail.jpg)
 
-## Website Preview
-
-```
-https://awesome-agnesi-fe97a2.netlify.app/
-```
-
-## The backend Api
-
-```
-https://github.com/Thiomark/store-api
-```
+1. To go to the backend repo [click here](https://github.com/Thiomark/shine-ecommerce-store-api)
+2. To preview the website [click here](golden-cajeta-05ed3f.netlify.app/)
 
 ## Admin access
 
